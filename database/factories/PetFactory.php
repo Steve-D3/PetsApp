@@ -35,6 +35,9 @@ class PetFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id, // Assumes users already seeded
             'name' => $this->faker->firstName(),
+            'photo' => $this->faker->imageUrl(300, 300, 'animals', true),
+            'microchip_number' => $this->faker->optional()->regexify('[A-Z0-9]{10}'), //in the future the microchip will contain the owner information
+            'sterilized' => $this->faker->boolean(70),
             'species' => $species,
             'breed' => $this->faker->randomElement($breeds[$species]),
             'gender' => $this->faker->randomElement(['Male', 'Female']),

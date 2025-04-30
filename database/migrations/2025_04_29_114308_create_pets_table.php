@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->string('photo')->nullable();
+            $table->string('microchip_number')->nullable();
+            $table->boolean('sterilized')->default(false);
             $table->string('species');
             $table->string('breed')->nullable();
             $table->string('gender')->nullable();

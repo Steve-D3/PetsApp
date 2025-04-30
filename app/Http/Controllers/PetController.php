@@ -9,7 +9,7 @@ use App\Models\Pet;
 class PetController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all pets in the database.
      */
     public function index()
     {
@@ -25,19 +25,24 @@ class PetController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new pet in the database.
      */
     public function store(StorePetRequest $request)
     {
-        //
+        $pet = Pet::create($request->all());
+        return response()->json([
+            'message' => 'Pet created successfully',
+            'pet' => $pet
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * Display a specific pet.
      */
-    public function show(Pet $pet)
+    public function show(Pet $id)
     {
-        //
+
+        return response()->json($id);
     }
 
     /**
@@ -49,18 +54,27 @@ class PetController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the info of a specific pet.
      */
-    public function update(UpdatePetRequest $request, Pet $pet)
+    public function update(UpdatePetRequest $request, $petId)
     {
-        //
+        $pet = Pet::findOrFail($petId);
+        $pet->update($request->all());
+        return response()->json([
+            'message' => 'Pet updated successfully',
+            'pet' => $pet
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove a specific pet.
      */
     public function destroy(Pet $pet)
     {
-        //
+        Pet::destroy($pet->id);
+        return response()->json([
+            'message' => 'Pet deleted successfully',
+            'pet' => $pet
+        ]);
     }
 }

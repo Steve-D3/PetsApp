@@ -9,4 +9,14 @@ class Pet extends Model
 {
     /** @use HasFactory<\Database\Factories\PetFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'name',
+        'photo',
+        'microchip_number',
+        'sterilized',
+        'species',
+        'breed',
+    ];
 }

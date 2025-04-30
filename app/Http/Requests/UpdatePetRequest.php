@@ -11,7 +11,7 @@ class UpdatePetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class UpdatePetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string|max:255',
+            'photo' => 'nullable|image|max:2048',
+            'microchip_number' => 'nullable|string|max:255',
+            'sterilized' => 'boolean',
+            'species' => 'nullable|string',
+            'breed' => 'nullable|string',
+            'gender' => 'nullable|in:Male,Female',
+            'weight' => 'numeric|min:0.01|max:100',
+            'birth_date' => 'nullable|date|before:today',
+            'allergies' => 'nullable|string',
+            'food_preferences' => 'nullable|string',
         ];
     }
 }
