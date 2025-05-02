@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\VetClinic;
 use App\Models\VeterinarianProfile;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,23 +16,30 @@ class VeterinarianProfileSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create 5 veterinarian users with profiles
+        // Ensure there are vet clinics to assign vets to
+        if (VetClinic::count() === 0) {
+            \App\Models\VetClinic::factory()->count(5)->create();
+        }
+
+        $clinics = VetClinic::all();
+
         for ($i = 1; $i <= 5; $i++) {
             $user = User::create([
-                'name' => "Vet $i",
+                'name' => fake()->name(),
                 'email' => "vet$i@example.com",
-                'password' => Hash::make('password'), // default password
+                'password' => Hash::make('password'),
                 'role' => 'vet',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             VeterinarianProfile::create([
                 'user_id' => $user->id,
                 'license_number' => "VET-00$i",
-                'specialty' => fake()->randomElement(['Surgery', 'Dentistry', 'Dermatology']),
+                'specialty' => fake()->randomElement(['Nutrition', 'Oncology', 'Neurosurgery', 'General']),
                 'biography' => fake()->sentence(10),
-                'clinic_name' => "Happy Paws Clinic $i",
-                'location' => fake()->city(),
                 'phone_number' => fake()->phoneNumber(),
+                'vet_clinic_id' => $clinics->random()->id, // New relation
             ]);
         }
     }

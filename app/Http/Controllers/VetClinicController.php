@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVeterinarianProfileRequest;
-use App\Http\Requests\UpdateVeterinarianProfileRequest;
-use App\Models\VeterinarianProfile;
+use App\Http\Requests\StoreVetClinicRequest;
+use App\Http\Requests\UpdateVetClinicRequest;
+use App\Models\VetClinic;
 
-class VeterinarianProfileController extends Controller
+class VetClinicController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json(VeterinarianProfile::all());
+        return response()->json(VetClinic::all());
     }
 
     /**
@@ -27,7 +27,7 @@ class VeterinarianProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVeterinarianProfileRequest $request)
+    public function store(StoreVetClinicRequest $request)
     {
         //
     }
@@ -35,15 +35,15 @@ class VeterinarianProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VeterinarianProfile $veterinarianProfile)
+    public function show(VetClinic $id)
     {
-        //
+        return response()->json($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VeterinarianProfile $veterinarianProfile)
+    public function edit(VetClinic $vetClinic)
     {
         //
     }
@@ -51,7 +51,7 @@ class VeterinarianProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVeterinarianProfileRequest $request, VeterinarianProfile $veterinarianProfile)
+    public function update(UpdateVetClinicRequest $request, VetClinic $vetClinic)
     {
         //
     }
@@ -59,7 +59,7 @@ class VeterinarianProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VeterinarianProfile $veterinarianProfile)
+    public function destroy(VetClinic $vetClinic)
     {
         //
     }

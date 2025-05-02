@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Pet;
 use App\Models\User;
+use App\Models\VetClinic;
 use App\Models\VeterinarianProfile;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             VeterinarianProfileSeeder::class,
         ]);
+
 
         // User::factory()->create([
         //     'name' => 'Test User',
