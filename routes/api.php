@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\VetClinicController;
 use App\Http\Controllers\VeterinarianProfileController;
@@ -23,3 +24,8 @@ Route::get('/vets', [VeterinarianProfileController::class, 'index']);
 // Vet Clinics API routes
 Route::get('/clinics', [VetClinicController::class, 'index']);
 Route::get('/clinics/{id}', [VetClinicController::class, 'show']);
+
+
+// Appointments API routes
+Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']);

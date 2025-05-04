@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Pet;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,15 @@ class AppointmentFactory extends Factory
      */
     public function definition(): array
     {
+        $pet = Pet::inRandomOrder()->first();
+        $vet = User::where('role', 'vet')->inRandomOrder()->first();
+
         return [
-            //
+            'pet_id' => $pet?->id ?? Pet::factory(),
+            'veterinarian_id' => $vet?->id ?? User::factory()->create(['role' => 'vet'])->id,
+            'scheduled_at' => $this->faker->dateTimeBetween('+1 day', '+1 month'),
+            'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled', 'completed']),
+            'notes' => $this->faker->optional()->sentence(),
         ];
     }
 }

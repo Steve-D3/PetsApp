@@ -13,7 +13,9 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $appointments = Appointment::with(['pet', 'veterinarian'])->get();
+
+        return response()->json($appointments);
     }
 
     /**
@@ -37,7 +39,9 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        //
+        $appointment->load(['pet', 'veterinarian']);
+
+        return response()->json($appointment);
     }
 
     /**

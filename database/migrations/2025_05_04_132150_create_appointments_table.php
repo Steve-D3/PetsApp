@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pet_id')->constrained()->onDelete('cascade');
+            $table->foreignId('veterinarian_id')->constrained('users')->onDelete('cascade'); // vet is a user with role 'vet'
+            $table->dateTime('scheduled_at');
+            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

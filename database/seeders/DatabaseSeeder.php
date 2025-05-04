@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
 use App\Models\Pet;
 use App\Models\User;
 use App\Models\VetClinic;
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             VeterinarianProfileSeeder::class,
         ]);
+        Appointment::factory()->count(10)->create();
 
 
         // User::factory()->create([
