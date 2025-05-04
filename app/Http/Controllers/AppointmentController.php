@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVetClinicRequest;
-use App\Http\Requests\UpdateVetClinicRequest;
-use App\Models\VetClinic;
+use App\Http\Requests\StoreAppointmentRequest;
+use App\Http\Requests\UpdateAppointmentRequest;
+use App\Models\Appointment;
 
-class VetClinicController extends Controller
+class AppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json(VetClinic::all());
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class VetClinicController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVetClinicRequest $request)
+    public function store(StoreAppointmentRequest $request)
     {
         //
     }
@@ -35,16 +35,15 @@ class VetClinicController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(VetClinic $id)
+    public function show(Appointment $appointment)
     {
-        $id = VetClinic::with('veterinarians')->find($id->id);
-        return response()->json($id);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VetClinic $vetClinic)
+    public function edit(Appointment $appointment)
     {
         //
     }
@@ -52,7 +51,7 @@ class VetClinicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVetClinicRequest $request, VetClinic $vetClinic)
+    public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
         //
     }
@@ -60,7 +59,7 @@ class VetClinicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VetClinic $vetClinic)
+    public function destroy(Appointment $appointment)
     {
         //
     }

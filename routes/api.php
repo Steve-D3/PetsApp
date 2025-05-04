@@ -12,10 +12,10 @@ Route::get('/user', function (Request $request) {
 
 // Pets API routes
 Route::get('/pets', [PetController::class, 'index']);
-Route::get('/pets/{request}', [PetController::class, 'show']);
+Route::get('/pets/{pet}', [PetController::class, 'show']);
 Route::post('/pets', [PetController::class, 'store']);
-Route::put('/pets/{petId}', [PetController::class, 'update']);
-Route::delete('/pets/{id}', [PetController::class, 'destroy']);
+Route::put('/pets/{pet}', [PetController::class, 'update']);
+Route::delete('/pets/{pet}', [PetController::class, 'destroy']);
 
 // Vets API routes
 Route::get('/vets', [VeterinarianProfileController::class, 'index']);

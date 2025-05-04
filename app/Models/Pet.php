@@ -18,5 +18,15 @@ class Pet extends Model
         'sterilized',
         'species',
         'breed',
+        'gender',
+        'weight',
+        'birth_date',
+        'allergies',
+        'food_preferences',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

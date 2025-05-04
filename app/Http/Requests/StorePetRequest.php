@@ -11,7 +11,7 @@ class StorePetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,21 @@ class StorePetRequest extends FormRequest
      */
     public function rules(): array
     {
+        $petId = $this->route('pet')->id ?? null;
+
         return [
-            //
+            'user_id' => 'required|exists:users,id',
+            'name' => 'sometimes|string|max:255',
+            'photo' => 'nullable|string',
+            'microchip_number' => 'nullable|string|unique:pets,microchip_number,' . $petId,
+            'sterilized' => 'sometimes|boolean',
+            'species' => 'sometimes|string',
+            'breed' => 'nullable|string',
+            'gender' => 'nullable|in:Male,Female',
+            'weight' => 'sometimes|numeric|min:0',
+            'birth_date' => 'nullable|date',
+            'allergies' => 'nullable|string',
+            'food_preferences' => 'nullable|string',
         ];
     }
 }

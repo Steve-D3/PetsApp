@@ -19,10 +19,6 @@ class PetController extends Controller
 
         $filters = $request->validated();
 
-        if (isset($filters['user_id'])) {
-            $query->where('user_id', $filters['user_id']);
-        }
-
         if (isset($filters['species'])) {
             $query->where('species', $filters['species']);
         }
@@ -59,6 +55,10 @@ class PetController extends Controller
             $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
 
+        if (isset($filters['user_id'])) {
+            $query->where('user_id', $filters['user_id']);
+        }
+
         return response()->json($query->get());
     }
 
@@ -75,20 +75,21 @@ class PetController extends Controller
      */
     public function store(StorePetRequest $request)
     {
-        $pet = Pet::create($request->all());
+        $pet = Pet::create($request->validated());
+
         return response()->json([
             'message' => 'Pet created successfully',
-            'pet' => $pet
-        ]);
+            'data' => $pet
+        ], 201);
     }
 
     /**
      * Display a specific pet.
      */
-    public function show(Pet $id)
+    public function show(Pet $pet)
     {
 
-        return response()->json($id);
+        return response()->json($pet);
     }
 
     /**
@@ -102,13 +103,13 @@ class PetController extends Controller
     /**
      * Update the info of a specific pet.
      */
-    public function update(UpdatePetRequest $request, $petId)
+    public function update(UpdatePetRequest $request, Pet $pet)
     {
-        $pet = Pet::findOrFail($petId);
         $pet->update($request->validated());
+
         return response()->json([
             'message' => 'Pet updated successfully',
-            'pet' => $pet
+            'data' => $pet->fresh() // to return the updated instance
         ]);
     }
 

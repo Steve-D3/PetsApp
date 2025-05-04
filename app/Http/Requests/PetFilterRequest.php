@@ -24,10 +24,10 @@ class PetFilterRequest extends FormRequest
         return [
             'user_id' => 'integer|exists:users,id',
             'name' => 'string',
-            'species' => 'string',
+            'species' => 'string |in:Dog,Cat,Bird,Fish,Rabbit,Hamster,Turtle,Lizard,Other',
             'breed' => 'string',
-            'gender' => 'in:male,female',
-            'sterilized' => 'boolean',
+            'gender' => 'in:Male,Female',
+            'sterilized' => 'numeric|in:0,1',
             'min_weight' => 'numeric',
             'max_weight' => 'numeric',
             'birth_date_from' => 'date',

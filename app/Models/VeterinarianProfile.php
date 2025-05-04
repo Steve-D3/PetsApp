@@ -9,4 +9,21 @@ class VeterinarianProfile extends Model
 {
     /** @use HasFactory<\Database\Factories\VeterinarianProfileFactory> */
     use HasFactory;
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'vet_clinic_id',
+        'user_id',
+    ];
+
+    public function clinic()
+    {
+        return $this->belongsTo(VetClinic::class, 'vet_clinic_id');
+    }
+
+    public function pets()
+    {
+        return $this->hasMany(Pet::class, 'veterinarian_id');
+    }
 }
