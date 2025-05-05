@@ -15,6 +15,18 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('General') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" :active="request()->routeIs('pets')">
+                        {{ __('Pets') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" :active="request()->routeIs('users')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                    <x-nav-link href="#" :active="request()->routeIs('users')">
+                        {{ __('Veterinarians') }}
+                    </x-nav-link>
                 </div>
             </div>
 
