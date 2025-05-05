@@ -21,6 +21,11 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
+
+            $table->json('off_days')
+                ->nullable()
+                ->default(json_encode([]))
+                ->comment('Array of days off in JSON format');
         });
     }
 

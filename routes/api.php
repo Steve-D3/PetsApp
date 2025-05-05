@@ -28,4 +28,8 @@ Route::get('/clinics/{id}', [VetClinicController::class, 'show']);
 
 // Appointments API routes
 Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::get('/appointments/available-slots/{veterinarianProfile}', [AppointmentController::class, 'availableSlots']);
 Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']);
+Route::post('/appointments', [AppointmentController::class, 'store']);
+Route::put('/appointments/{appointment}', [AppointmentController::class, 'update']);
+Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);

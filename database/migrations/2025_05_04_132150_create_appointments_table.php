@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pet_id')->constrained()->onDelete('cascade');
             $table->foreignId('veterinarian_id')->constrained('users')->onDelete('cascade'); // vet is a user with role 'vet'
-            $table->dateTime('scheduled_at');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->text('notes')->nullable();
             $table->timestamps();

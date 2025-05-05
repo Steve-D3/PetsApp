@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAppointmentRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreAppointmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,11 @@ class StoreAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pet_id' => 'required|exists:pets,id',
+            'veterinarian_id' => 'required|exists:users,id',
+            'scheduled_at' => 'required|date_format:Y-m-d H:i:s|after:now',
+            'status' => 'nullable|in:pending,confirmed,cancelled,completed',
+            'notes' => 'nullable|string',
         ];
     }
 }

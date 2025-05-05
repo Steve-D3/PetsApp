@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             VeterinarianProfileSeeder::class,
         ]);
-        Appointment::factory()->count(10)->create();
+        Appointment::factory()->count(20)->create();
 
 
         // User::factory()->create([

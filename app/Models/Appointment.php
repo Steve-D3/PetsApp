@@ -13,7 +13,8 @@ class Appointment extends Model
     protected $fillable = [
         'pet_id',
         'veterinarian_id',
-        'scheduled_at',
+        'start_time',
+        'end_time',
         'status',
         'notes',
     ];
@@ -30,6 +31,7 @@ class Appointment extends Model
 
     public function veterinarian()
     {
-        return $this->belongsTo(VeterinarianProfile::class, 'id');
+        return $this->belongsTo(User::class, 'veterinarian_id');
     }
+
 }

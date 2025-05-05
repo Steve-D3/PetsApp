@@ -59,7 +59,7 @@ class PetController extends Controller
             $query->where('user_id', $filters['user_id']);
         }
 
-        return response()->json($query->get());
+        return response()->json($query->get()->load('owner'));
     }
 
     /**
@@ -88,7 +88,7 @@ class PetController extends Controller
      */
     public function show(Pet $pet)
     {
-
+        $pet->load('owner');
         return response()->json($pet);
     }
 

@@ -14,7 +14,10 @@ class VeterinarianProfile extends Model
         'created_at',
         'updated_at',
         'vet_clinic_id',
-        'user_id',
+    ];
+
+    protected $casts = [
+        'off_days' => 'array',
     ];
 
     public function clinic()
@@ -25,5 +28,10 @@ class VeterinarianProfile extends Model
     public function pets()
     {
         return $this->hasMany(Pet::class, 'veterinarian_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'veterinarian_id', 'user_id');
     }
 }

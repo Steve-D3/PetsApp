@@ -16,12 +16,13 @@ class VeterinarianProfileSeeder extends Seeder
      */
     public function run(): void
     {
-        // Ensure there are vet clinics to assign vets to
+        // Ensure vet clinics exist
         if (VetClinic::count() === 0) {
-            \App\Models\VetClinic::factory()->count(5)->create();
+            VetClinic::factory()->count(5)->create();
         }
 
         $clinics = VetClinic::all();
+        $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
         for ($i = 1; $i <= 5; $i++) {
             $user = User::create([
@@ -39,7 +40,8 @@ class VeterinarianProfileSeeder extends Seeder
                 'specialty' => fake()->randomElement(['Nutrition', 'Oncology', 'Neurosurgery', 'General']),
                 'biography' => fake()->sentence(10),
                 'phone_number' => fake()->phoneNumber(),
-                'vet_clinic_id' => $clinics->random()->id, // New relation
+                'vet_clinic_id' => $clinics->random()->id,
+                'off_days' => json_encode(collect($weekdays)->random(rand(0, 2))->values()->all()),
             ]);
         }
     }
