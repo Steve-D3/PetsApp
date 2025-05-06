@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Admin\DashboardOverview;
+use App\Livewire\Admin\PetsIndex;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -17,4 +18,5 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/admin/dashboard', DashboardOverview::class)->name('admin.dashboard');
+    Route::get('/admin/pets', PetsIndex::class)->name('pets.index');
 });
