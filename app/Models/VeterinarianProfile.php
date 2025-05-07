@@ -20,6 +20,11 @@ class VeterinarianProfile extends Model
         'off_days' => 'array',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function clinic()
     {
         return $this->belongsTo(VetClinic::class, 'vet_clinic_id');
