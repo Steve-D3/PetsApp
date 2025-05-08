@@ -2,6 +2,7 @@
 
 use App\Livewire\Admin\DashboardOverview;
 use App\Livewire\Admin\PetsCreate;
+use App\Livewire\Admin\PetShow;
 use App\Livewire\Admin\PetsIndex;
 use App\Livewire\Admin\VetShow;
 use App\Livewire\Admin\VetsIndex;
@@ -25,6 +26,6 @@ Route::middleware([
     Route::get('/admin/vets', VetsIndex::class)->name('admin.vets');
     Route::get('/admin/vets/{veterinarianProfile}', VetShow::class)->name('admin.vets.show');
     Route::get('/admin/pets/create', PetsCreate::class)->name('admin.pets.create');
-
+    Route::get('/admin/pets/{pet}', PetShow::class)->name('admin.pets.show');
 
 });

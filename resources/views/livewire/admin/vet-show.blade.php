@@ -19,7 +19,7 @@
                 <div class="space-y-2 text-gray-800 dark:text-gray-100">
                     <div><strong>Name:</strong> {{ $veterinarianProfile->clinic->name }}</div>
                     <div><strong>Address:</strong> {{ $veterinarianProfile->clinic->address }}</div>
-                    <div><strong>Website:</strong> {{ $veterinarianProfile->clinic->website }}</div>
+                    <div><strong>Website:</strong> <a href="{{ $veterinarianProfile->clinic->website }}">{{ $veterinarianProfile->clinic->website }}</a></div>
                 </div>
             </div>
 

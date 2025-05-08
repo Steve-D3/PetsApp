@@ -1,4 +1,4 @@
-<div class="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl shadow my-10">
+<div class="max-w-2xl mx-auto p-6 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl shadow">
     <h2 class="text-2xl font-bold mb-4">Add New Pet</h2>
 
     <form wire:submit.prevent="submit" class="space-y-6">
