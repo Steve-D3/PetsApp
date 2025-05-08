@@ -25,4 +25,6 @@ Route::middleware([
     Route::get('/admin/vets', VetsIndex::class)->name('admin.vets');
     Route::get('/admin/vets/{veterinarianProfile}', VetShow::class)->name('admin.vets.show');
     Route::get('/admin/pets/create', PetsCreate::class)->name('admin.pets.create');
+
+
 });
