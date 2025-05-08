@@ -1,7 +1,15 @@
-<div class="py-8 px-6 text-white xl:px-24 ">
-    <h1 class="text-2xl font-bold mb-6 px-6">Veterinarians</h1>
+<div class="py-8 px-6 text-white xl:px-24 max-w-7xl mx-auto">
+    <div>
+        <h1 class="text-2xl font-bold mb-6 px-6">Veterinarians</h1>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-10 mx-10">
+        <a href="#"
+            class="ml-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow sm:w-auto sm:ml-4">
+            Add
+        </a>
+    </div>
+
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-10 py-6">
         @foreach ($vets as $vet)
             <a href="{{ route('admin.vets.show', $vet->id) }}">
                 <div
