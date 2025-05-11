@@ -1,7 +1,7 @@
 <div class="py-8 px-6 text-white dark:bg-gray-900 min-h-screen">
     <h1 class="text-3xl font-bold mb-6 text-center">Vet Details</h1>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class=" lg:mx-40 grid grid-cols-1 lg:grid-cols-2 gap-8">
         {{-- Left Column: Vet and Clinic Info --}}
         <div class="space-y-6">
             <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">

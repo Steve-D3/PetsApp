@@ -81,7 +81,7 @@
                         <td class="px-4 py-3 text-sm">
                             <div class="space-x-4 flex justify-between">
                                 <a href="{{ route('admin.pets.show', $pet->id) }}" class="text-blue-500 hover:underline">Details</a>
-                                <a href="#" class="text-blue-500 hover:underline">Edit</a>
+                                <a href="{{ route('admin.pets.edit', $pet->id) }}" class="text-blue-500 hover:underline">Edit</a>
                                 <a href="delete({{ $pet->id }})" wire:click.prevent="delete({{ $pet->id }})"
                                     wire:confirm="Are you sure you want to delete this pet?"
                                     class="text-red-500 hover:underline">Delete</a>

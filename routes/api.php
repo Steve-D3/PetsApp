@@ -20,10 +20,17 @@ Route::delete('/pets/{pet}', [PetController::class, 'destroy']);
 
 // Vets API routes
 Route::get('/vets', [VeterinarianProfileController::class, 'index']);
+Route::get('/vets/{veterinarianProfile}', [VeterinarianProfileController::class, 'show']);
+Route::post('/vets', [VeterinarianProfileController::class, 'store']);
+Route::put('/vets/{veterinarianProfile}', [VeterinarianProfileController::class, 'update']);
+Route::delete('/vets/{veterinarianProfile}', [VeterinarianProfileController::class, 'destroy']);
 
 // Vet Clinics API routes
 Route::get('/clinics', [VetClinicController::class, 'index']);
 Route::get('/clinics/{id}', [VetClinicController::class, 'show']);
+Route::post('/clinics', [VetClinicController::class, 'store']);
+Route::put('/clinics/{id}', [VetClinicController::class, 'update']);
+Route::delete('/clinics/{id}', [VetClinicController::class, 'destroy']);
 
 
 // Appointments API routes

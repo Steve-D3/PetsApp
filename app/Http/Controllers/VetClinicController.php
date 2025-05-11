@@ -21,7 +21,7 @@ class VetClinicController extends Controller
      */
     public function create()
     {
-        //
+        return response()->json(VetClinic::create());
     }
 
     /**
@@ -29,7 +29,11 @@ class VetClinicController extends Controller
      */
     public function store(StoreVetClinicRequest $request)
     {
-        //
+        $vetClinic = VetClinic::create($request->validated());
+        return response()->json([
+            'message' => 'Vet clinic created successfully',
+            'data' => $vetClinic
+        ], 201);
     }
 
     /**
@@ -46,7 +50,7 @@ class VetClinicController extends Controller
      */
     public function edit(VetClinic $vetClinic)
     {
-        //
+        return response()->json(VetClinic::create($vetClinic->id));
     }
 
     /**
@@ -54,7 +58,11 @@ class VetClinicController extends Controller
      */
     public function update(UpdateVetClinicRequest $request, VetClinic $vetClinic)
     {
-        //
+        $vetClinic->update($request->validated());
+        return response()->json([
+            'message' => 'Vet clinic updated successfully',
+            'data' => $vetClinic
+        ]);
     }
 
     /**
@@ -62,6 +70,10 @@ class VetClinicController extends Controller
      */
     public function destroy(VetClinic $vetClinic)
     {
-        //
+        $vetClinic->delete();
+        return response()->json([
+            'message' => 'Vet clinic deleted successfully',
+            'data' => $vetClinic
+        ]);
     }
 }

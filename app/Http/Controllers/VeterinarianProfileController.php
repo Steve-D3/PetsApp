@@ -21,7 +21,7 @@ class VeterinarianProfileController extends Controller
      */
     public function create()
     {
-        //
+        return response()->json(VeterinarianProfile::create());
     }
 
     /**
@@ -29,7 +29,12 @@ class VeterinarianProfileController extends Controller
      */
     public function store(StoreVeterinarianProfileRequest $request)
     {
-        //
+        $veterinarianProfile = VeterinarianProfile::create($request->validated());
+
+        return response()->json([
+            'message' => 'Veterinarian profile created successfully',
+            'data' => $veterinarianProfile
+        ], 201);
     }
 
     /**
@@ -37,7 +42,7 @@ class VeterinarianProfileController extends Controller
      */
     public function show(VeterinarianProfile $veterinarianProfile)
     {
-        //
+        return response()->json($veterinarianProfile);
     }
 
     /**
@@ -53,7 +58,12 @@ class VeterinarianProfileController extends Controller
      */
     public function update(UpdateVeterinarianProfileRequest $request, VeterinarianProfile $veterinarianProfile)
     {
-        //
+        $veterinarianProfile->update($request->validated());
+
+        return response()->json([
+            'message' => 'Veterinarian profile updated successfully',
+            'data' => $veterinarianProfile
+        ]);
     }
 
     /**
@@ -61,6 +71,11 @@ class VeterinarianProfileController extends Controller
      */
     public function destroy(VeterinarianProfile $veterinarianProfile)
     {
-        //
+        $veterinarianProfile->delete();
+
+        return response()->json([
+            'message' => 'Veterinarian profile deleted successfully',
+            'data' => $veterinarianProfile
+        ]);
     }
 }

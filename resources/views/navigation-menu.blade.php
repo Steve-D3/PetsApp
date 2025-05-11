@@ -21,9 +21,12 @@
                     <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
                         {{ __('Pets') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('admin.vets') }}" :active="request()->routeIs('admin.vets')">
+                    <x-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
                         {{ __('Vets') }}
                     </x-nav-link>
+                    {{-- <x-nav-link href="#" :active="request()->routeIs('admin.vets')">
+                        {{ __('Users') }}
+                    </x-nav-link> --}}
                 </div>
             </div>
 
