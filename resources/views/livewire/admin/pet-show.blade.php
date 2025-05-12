@@ -59,10 +59,10 @@
                             <div class="space-y-1">
                                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</p>
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                    @if($appointment->status === 'scheduled') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                    @elseif($appointment->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                                    @elseif($appointment->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-                                    @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif">
+                                    @if($appointment->status === 'scheduled') text-blue-800 dark:text-blue-200
+                                    @elseif($appointment->status === 'completed') bg-green-100
+                                    @elseif($appointment->status === 'cancelled') dark:bg-red-900
+                                    @else @endif">
                                     {{ ucfirst($appointment->status) }}
                                 </span>
                             </div>

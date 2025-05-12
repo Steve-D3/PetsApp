@@ -54,7 +54,7 @@
 
 
         {{-- Right Column: Calendar --}}
-        <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden flex flex-col h-full">
             <div class="px-6 pt-6 pb-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                 <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Appointments</h2>
                 <a href="{{ route('appointments.create', $veterinarianProfile) }}" 
@@ -62,11 +62,40 @@
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    Add
+                    Add Appointment
                 </a>
             </div>
-            <div class="p-6 h-full">
-                <div id="calendar" class="rounded overflow-hidden mt-10"></div>
+            <div class="p-4 flex-1 flex flex-col min-h-0">
+                <div class="relative flex-1">
+                    <!-- Loading indicator -->
+                    <div id="calendar-loading" class="absolute inset-0 items-center justify-center bg-white/50 dark:bg-gray-900/50 z-10 hidden">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 m-auto"></div>
+                    </div>
+                    <!-- Calendar container -->
+                    <div id="calendar" class="h-full text-black"></div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex flex-wrap items-center justify-center gap-4 text-sm">
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                            <span>Scheduled</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                            <span>Confirmed</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
+                            <span>Cancelled</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-gray-500 mr-2"></span>
+                            <span>Completed</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -83,9 +112,50 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-B4RCZd7ZZBSoRJpJxMeRQc/ZnC9LA1k64g0146DcoNE="
           crossorigin=""/>
+    
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    <style>
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .fc-header-toolbar {
+                padding: 0.75rem 1rem 0.5rem;
+            }
+            
+            .fc-toolbar-title {
+                font-size: 1.125rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .fc-toolbar {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .fc-toolbar-chunk {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.375rem;
+            }
+        }
+    </style>
 @endpush
 
 @push('scripts')
+    <!-- SweetAlert2 for beautiful alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Moment.js for date handling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    
+    <!-- FullCalendar Core Package -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    
+    <!-- FullCalendar Plugins -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
+    
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
