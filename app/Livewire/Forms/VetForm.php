@@ -52,6 +52,8 @@ class VetForm extends Form
         ]);
 
         session()->flash('success', 'Veterinarian created successfully.');
-        return redirect()->route('admin.vets');
+        return redirect()->route('vets.index');
     }
+
+
 }

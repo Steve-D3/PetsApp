@@ -71,10 +71,19 @@ class VeterinarianProfileController extends Controller
      */
     public function destroy(VeterinarianProfile $veterinarianProfile)
     {
+        // Get the user before deleting the profile
+        $user = $veterinarianProfile->user;
+        
+        // Delete the veterinarian profile
         $veterinarianProfile->delete();
+        
+        // Delete the associated user
+        if ($user) {
+            $user->delete();
+        }
 
         return response()->json([
-            'message' => 'Veterinarian profile deleted successfully',
+            'message' => 'Veterinarian profile and associated user deleted successfully',
             'data' => $veterinarianProfile
         ]);
     }

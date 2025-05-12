@@ -10,6 +10,16 @@ class VeterinarianProfile extends Model
     /** @use HasFactory<\Database\Factories\VeterinarianProfileFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'license_number',
+        'specialty',
+        'biography',
+        'phone_number',
+        'vet_clinic_id',
+        'off_days',
+    ];
+
     protected $hidden = [
         'created_at',
         'updated_at',

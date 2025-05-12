@@ -7,46 +7,46 @@
 
     <div>
         <label for="name" class="block font-medium">Full Name</label>
-        <input type="text" wire:model.defer="name" id="name" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
-        @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <input type="text" wire:model.defer="form.name" id="name" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
+        @error('form.name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
     <div>
         <label for="email" class="block font-medium">Email</label>
-        <input type="email" wire:model.defer="email" id="email" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
-        @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <input type="email" wire:model.defer="form.email" id="email" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
+        @error('form.email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
     <div>
         <label for="license_number" class="block font-medium">License Number</label>
-        <input type="text" wire:model.defer="license_number" id="license_number" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
-        @error('license_number') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <input type="text" wire:model.defer="form.license_number" id="license_number" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
+        @error('form.license_number') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
     <div>
         <label for="specialty" class="block font-medium">Specialty</label>
-        <input type="text" wire:model.defer="specialty" id="specialty" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
+        <input type="text" wire:model.defer="form.specialty" id="specialty" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
     </div>
 
     <div>
         <label for="biography" class="block font-medium">Biography</label>
-        <textarea wire:model.defer="biography" id="biography" rows="3" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600"></textarea>
+        <textarea wire:model.defer="form.biography" id="biography" rows="3" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600"></textarea>
     </div>
 
     <div>
         <label for="phone_number" class="block font-medium">Phone Number</label>
-        <input type="text" wire:model.defer="phone_number" id="phone_number" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
+        <input type="text" wire:model.defer="form.phone_number" id="phone_number" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
     </div>
 
     <div>
         <label for="vet_clinic_id" class="block font-medium">Vet Clinic</label>
-        <select wire:model.defer="vet_clinic_id" id="vet_clinic_id" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
+        <select wire:model.defer="form.vet_clinic_id" id="vet_clinic_id" class="w-full mt-1 p-2 rounded border dark:bg-gray-700 dark:border-gray-600">
             <option value="">-- Select Clinic --</option>
             @foreach ($clinics as $clinic)
                 <option value="{{ $clinic->id }}">{{ $clinic->name }}</option>
             @endforeach
         </select>
-        @error('vet_clinic_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        @error('form.vet_clinic_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
     </div>
 
     <div>
@@ -54,7 +54,7 @@
         <div class="flex flex-wrap gap-2">
             @foreach (['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'] as $day)
                 <label class="inline-flex items-center">
-                    <input type="checkbox" wire:model.defer="off_days" value="{{ $day }}" class="mr-1">
+                    <input type="checkbox" wire:model.defer="form.off_days" value="{{ $day }}" class="mr-1">
                     {{ $day }}
                 </label>
             @endforeach
