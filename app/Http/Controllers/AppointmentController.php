@@ -98,7 +98,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+        return response()->json(Appointment::create());
     }
 
     /**
@@ -183,7 +183,7 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        //
+        return response()->json($appointment);  
     }
 
     /**
