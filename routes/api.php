@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\VetClinicController;
 use App\Http\Controllers\VeterinarianProfileController;
@@ -40,3 +41,11 @@ Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']
 Route::post('/appointments', [AppointmentController::class, 'store']);
 Route::put('/appointments/{appointment}', [AppointmentController::class, 'update']);
 Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy']);
+
+
+// Medical records API routes
+Route::get('/medical-records', [MedicalRecordController::class, 'index']);
+Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'show']);
+Route::post('/medical-records', [MedicalRecordController::class, 'store']);
+Route::put('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'update']);
+Route::delete('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'destroy']);
