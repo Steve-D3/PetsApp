@@ -1,9 +1,6 @@
 <div class="flex flex-col py-8 px-6 text-white justify-center items-center">
-    <h1 class="text-2xl font-bold mb-6 px-6">Pets on the database</h1>
-
-    {{-- Filters and Add Button --}}
-    <div class=" max-w-7xl mx-auto flex flex-col sm:flex-row sm:gap-4 mb-4 w-full px-6">
-        <div class="py-6 px-4 sm:px-6 lg:px-8">
+    <div class=" max-w-7xl mx-auto flex flex-col sm:flex-row  sm:gap-4 mb-4 w-full px-6">
+        <div class="py-6 px-4 sm:px-6 lg:px-8 lg:mx-auto">
             <!-- Header -->
             <div class="sm:flex sm:items-center sm:justify-between mb-8">
                 <div class="mb-4 sm:mb-0">
@@ -17,12 +14,12 @@
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                             </svg>
                         </div>
-                        <input type="text" 
+                        <input type="text"
                                wire:model.live.debounce.300ms="search"
-                               class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                placeholder="Search pets...">
                     </div>
-                    <a href="{{ route('admin.pets.create') }}" 
+                    <a href="{{ route('admin.pets.create') }}"
                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800">
                         <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
@@ -37,7 +34,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Type</label>
-                        <select id="type" wire:model.live="typeFilter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white">
+                        <select id="type" wire:model.live="filterSpecies" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white">
                             <option value="">All Types</option>
                             <option value="Dog">Dog</option>
                             <option value="Cat">Cat</option>
@@ -48,7 +45,7 @@
                     </div>
                     <div>
                         <label for="sterilized" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sterilized</label>
-                        <select id="sterilized" wire:model.live="sterilizedFilter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white">
+                        <select id="sterilized" wire:model.live="filterSterilized" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white">
                             <option value="">All</option>
                             <option value="1">Yes</option>
                             <option value="0">No</option>
@@ -56,7 +53,7 @@
                     </div>
                     <div>
                         <label for="microchip" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Microchip</label>
-                        <select id="microchip" wire:model.live="microchipFilter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white">
+                        <select id="microchip" wire:model.live="filterMicrochip" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:text-white">
                             <option value="">All</option>
                             <option value="1">Yes</option>
                             <option value="0">No</option>
@@ -122,7 +119,7 @@
                                                 </svg>
                                             </dt>
                                             <dd class="ml-3 text-sm text-gray-500 dark:text-gray-400">
-                                                {{ $pet->age ? $pet->age . ' years' : 'Age not specified' }}
+                                                {{ $pet->birth_date ? $this->calculateAge($pet->birth_date) . ' years old' : 'Age not specified' }}
                                             </dd>
                                         </div>
                                         <div class="flex items-center">
@@ -184,7 +181,7 @@
                     </svg>
                     <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-white">No pets found</h3>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {{ $search || $typeFilter || $breedFilter || $ownerFilter ? 'Try adjusting your search or filter criteria' : 'Get started by adding a new pet' }}
+                        {{ $search || $filterSpecies || $filterSterilized || $filterMicrochip ? 'Try adjusting your search or filter criteria' : 'Get started by adding a new pet' }}
                     </p>
                     <div class="mt-6">
                         <a href="{{ route('admin.pets.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">

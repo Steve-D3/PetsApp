@@ -73,10 +73,13 @@ class VeterinarianProfileController extends Controller
     {
         // Get the user before deleting the profile
         $user = $veterinarianProfile->user;
-        
+
         // Delete the veterinarian profile
         $veterinarianProfile->delete();
-        
+
+        // delete appointments
+        $veterinarianProfile->appointments()->delete();
+
         // Delete the associated user
         if ($user) {
             $user->delete();

@@ -14,6 +14,21 @@ class PetShow extends Component
         $this->pet = $pet->load(['owner', 'appointments']);
     }
 
+    public function delete($appointmentId)
+    {
+        try {
+            $appointment = $this->pet->appointments()->findOrFail($appointmentId);
+            $appointment->delete();
+            
+            // Reload the pet with updated appointments
+            $this->pet->load('appointments');
+            
+            session()->flash('message', 'Appointment deleted successfully.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to delete appointment: ' . $e->getMessage());
+        }
+    }
+    
     public function render()
     {
         return view('livewire.admin.pet-show');

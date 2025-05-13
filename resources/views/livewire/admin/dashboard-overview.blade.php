@@ -152,11 +152,12 @@
                                         </p>
                                     </div>
                                     <div class="ml-4">
-                                        <span class="px-2 py-1 text-xs rounded-full {{ 
-                                            $appointment->status === 'scheduled' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' : 
-                                            ($appointment->status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
-                                            'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300')
-                                        }}">
+                                        <span class="px-2 py-1 text-xs rounded-full
+                                        @if($appointment->status === 'confirmed') bg-blue-900/50 text-blue-400
+                                        @elseif($appointment->status === 'completed') bg-green-900/30 text-green-400
+                                        @elseif($appointment->status === 'cancelled') bg-red-900/30 text-red-400
+                                        @elseif($appointment->status === 'pending') bg-yellow-900/30 text-yellow-400
+                                        @else @endif">
                                             {{ ucfirst($appointment->status) }}
                                         </span>
                                     </div>
@@ -304,11 +305,12 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 text-xs rounded-full {{ 
-                                            $appointment->status === 'scheduled' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' : 
-                                            ($appointment->status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
-                                            'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300')
-                                        }}">
+                                        <span class="px-2 py-1 text-xs rounded-full
+                                        @if($appointment->status === 'confirmed') bg-blue-900/50 text-blue-400
+                                        @elseif($appointment->status === 'completed') bg-green-900/30 text-green-400
+                                        @elseif($appointment->status === 'cancelled') bg-red-900/30 text-red-400
+                                        @elseif($appointment->status === 'pending') bg-yellow-900/30 text-yellow-400
+                                        @else @endif">
                                             {{ ucfirst($appointment->status) }}
                                         </span>
                                     </td>
