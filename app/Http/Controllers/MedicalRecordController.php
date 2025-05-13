@@ -21,7 +21,7 @@ class MedicalRecordController extends Controller
     {
         $validated = $request->validated();
 
-        $query = MedicalRecord::with(['pet', 'vet', 'appointment']);
+        $query = MedicalRecord::with(['pet', 'vet', 'appointment', 'treatments']);
 
         // Apply filters
         if (isset($validated['pet_id'])) {
@@ -58,9 +58,7 @@ class MedicalRecordController extends Controller
         $sortOrder = $validated['sort_order'] ?? 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
-        // Pagination
-        $perPage = $validated['per_page'] ?? 15;
-        $medicalRecords = $query->paginate($perPage);
+        $medicalRecords = $query->get();
 
         return response()->json($medicalRecords);
     }
@@ -154,7 +152,7 @@ class MedicalRecordController extends Controller
         try {
             // Get the validated data
             $validated = $request->validated();
-            
+
             // Prepare the update data
             $updateData = [
                 'pet_id' => $validated['pet_id'] ?? $medicalRecord->pet_id,
@@ -190,7 +188,7 @@ class MedicalRecordController extends Controller
         } catch (\Exception $e) {
             // Log the error for debugging
             \Log::error('Error updating medical record: ' . $e->getMessage());
-            
+
             return response()->json([
                 'message' => 'Failed to update medical record',
                 'error' => $e->getMessage()

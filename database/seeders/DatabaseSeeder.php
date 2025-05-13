@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Appointment;
 use App\Models\MedicalRecord;
 use App\Models\Pet;
+use App\Models\Treatment;
 use App\Models\User;
 use App\Models\VetClinic;
 use App\Models\VeterinarianProfile;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Appointment::factory()->count(20)->create();
         MedicalRecord::factory()->count(20)->create();
+        Treatment::factory()->count(20)->create();
 
 
         // User::factory()->create([

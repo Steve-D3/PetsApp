@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\VetClinicController;
 use App\Http\Controllers\VeterinarianProfileController;
 use Illuminate\Http\Request;
@@ -49,3 +50,10 @@ Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 
 Route::post('/medical-records', [MedicalRecordController::class, 'store']);
 Route::put('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'update']);
 Route::delete('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'destroy']);
+
+// Treatments API routes
+Route::get('/treatments', [TreatmentController::class, 'index']);
+Route::get('/treatments/{treatment}', [TreatmentController::class, 'show']);
+Route::post('/treatments', [TreatmentController::class, 'store']);
+Route::put('/treatments/{treatment}', [TreatmentController::class, 'update']);
+Route::delete('/treatments/{treatment}', [TreatmentController::class, 'destroy']);
