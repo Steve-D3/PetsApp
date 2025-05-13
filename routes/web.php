@@ -36,6 +36,7 @@ Route::middleware([
     Route::get('/admin/pet/create', PetsCreate::class)->name('admin.pets.create');
     Route::get('/admin/pet/{pet}', PetShow::class)->name('admin.pets.show');
     Route::get('/admin/pet/{pet}/edit', PetsEdit::class)->name('admin.pets.edit');
+    Route::get('/admin/pet/{pet}/appointment/create', Form::class)->name('admin.appointments.create');
     Route::get('/admin/appointments/{appointment}/edit', AppointmentEdit::class)->name('admin.appointments.edit');
 
     Route::get('/appointments', Form::class)->name('appointments.index');

@@ -18,7 +18,7 @@ class Form extends Component
 
     protected $listeners = ['openAppointmentForm' => 'setDate'];
 
-    public function mount($veterinarianProfile = null)
+    public function mount($veterinarianProfile = null, $pet = null)
     {
         $this->veterinarianProfile = $veterinarianProfile;
         $this->pets = Pet::all();
@@ -30,11 +30,20 @@ class Form extends Component
         }
         
         $this->initializeForm();
+        
+        // If we have a pet ID, set it in the form
+        if ($pet) {
+            $pet = is_object($pet) ? $pet : Pet::find($pet);
+            if ($pet) {
+                $this->form->pet_id = $pet->id;
+                $this->form->pet_name = $pet->name;
+            }
+        }
     }
     
     protected function initializeForm()
     {
-        $this->form = new AppointmentForm($this->veterinarianProfile);
+        $this->form = new AppointmentForm($this, $this->veterinarianProfile, 'form');
     }
 
     public function setDate($date)
@@ -46,6 +55,8 @@ class Form extends Component
     public function save()
     {
         try {
+            // Validate the form
+            $this->form->validate();
             
             // Create the appointment
             $appointment = new Appointment([
@@ -63,6 +74,11 @@ class Form extends Component
                 // Redirect based on context
                 if ($this->veterinarianProfile) {
                     return redirect()->route('admin.vets.show', $this->veterinarianProfile);
+                }
+                
+                // If we have a pet in the form, redirect back to the pet's page
+                if ($this->form->pet_id) {
+                    return redirect()->route('admin.pets.show', $this->form->pet_id);
                 }
                 
                 return redirect()->route('appointments.index');

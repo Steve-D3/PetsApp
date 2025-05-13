@@ -16,6 +16,14 @@ class AppointmentForm extends Form
     public $notes;
     public $pet_name = '';
     public $vet_name = '';
+    
+    protected $veterinarianProfile;
+    
+    public function __construct($component, $veterinarianProfile = null, $propertyName = 'form')
+    {
+        parent::__construct($component, $propertyName);
+        $this->veterinarianProfile = $veterinarianProfile;
+    }
 
     protected function rules()
     {
