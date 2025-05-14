@@ -26,16 +26,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Optional: To help with standardizing treatments
-        Schema::create('treatment_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name'); // Standard treatment names
-            $table->string('category');
-            $table->text('description')->nullable();
-            $table->decimal('default_cost', 8, 2)->nullable();
-            $table->string('default_unit')->nullable();
-            $table->timestamps();
-        });
     }
 
     /**

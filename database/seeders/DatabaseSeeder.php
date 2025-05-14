@@ -9,7 +9,6 @@ use App\Models\Treatment;
 use App\Models\User;
 use App\Models\VetClinic;
 use App\Models\VeterinarianProfile;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,12 +20,11 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
         Pet::factory(10)->create();
-        $this->call([
-            VeterinarianProfileSeeder::class,
-        ]);
+        $this->call(VeterinarianProfileSeeder::class);
         Appointment::factory()->count(20)->create();
         MedicalRecord::factory()->count(20)->create();
         Treatment::factory()->count(20)->create();
+        $this->call(TreatmentTypesSeeder::class);
 
 
         // User::factory()->create([
