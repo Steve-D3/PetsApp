@@ -52,5 +52,9 @@ class MedicalRecord extends Model
 
     public function treatments(){
         return $this->hasMany(Treatment::class, 'medical_record_id');
-    }   
+    }
+
+    public function vaccinations(){
+        return $this->hasMany(Vaccination::class, 'medical_record_id', 'id');
+    }
 }

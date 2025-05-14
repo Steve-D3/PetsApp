@@ -13,7 +13,8 @@ class VetClinicController extends Controller
      */
     public function index()
     {
-        return response()->json(VetClinic::all());
+        $vetClinics = VetClinic::all()->load('veterinarians');
+        return response()->json($vetClinics);
     }
 
     /**

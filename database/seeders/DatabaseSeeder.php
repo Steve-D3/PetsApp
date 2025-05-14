@@ -20,16 +20,30 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
         Pet::factory(10)->create();
+        
+        // Seed vet clinics before veterinarian profiles since profiles reference clinics
+        $this->call(VetClinicSeeder::class);
         $this->call(VeterinarianProfileSeeder::class);
+        
         Appointment::factory()->count(20)->create();
         MedicalRecord::factory()->count(20)->create();
-        Treatment::factory()->count(20)->create();
+        
+        // Treatment types should be seeded before treatments
         $this->call(TreatmentTypesSeeder::class);
+        $this->call(TreatmentSeeder::class);
+        
+        // Vaccine types should be seeded before vaccinations
+        $this->call(VaccineTypeSeeder::class);
+        $this->call(VaccinationSeeder::class);
 
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Create a test user with admin privileges (using 'vet' role which should have admin access)
+        User::factory()->create([
+            'name' => 'Test Admin',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin', // Using 'vet' role which should have admin privileges
+            'email_verified_at' => now(),
+        ]);
     }
 }

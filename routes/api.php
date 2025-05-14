@@ -5,6 +5,8 @@ use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\TreatmentTypeController;
+use App\Http\Controllers\VaccinationController;
+use App\Http\Controllers\VaccineTypeController;
 use App\Http\Controllers\VetClinicController;
 use App\Http\Controllers\VeterinarianProfileController;
 use Illuminate\Http\Request;
@@ -65,3 +67,20 @@ Route::get('/treatment-types/{treatmentType}', [TreatmentTypeController::class, 
 Route::post('/treatment-types', [TreatmentTypeController::class, 'store']);
 Route::put('/treatment-types/{treatmentType}', [TreatmentTypeController::class, 'update']);
 Route::delete('/treatment-types/{treatmentType}', [TreatmentTypeController::class, 'destroy']);
+
+// Vaccine types API routes
+Route::get('/vaccine-types', [VaccineTypeController::class, 'index']);
+Route::get('/vaccine-types/{vaccineType}', [VaccineTypeController::class, 'show']);
+Route::post('/vaccine-types', [VaccineTypeController::class, 'store']);
+Route::put('/vaccine-types/{vaccineType}', [VaccineTypeController::class, 'update']);
+Route::delete('/vaccine-types/{vaccineType}', [VaccineTypeController::class, 'destroy']);
+
+// Vaccinations API routes
+Route::get('/vaccinations', [VaccinationController::class, 'index']);
+Route::get('/vaccinations/{vaccination}', [VaccinationController::class, 'show']);
+Route::post('/vaccinations', [VaccinationController::class, 'store']);
+Route::put('/vaccinations/{vaccination}', [VaccinationController::class, 'update']);
+Route::delete('/vaccinations/{vaccination}', [VaccinationController::class, 'destroy']);
+
+
+

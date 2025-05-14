@@ -21,7 +21,7 @@ class MedicalRecordController extends Controller
     {
         $validated = $request->validated();
 
-        $query = MedicalRecord::with(['pet', 'vet', 'appointment', 'treatments']);
+        $query = MedicalRecord::with(['pet', 'vet', 'appointment', 'treatments', 'vaccinations']);
 
         // Apply filters
         if (isset($validated['pet_id'])) {
@@ -128,7 +128,7 @@ class MedicalRecordController extends Controller
      */
     public function show(MedicalRecord $medicalRecord)
     {
-        $data = $medicalRecord->load(['pet', 'vet', 'appointment']);
+        $data = $medicalRecord->load(['pet', 'vet', 'appointment', 'treatments', 'vaccinations']);
         return response()->json($data);
     }
 

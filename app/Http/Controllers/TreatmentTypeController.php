@@ -37,7 +37,7 @@ class TreatmentTypeController extends Controller
      */
     public function show(TreatmentType $treatmentType)
     {
-        //
+        return response()->json($treatmentType);
     }
 
     /**
@@ -61,6 +61,10 @@ class TreatmentTypeController extends Controller
      */
     public function destroy(TreatmentType $treatmentType)
     {
-        //
+        $treatmentType->delete();
+        return response()->json([
+            'message' => 'Treatment type deleted successfully',
+            'data' => $treatmentType
+        ]);
     }
 }
