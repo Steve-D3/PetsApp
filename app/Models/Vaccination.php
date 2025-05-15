@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VaccineType;
+use App\Models\Pet;
+use App\Models\MedicalRecord;
+use App\Models\VeterinarianProfile;
 
 class Vaccination extends Model
 {
@@ -61,5 +65,29 @@ class Vaccination extends Model
     public function vaccinationType()
     {
         return $this->belongsTo(VaccineType::class, 'vaccine_type_id');
+    }
+
+    /**
+     * Get the pet associated with the vaccination.
+     */
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    /**
+     * Get the medical record associated with the vaccination.
+     */
+    public function medicalRecord()
+    {
+        return $this->belongsTo(MedicalRecord::class);
+    }
+
+    /**
+     * Get the veterinarian who administered the vaccination.
+     */
+    public function veterinarian()
+    {
+        return $this->belongsTo(VeterinarianProfile::class, 'administered_by');
     }
 }

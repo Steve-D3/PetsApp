@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TreatmentType;
+use App\Models\User;
 
 class Treatment extends Model
 {
@@ -59,6 +61,14 @@ class Treatment extends Model
     public function administrator()
     {
         return $this->belongsTo(User::class, 'administered_by');
+    }
+
+    /**
+     * Get the treatment type for this treatment.
+     */
+    public function treatmentType()
+    {
+        return $this->belongsTo(TreatmentType::class);
     }
 
     /**

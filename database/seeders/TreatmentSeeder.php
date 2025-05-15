@@ -75,6 +75,7 @@ class TreatmentSeeder extends Seeder
                     
                     $treatments[] = [
                         'medical_record_id' => $record->id,
+                        'treatment_type_id' => $treatmentType->id,
                         'name' => $treatmentType->name,
                         'category' => $treatmentType->category,
                         'description' => $faker->optional(0.7)->sentence(),

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\VetClinic;
+use App\Models\Pet;
+use App\Models\Appointment;
 
 class VeterinarianProfile extends Model
 {
@@ -45,8 +49,11 @@ class VeterinarianProfile extends Model
         return $this->hasMany(Pet::class, 'veterinarian_id');
     }
 
+    /**
+     * Get the appointments for the veterinarian.
+     */
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'veterinarian_id', 'user_id');
+        return $this->hasMany(Appointment::class, 'veterinarian_id');
     }
 }

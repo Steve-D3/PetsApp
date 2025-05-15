@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTreatmentTypeRequest;
+use App\Http\Requests\UpdateTreatmentTypeRequest;
 use App\Models\TreatmentType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TreatmentTypeController extends Controller
@@ -27,9 +31,30 @@ class TreatmentTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StoreTreatmentTypeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(StoreTreatmentTypeRequest $request): JsonResponse
     {
-        //
+        try {
+            // Create the treatment type with validated data
+            $treatmentType = TreatmentType::create($request->validated());
+
+            return response()->json([
+                'message' => 'Treatment type created successfully',
+                'data' => $treatmentType
+            ], 201);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error creating treatment type: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to create treatment type',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -51,9 +76,34 @@ class TreatmentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TreatmentType $treatmentType)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateTreatmentTypeRequest $request
+     * @param TreatmentType $treatmentType
+     * @return JsonResponse
+     */
+    public function update(UpdateTreatmentTypeRequest $request, TreatmentType $treatmentType): JsonResponse
     {
-        //
+        try {
+            // Update the treatment type with validated data
+            $treatmentType->update($request->validated());
+            
+            // Refresh the model to get any changes from the database
+            $treatmentType->refresh();
+
+            return response()->json([
+                'message' => 'Treatment type updated successfully',
+                'data' => $treatmentType
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error updating treatment type: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update treatment type',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
