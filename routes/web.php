@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Livewire\Admin\AppointmentEdit;
 use App\Livewire\Admin\DashboardOverview;
+use App\Livewire\Admin\MedicalRecordDetails;
 use App\Livewire\Admin\PetsCreate;
 use App\Livewire\Admin\PetShow;
 use App\Livewire\Admin\PetsEdit;
@@ -13,6 +14,7 @@ use App\Livewire\Admin\VetsIndex;
 use App\Livewire\Admin\VetsEdit;
 use App\Livewire\Appointments\Form;
 use App\Livewire\Forms\AppointmentForm;
+use App\Livewire\Admin\MedicalRecordsIndex;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -45,4 +47,10 @@ Route::middleware([
     Route::get('/admin/vets/{veterinarianProfile}', VetShow::class)->name('admin.vets.show');
     Route::get('/admin/vet/{veterinarianProfile}/edit', VetsEdit::class)->name('admin.vets.edit');
     Route::get('/admin/vet/{veterinarianProfile}/appointment/create', Form::class)->name('appointments.create');
+
+    Route::get('/admin/pets/{pet}/medical-records', MedicalRecordsIndex::class)
+        ->name('medical-records.index');
+        // ->middleware('can:view,pet');
+    Route::get('/admin/pets/{pet}/medical-records/{record}', MedicalRecordDetails::class)
+        ->name('medical-records.show');
 });

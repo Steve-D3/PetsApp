@@ -34,4 +34,9 @@ class Appointment extends Model
         return $this->belongsTo(User::class, 'veterinarian_id');
     }
 
+    public function medicalRecord()
+    {
+        return $this->hasOne(MedicalRecord::class, 'appointment_id');
+    }
+
 }

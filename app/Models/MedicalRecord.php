@@ -38,6 +38,19 @@ class MedicalRecord extends Model
         'appointment_id',
     ];
 
+    protected $dates = [
+        'record_date',
+        'follow_up_date',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $casts = [
+        'record_date' => 'datetime',
+        'follow_up_date' => 'datetime',
+        'follow_up_required' => 'boolean',
+    ];
+
     public function pet(){
         return $this->belongsTo(Pet::class, 'pet_id');
     }

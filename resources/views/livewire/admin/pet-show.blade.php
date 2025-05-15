@@ -44,6 +44,16 @@
                 <p><strong>Name:</strong> {{ $pet->owner->name }}</p>
                 <p><strong>Email:</strong> {{ $pet->owner->email }}</p>
             </div>
+
+            <!-- Medical Record -->
+            <div class="col-span-1 space-y-2">
+                <h2 class="text-2xl font-semibold mb-2">Medical Record</h2>
+                <a href="{{ route('medical-records.index', $pet) }}" class="text-blue-600 hover:text-blue-800">
+                    <strong>View Medical Records</strong>
+                </a>
+            </div>
+
+
         </div>
 
         <!-- Appointments -->
@@ -88,11 +98,11 @@
                                 <p class="text-gray-600 dark:text-gray-300">{{ $appointment->notes ?: '—' }}</p>
                             </div>
                             <div class="flex space-x-3 justify-end">
-                                <a href="{{ route('admin.appointments.edit', $appointment) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-150">
+                                <button wire:click="edit({{ $appointment->id }})" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-150">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
-                                </a>
+                                </button>
                                 <button wire:click="delete({{ $appointment->id }})"
                                     onclick="return confirm('Are you sure you want to delete this appointment?')"
                                     class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-150">

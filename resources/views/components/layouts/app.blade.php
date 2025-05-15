@@ -42,6 +42,7 @@
 
     @stack('modals')
 
+    @livewire('wire-elements-modal')
     @livewireScripts
 
     @stack('scripts')
