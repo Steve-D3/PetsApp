@@ -11,7 +11,7 @@ class UpdateVaccinationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Update this based on your authentication/authorization logic
     }
 
     /**
@@ -22,7 +22,26 @@ class UpdateVaccinationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pet_id' => 'sometimes|required|exists:pets,id',
+            'medical_record_id' => 'nullable|exists:medical_records,id',
+            'vaccine_type_id' => 'sometimes|required|exists:vaccine_types,id',
+            'manufacturer' => 'nullable|string|max:255',
+            'batch_number' => 'nullable|string|max:100',
+            'serial_number' => 'nullable|string|max:100',
+            'expiration_date' => 'nullable|date|after_or_equal:today',
+            'administration_date' => 'sometimes|required|date|before_or_equal:today',
+            'next_due_date' => 'nullable|date|after:administration_date',
+            'administered_by' => 'nullable|exists:veterinarian_profiles,id',
+            'administration_site' => 'nullable|string|max:100',
+            'administration_route' => 'nullable|string|max:100',
+            'dose' => 'nullable|numeric|min:0',
+            'dose_unit' => 'nullable|string|max:50',
+            'is_booster' => 'sometimes|boolean',
+            'certification_number' => 'nullable|string|max:100',
+            'reaction_observed' => 'sometimes|boolean',
+            'reaction_details' => 'nullable|string',
+            'notes' => 'nullable|string',
+            'cost' => 'nullable|numeric|min:0',
         ];
     }
 }

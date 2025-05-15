@@ -30,7 +30,25 @@ class VaccinationController extends Controller
      */
     public function store(StoreVaccinationRequest $request)
     {
-        //
+        try {
+            // Create the vaccination record
+            $vaccination = Vaccination::create($request->validated());
+
+            // Load the related data for the response
+            $vaccination->load('vaccinationType');
+
+            return response()->json([
+                'message' => 'Vaccination record created successfully',
+                'data' => $vaccination
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Error creating vaccination record: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to create vaccination record',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -55,7 +73,25 @@ class VaccinationController extends Controller
      */
     public function update(UpdateVaccinationRequest $request, Vaccination $vaccination)
     {
-        //
+        try {
+            // Update the vaccination record with the validated data
+            $vaccination->update($request->validated());
+            
+            // Load the updated record with its relationships
+            $vaccination->load('vaccinationType');
+            
+            return response()->json([
+                'message' => 'Vaccination record updated successfully',
+                'data' => $vaccination
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error updating vaccination record: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update vaccination record',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

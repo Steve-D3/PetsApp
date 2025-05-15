@@ -30,7 +30,22 @@ class VaccineTypeController extends Controller
      */
     public function store(StoreVaccineTypeRequest $request)
     {
-        //
+        try {
+            // Create the vaccine type with validated data
+            $vaccineType = VaccineType::create($request->validated());
+
+            return response()->json([
+                'message' => 'Vaccine type created successfully',
+                'data' => $vaccineType
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Error creating vaccine type: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to create vaccine type',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -54,7 +69,25 @@ class VaccineTypeController extends Controller
      */
     public function update(UpdateVaccineTypeRequest $request, VaccineType $vaccineType)
     {
-        //
+        try {
+            // Update the vaccine type with the validated data
+            $vaccineType->update($request->validated());
+            
+            // Refresh the model to get any changes from the database
+            $vaccineType->refresh();
+
+            return response()->json([
+                'message' => 'Vaccine type updated successfully',
+                'data' => $vaccineType
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error updating vaccine type: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update vaccine type',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
