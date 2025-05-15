@@ -12,10 +12,18 @@
                             {{ $showFilters ? 'Hide' : 'Show' }} Filters
                         </x-button>
                         @if ($showFilters)
-                            <x-button wire:click="resetFilters" class="bg-gray-200 hover:bg-gray-300 text-gray-800">
-                                Reset Filters
-                            </x-button>
+                        <x-button wire:click="resetFilters" class="bg-gray-200 hover:bg-gray-300 text-gray-800">
+                            Reset Filters
+                        </x-button>
                         @endif
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ route('admin.pets.show', $pet) }}" class="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 hover:text-gray-900">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Back to Pet
+                        </a>
                     </div>
                 </div>
                 <p class="mt-1 text-sm text-gray-600">
