@@ -177,7 +177,7 @@
                 <div class="p-5 border-b border-gray-100 dark:border-gray-700">
                     <div class="flex items-center justify-between">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Clients</h2>
-                        <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">View All</a>
+                        <a href=""# class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">View All</a>
                     </div>
                 </div>
                 <div class="divide-y divide-gray-100 dark:divide-gray-700">
@@ -315,7 +315,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">View</a>
+                                        <a href=" {{ route('admin.appointments.show', $appointment->id) }} " class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">View</a>
                                     </td>
                                 </tr>
                             @endforeach

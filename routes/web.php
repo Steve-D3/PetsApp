@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Livewire\Admin\AppointmentDetails;
 use App\Livewire\Admin\AppointmentEdit;
 use App\Livewire\Admin\DashboardOverview;
 use App\Livewire\Admin\MedicalRecordDetails;
@@ -40,6 +41,7 @@ Route::middleware([
     Route::get('/admin/pet/{pet}/edit', PetsEdit::class)->name('admin.pets.edit');
     Route::get('/admin/pet/{pet}/appointment/create', Form::class)->name('admin.appointments.create');
     Route::get('/admin/appointments/{appointment}/edit', AppointmentEdit::class)->name('admin.appointments.edit');
+    Route::get('/admin/appointments/{appointment}', AppointmentDetails::class)->name('admin.appointments.show');
 
     Route::get('/appointments', Form::class)->name('appointments.index');
 

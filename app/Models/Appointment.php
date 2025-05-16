@@ -19,6 +19,11 @@ class Appointment extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     protected $hidden = [
         'created_at',
         'updated_at',
@@ -26,17 +31,20 @@ class Appointment extends Model
 
     public function pet()
     {
-        return $this->belongsTo(Pet::class);
+        return $this->belongsTo(Pet::class)->with('medicalRecords');
     }
 
     public function veterinarian()
     {
-        return $this->belongsTo(User::class, 'veterinarian_id');
+        return $this->belongsTo(VeterinarianProfile::class, 'veterinarian_id', 'user_id')->with('clinic');
     }
 
-    public function medicalRecord()
+    public function clinic()
     {
-        return $this->hasOne(MedicalRecord::class, 'appointment_id');
+        return $this->belongsTo(VetClinic::class, 'clinic_id');
     }
 
+    public function vaccinations() {
+        return $this->hasMany(Vaccination::class, 'pet_id', 'pet_id')->with('vaccinationType');
+    }
 }
