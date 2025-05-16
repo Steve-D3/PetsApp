@@ -3,11 +3,15 @@
 use App\Http\Controllers\AppointmentController;
 use App\Livewire\Admin\AppointmentDetails;
 use App\Livewire\Admin\AppointmentEdit;
+use App\Livewire\Admin\ClinicShow;
+use App\Livewire\Admin\ClinicsIndex;
+use App\Livewire\Admin\ClinicsShow;
 use App\Livewire\Admin\DashboardOverview;
 use App\Livewire\Admin\MedicalRecordDetails;
 use App\Livewire\Admin\PetsCreate;
 use App\Livewire\Admin\PetShow;
 use App\Livewire\Admin\PetsEdit;
+use App\Livewire\Admin\UsersIndex;
 use App\Livewire\Admin\VetsCreate;
 use App\Livewire\Admin\PetsIndex;
 use App\Livewire\Admin\VetShow;
@@ -29,9 +33,7 @@ Route::middleware([
     'verified',
     'role:admin,vet',
 ])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/', DashboardOverview::class)->name('dashboard');
 
     Route::get('/admin/dashboard', DashboardOverview::class)->name('admin.dashboard');
     Route::get('/admin/pets', PetsIndex::class)->name('pets.index');
@@ -55,4 +57,9 @@ Route::middleware([
         // ->middleware('can:view,pet');
     Route::get('/admin/pets/{pet}/medical-records/{record}', MedicalRecordDetails::class)
         ->name('medical-records.show');
+
+    Route::get('/admin/users', UsersIndex::class)->name('admin.users.index');
+
+    Route::get('/admin/clinics', ClinicsIndex::class)->name('admin.clinics.index');
+    Route::get('/admin/clinics/{clinic}', ClinicShow::class)->name('admin.clinics.show');
 });

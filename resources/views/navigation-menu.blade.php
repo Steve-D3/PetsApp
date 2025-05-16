@@ -15,18 +15,18 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
-                        {{ __('General') }}
-                    </x-nav-link>
                     <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
                         {{ __('Pets') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
+                        {{ __('Users') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
                         {{ __('Vets') }}
                     </x-nav-link>
-                    {{-- <x-nav-link href="#" :active="request()->routeIs('admin.vets')">
-                        {{ __('Users') }}
-                    </x-nav-link> --}}
+                    <x-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.index')">
+                        {{ __('Clinics') }}
+                    </x-nav-link>
                 </div>
             </div>
 
