@@ -1,3 +1,55 @@
+@push('scripts')
+    <script>
+        function initMap() {
+            // Geocode the address when the component mounts
+            const geocoder = new google.maps.Geocoder();
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: { lat: 50.8503, lng: 4.3517 }, // Default to Brussels, will be updated after geocoding
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: true,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_BOTTOM,
+                },
+            });
+
+            const address = '{{ $clinic->address }}, {{ $clinic->postal_code }} {{ $clinic->city }}, {{ $clinic->country }}';
+            
+            geocoder.geocode({ 'address': address }, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: '{{ $clinic->name }}',
+                        animation: google.maps.Animation.DROP,
+                    });
+                }
+            });
+        }
+
+        // Load the Google Maps API with your API key
+        function loadGoogleMaps() {
+            const script = document.createElement('script');
+            const apiKey = '{{ config('services.google.maps_key') }}';
+            if (!apiKey) {
+                console.error('Google Maps API key is not configured');
+                document.getElementById('map').innerHTML = '<div class="p-4 text-center text-gray-500 dark:text-gray-400">Map cannot be loaded: Missing Google Maps API key</div>';
+                return;
+            }
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+
+        // Load the map when the page is fully loaded
+        document.addEventListener('DOMContentLoaded', loadGoogleMaps);
+    </script>
+@endpush
+
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Back Button -->
@@ -85,6 +137,33 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Location</h3>
+                    </div>
+                    <div class="h-64 md:h-80 relative" id="map">
+                        <!-- Map will be loaded here -->
+                    </div>
+                    <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ $clinic->address }}, {{ $clinic->postal_code }} {{ $clinic->city }}, {{ $clinic->country }}
+                        </div>
+                        <a 
+                            href="https://www.google.com/maps/search/?api=1&query={{ urlencode($clinic->address . ', ' . $clinic->postal_code . ' ' . $clinic->city . ', ' . $clinic->country) }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-100 dark:bg-blue-800 dark:hover:bg-blue-700"
+                        >
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Open in Maps
+                        </a>
                     </div>
                 </div>
             </div>
