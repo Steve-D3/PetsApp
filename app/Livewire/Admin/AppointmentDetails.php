@@ -3,7 +3,9 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Appointment;
+use App\Models\TreatmentType;
 use App\Models\MedicalRecord;
+use App\Models\VaccineType;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,6 +15,9 @@ class AppointmentDetails extends Component
 
     public $appointment;
     public $notes;
+    public $showAllMedicalRecords = false;
+    public $showAllTreatments = false;
+    public $showAllVaccinations = false;
     public $showMedicalRecordForm = false;
     public $showTreatmentForm = false;
     public $showVaccineForm = false;
@@ -24,13 +29,57 @@ class AppointmentDetails extends Component
     public $treatment_plan;
     public $medications;
 
+    // Treatment Form Properties
+    public $treatment_types;
+    public $treatment_details;
+    public $treatment_date;
+
+    public $vaccine_types;
+    public $vaccine_details;
+    public $vaccine_date;
+
+
     public function mount(Appointment $appointment)
     {
         // Eager load relationships
-        $appointment->load(['pet', 'pet.owner', 'pet.medicalRecords', 'pet.medicalRecords.treatments', 'pet.vaccinations', 'vaccinations' ,'veterinarian']);
+        $appointment->load([
+            'pet',
+            'pet.owner',
+            'pet.medicalRecords',
+            'pet.medicalRecords.treatments',
+            'pet.vaccinations',
+            'vaccinations',
+            'veterinarian'
+        ]);
+
+        $this->treatment_date = now();
 
         $this->appointment = $appointment;
         $this->notes = $appointment->notes;
+        $this->treatment_types = TreatmentType::all();
+        $this->vaccine_types = VaccineType::all();
+    }
+
+    public function showAllMedicalRecords()
+    {
+        $this->showAllMedicalRecords = true;
+    }
+
+    public function showAllTreatments()
+    {
+        $this->showAllTreatments = true;
+    }
+
+    public function showAllVaccinations()
+    {
+        $this->showAllVaccinations = true;
+    }
+
+    public function closeAllModals()
+    {
+        $this->showAllMedicalRecords = false;
+        $this->showAllTreatments = false;
+        $this->showAllVaccinations = false;
     }
 
     public function saveNotes()
