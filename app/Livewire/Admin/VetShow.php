@@ -15,7 +15,7 @@ class VetShow extends Component
 
     public function mount(VeterinarianProfile $veterinarianProfile)
     {
-        $this->veterinarianProfile = $veterinarianProfile->load(['user', 'clinic']);
+        $this->veterinarianProfile = $veterinarianProfile->load(['user', 'clinic', 'appointments']);
 
         $appointments = $this->veterinarianProfile->appointments()->get()
         ->map(function ($appt) {
