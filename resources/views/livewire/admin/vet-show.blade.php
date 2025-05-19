@@ -317,6 +317,120 @@
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tX/miZyoHS5obTRR9BMY="
           crossorigin=""/>
 
+    <!-- <style>
+        .fc {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .fc .fc-toolbar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .fc .fc-button {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+        }
+        .fc .fc-button-primary:not(:disabled).fc-button-active,
+        .fc .fc-button-primary:not(:disabled):active {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        .fc .fc-button-primary:not(:disabled):hover {
+            background-color: #e5e7eb;
+            border-color: #d1d5db;
+        }
+        .fc-event {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            border: none;
+        }
+        .fc-daygrid-day-number {
+            color: #4b5563;
+            font-weight: 500;
+        }
+        .fc-day-today {
+            background-color: #eff6ff !important;
+        }
+        .fc-day-today .fc-daygrid-day-number {
+            color: #1d4ed8;
+            font-weight: 700;
+        }
+        .fc-day-past .fc-daygrid-day-number {
+            color: #9ca3af;
+        }
+        .fc-daygrid-event-harness {
+            margin-bottom: 2px;
+        }
+        .fc .fc-daygrid-day.fc-day-today {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        .fc-daygrid-day-top {
+            padding: 4px 8px;
+        }
+        .fc-daygrid-day-events {
+            min-height: 2.5rem;
+        }
+        /* Dark mode styles */
+        .dark .fc {
+            --fc-border-color: #374151;
+            --fc-page-bg-color: #1f2937;
+            --fc-neutral-bg-color: #1f2937;
+            --fc-list-event-hover-bg-color: #374151;
+            --fc-now-indicator-color: #3b82f6;
+        }
+        .dark .fc .fc-button {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #f3f4f6;
+        }
+        .dark .fc .fc-button:not(:disabled):hover {
+            background-color: #4b5563;
+            border-color: #6b7280;
+        }
+        .dark .fc .fc-button-primary:not(:disabled).fc-button-active,
+        .dark .fc .fc-button-primary:not(:disabled):active {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        .dark .fc-daygrid-day-number {
+            color: #e5e7eb;
+        }
+        .dark .fc-day-today {
+            background-color: rgba(37, 99, 235, 0.2) !important;
+        }
+        .dark .fc-day-today .fc-daygrid-day-number {
+            color: #60a5fa;
+        }
+        .dark .fc-day-past .fc-daygrid-day-number {
+            color: #6b7280;
+        }
+        .dark .fc-col-header-cell {
+            background-color: #1f2937;
+        }
+        .dark .fc-col-header-cell .fc-col-header-cell-cushion {
+            color: #e5e7eb;
+        }
+        /* Fix for loading indicator */
+        #calendar-loading {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .dark #calendar-loading {
+            background-color: rgba(17, 24, 39, 0.5);
+        }
+    </style> -->
+
 
 @endpush
 
@@ -428,16 +542,14 @@
                         ${props.notes ? `<p class="mt-2"><strong>Notes:</strong> ${props.notes}</p>` : ''}
                     </div>
                     `,
-                    icon: 'info',
                     showCancelButton: true,
-                    confirmButtonText: 'View Details',
+                    confirmButtonText: 'Edit',
                     cancelButtonText: 'Close',
                     showDenyButton: true,
                     denyButtonText: 'Cancel Appointment',
                     confirmButtonColor: '#3b82f6',
                     cancelButtonColor: '#6b7280',
                     denyButtonColor: '#ef4444',
-                    buttonsStyling: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = `/appointments/${event.id}`;
@@ -457,7 +569,7 @@
 
                 if (clickedDate >= today) {
                     window.location.href = `{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}?date=${info.dateStr}`;
-                    
+
                     console.log(info.dateStr);
                 } else {
                     Swal.fire({
