@@ -12,6 +12,7 @@ use App\Livewire\Admin\PetsCreate;
 use App\Livewire\Admin\PetShow;
 use App\Livewire\Admin\PetsEdit;
 use App\Livewire\Admin\UsersIndex;
+use App\Livewire\Admin\UserShow;
 use App\Livewire\Admin\VetsCreate;
 use App\Livewire\Admin\PetsIndex;
 use App\Livewire\Admin\VetShow;
@@ -59,6 +60,7 @@ Route::middleware([
         ->name('medical-records.show');
 
     Route::get('/admin/users', UsersIndex::class)->name('admin.users.index');
+    Route::get('/admin/users/{id}', UserShow::class)->name('admin.users.show');
 
     Route::get('/admin/clinics', ClinicsIndex::class)->name('admin.clinics.index');
     Route::get('/admin/clinics/{clinic}', ClinicShow::class)->name('admin.clinics.show');

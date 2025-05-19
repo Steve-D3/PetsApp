@@ -96,12 +96,12 @@
         <div class="mt-12">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Appointments</h3>
-                <a href="{{ route('admin.appointments.create', ['pet' => $pet->id]) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors duration-150">
+                <button wire:click="$set('showAddModal', true)" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors duration-150">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
                     Add Appointment
-                </a>
+                </button>
             </div>
 
             <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
@@ -135,13 +135,13 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $appointment->veterinarian->name }}</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $appointment->veterinarian->user->name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-500 dark:text-gray-400">{{ $appointment->notes ?: '—' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button wire:click="edit({{ $appointment->id }})" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-150">
+                                        <button wire:click="editAppointment({{ $appointment->id }})" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-150">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                             </svg>
@@ -172,4 +172,110 @@
             </div>
         </div>
     </div>
+    <!-- Edit Appointment Modal -->
+    <x-dialog-modal wire:model.live="showEditModal">
+        <x-slot name="title">
+            {{ __('Edit Appointment') }}
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="space-y-4">
+                <!-- Start Time -->
+                <div>
+                    <x-label for="startTimeToEdit" value="{{ __('Start Time') }}" />
+                    <x-input id="startTimeToEdit" type="datetime-local" class="mt-1 block w-full" wire:model="startTimeToEdit" required />
+                    <x-input-error for="startTimeToEdit" class="mt-1" />
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <x-label for="statusToEdit" value="{{ __('Status') }}" />
+                    <select id="statusToEdit" wire:model="statusToEdit" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <x-input-error for="statusToEdit" class="mt-1" />
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <x-label for="notesToEdit" value="{{ __('Notes') }}" />
+                    <x-input id="notesToEdit" type="text" class="mt-1 block w-full" wire:model="notesToEdit" />
+                    <x-input-error for="notesToEdit" class="mt-1" />
+                </div>
+
+                <!-- Veterinarian -->
+                <div>
+                    <x-label for="veterinarianIdToEdit" value="{{ __('Veterinarian') }}" />
+                    <select id="veterinarianIdToEdit" wire:model="veterinarianIdToEdit" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                        @foreach($veterinarians as $vet)
+                            <option value="{{ $vet->id }}">
+                                {{ $vet->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error for="veterinarianIdToEdit" class="mt-1" />
+                </div>
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showEditModal', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-button class="ml-3" wire:click="updateAppointment" wire:loading.attr="disabled">
+                {{ __('Update Appointment') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
+
+    <!-- Add Appointment Modal -->
+    <x-dialog-modal wire:model.live="showAddModal">
+        <x-slot name="title">
+            {{ __('Add New Appointment') }}
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="space-y-4">
+                <!-- Veterinarian -->
+                <div>
+                    <x-label for="veterinarianIdToAdd" value="{{ __('Veterinarian') }}" />
+                    <select id="veterinarianIdToAdd" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm" wire:model="veterinarianIdToAdd" required>
+                        <option value="">Select a veterinarian</option>
+                        @foreach($veterinarians as $vet)
+                            <option value="{{ $vet->id }}">{{ $vet->name }} {{ $vet->id }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error for="veterinarianIdToAdd" class="mt-1" />
+                </div>
+
+                <!-- Start Time -->
+                <div>
+                    <x-label for="startTimeToAdd" value="{{ __('Start Time') }}" />
+                    <x-input id="startTimeToAdd" type="datetime-local" class="mt-1 block w-full" wire:model="startTimeToAdd" required />
+                    <x-input-error for="startTimeToAdd" class="mt-1" />
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <x-label for="notesToAdd" value="{{ __('Notes') }}" />
+                    <textarea id="notesToAdd" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm" wire:model="notesToAdd" rows="3"></textarea>
+                    <x-input-error for="notesToAdd" class="mt-1" />
+                </div>
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showAddModal', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-button class="ml-3" wire:click="addAppointment" wire:loading.attr="disabled">
+                {{ __('Add Appointment') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
 </div>

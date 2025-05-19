@@ -246,7 +246,9 @@
             </div>
 
             <!-- Upcoming Appointments -->
-             {{ $appointmentsJson }}
+             <div class="hidden debug-data">
+                <pre>{{ $appointmentsJson }}</pre>
+            </div>
             <div class="mt-6 bg-white overflow-hidden shadow rounded-lg dark:bg-gray-800">
                 <div class="px-4 py-5 sm:px-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-white">Upcoming Appointments</h2>
@@ -280,7 +282,7 @@
                                     </div>
                                 </div>
                                 <div class="ml-auto">
-                                    <a href="{{ route('appointments.show', $appointment) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+                                    <a href="{{ route('admin.appointments.show', $appointment) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
                                         View
                                     </a>
                                 </div>
@@ -455,9 +457,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize the map
-        initMap();
-
         // Initialize the calendar
         initCalendar();
 
@@ -771,143 +770,5 @@
             }
         });
     }
-    function initMap() {
-        const mapContainer = document.getElementById('clinic-map');
-        if (!mapContainer) return;
-
-        const clinicLat = {{ $veterinarianProfile->clinic->latitude ?? '51.260197' }};
-        const clinicLng = {{ $veterinarianProfile->clinic->longitude ?? '4.402771' }};
-        const clinicName = @json($veterinarianProfile->clinic->name ?? '');
-
-        // Show loading state
-        mapContainer.innerHTML = `
-            <div class="h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mb-2"></div>
-                <p class="text-gray-500 dark:text-gray-400">Loading map...</p>
-            </div>
-        `;
-
-        // Check if coordinates are valid
-        if (!clinicLat || !clinicLng || isNaN(clinicLat) || isNaN(clinicLng)) {
-            mapContainer.innerHTML = `
-                <div class="h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">Location Unavailable</h3>
-                    <p class="text-gray-500 dark:text-gray-400">The clinic location is not available on the map.</p>
-                </div>
-            `;
-            return;
-        }
-
-        const mapContainer = document.getElementById('clinic-map');
-        const loadingElement = mapContainer.querySelector('div[class*="absolute"]');
-
-        // Initialize map with essential options
-        const map = L.map('clinic-map', {
-            center: [clinicLat, clinicLng],
-            zoom: 15,
-            zoomControl: false,
-            attributionControl: false,
-            preferCanvas: true
-        });
-
-        // Set map container styles
-        Object.assign(mapContainer.style, {
-            display: 'block',
-            visibility: 'visible',
-            height: '320px'
-        });
-
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            maxZoom: 19,
-            minZoom: 3
-        }).addTo(map);
-
-        // Add zoom control
-        L.control.zoom({
-            position: 'bottomright'
-        }).addTo(map);
-
-        // Add marker with custom icon
-        const marker = L.marker([clinicLat, clinicLng], {
-            icon: L.divIcon({
-                html: `
-                    <div class="relative">
-                        <div class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-indigo-400 opacity-75"></div>
-                        <div class="relative inline-flex items-center justify-center h-8 w-8 rounded-full bg-indigo-600 text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                        </div>
-                    </div>`,
-                className: '',
-                iconSize: [32, 32],
-                iconAnchor: [16, 32],
-                popupAnchor: [0, -32]
-            })
-        }).addTo(map);
-
-        // Add popup
-        if (clinicName) {
-            marker.bindPopup(`
-                <div class="p-2">
-                    <h3 class="font-bold text-gray-900 dark:text-white">${clinicName}</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">${@json($veterinarianProfile->clinic->address ?? '')}</p>
-                    <div class="mt-2">
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${clinicLat},${clinicLng}"
-                           target="_blank"
-                           class="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300">
-                            Get Directions
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            `).openPopup();
-        }
-
-        // Configure map interactions
-        map.dragging.enable();
-        map.scrollWheelZoom.enable();
-        map.doubleClickZoom.enable();
-        if (map.tap) map.tap.disable();
-
-        // Remove loading state
-        if (loadingElement) {
-            loadingElement.style.opacity = '0';
-            setTimeout(() => loadingElement.remove(), 300);
-        }
-
-        // Handle window resize with debounce
-        let resizeTimer;
-        const handleResize = () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                map.invalidateSize({ animate: true });
-                // Re-center the map after resize
-                map.setView([clinicLat, clinicLng], map.getZoom(), { animate: false });
-            }, 250);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        // Add a small delay to ensure the map renders correctly after all resources are loaded
-        setTimeout(() => {
-            map.invalidateSize({ animate: true });
-        }, 300);
-    }
-
-    // Initialize map when Livewire is ready or on DOM load
-    if (window.Livewire) {
-        window.Livewire.hook('morph.updated', initMap);
-    } else {
-        document.addEventListener('livewire:load', initMap);
-    }
-    document.addEventListener('DOMContentLoaded', initMap);
 </script>
 @endpush

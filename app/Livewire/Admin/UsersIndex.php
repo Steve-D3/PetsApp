@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
 
 class UsersIndex extends Component
 {
@@ -18,7 +19,7 @@ class UsersIndex extends Component
     public $sortDirection = 'asc';
     public $selectedUsers = [];
     public $selectAll = false;
-    
+
     // User creation modal
     public $showCreateModal = false;
     public $name = '';
@@ -28,6 +29,15 @@ class UsersIndex extends Component
     public $userRole = 'owner';
     public $confirmingUserDeletion = false;
     public $userIdToDelete = null;
+
+    // User edit modal
+    public $showEditModal = false;
+    public $userIdToEdit = null;
+    public $nameToEdit = '';
+    public $emailToEdit = '';
+    public $passwordToEdit = '';
+    public $passwordConfirmationToEdit = '';
+    public $userRoleToEdit = 'owner';
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -82,48 +92,84 @@ class UsersIndex extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
     }
-    
+
     public function createUser()
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8|confirmed',
             'userRole' => 'required|in:admin,vet,owner',
         ]);
 
         User::create([
             'name' => $this->name,
             'email' => $this->email,
-            'password' => bcrypt($this->password),
+            'password' => Hash::make($this->password),
             'role' => $this->userRole,
-            'email_verified_at' => now(),
         ]);
 
         $this->reset(['name', 'email', 'password', 'password_confirmation', 'userRole']);
         $this->showCreateModal = false;
-        
+
         session()->flash('message', 'User created successfully.');
     }
-    
+
     public function confirmUserDeletion($userId)
     {
         $this->userIdToDelete = $userId;
         $this->confirmingUserDeletion = true;
     }
-    
+
     public function deleteUser()
     {
         if ($this->userIdToDelete === auth()->id()) {
-            session()->flash('error', 'You cannot delete your own account.');
+            session()->flash('message', 'You cannot delete your own account.');
             return;
         }
-        
+
         User::findOrFail($this->userIdToDelete)->delete();
         $this->selectedUsers = array_diff($this->selectedUsers, [$this->userIdToDelete]);
         $this->confirmingUserDeletion = false;
-        
+
         session()->flash('message', 'User deleted successfully.');
+    }
+
+    public function editUser($userId)
+    {
+        $user = User::findOrFail($userId);
+        $this->userIdToEdit = $userId;
+        $this->nameToEdit = $user->name;
+        $this->emailToEdit = $user->email;
+        $this->userRoleToEdit = $user->role;
+        $this->showEditModal = true;
+    }
+
+    public function updateUser()
+    {
+        $this->validate([
+            'nameToEdit' => 'required|string|max:255',
+            'emailToEdit' => 'required|email|unique:users,email,' . $this->userIdToEdit,
+            'passwordToEdit' => 'nullable|min:8|confirmed',
+            'userRoleToEdit' => 'required|in:admin,vet,owner',
+        ]);
+
+        $user = User::findOrFail($this->userIdToEdit);
+        $user->update([
+            'name' => $this->nameToEdit,
+            'email' => $this->emailToEdit,
+            'role' => $this->userRoleToEdit,
+        ]);
+
+        if ($this->passwordToEdit) {
+            $user->password = Hash::make($this->passwordToEdit);
+            $user->save();
+        }
+
+        $this->reset(['userIdToEdit', 'nameToEdit', 'emailToEdit', 'passwordToEdit', 'passwordConfirmationToEdit', 'userRoleToEdit']);
+        $this->showEditModal = false;
+
+        session()->flash('message', 'User updated successfully.');
     }
 
     public function deleteSelected()

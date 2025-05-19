@@ -185,13 +185,15 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex justify-end space-x-2">
-                                                <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <!-- Show -->
+                                                <a href="{{ route('admin.users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                                     </svg>
                                                 </a>
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                                <!-- Edit -->
+                                                <a wire:click="editUser({{ $user->id }})" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                                     </svg>
@@ -308,6 +310,66 @@
 
             <x-button class="ml-3" wire:click="createUser" wire:loading.attr="disabled">
                 {{ __('Create User') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
+
+    <x-dialog-modal wire:model.live="showEditModal">
+        <x-slot name="title">
+            {{ __('Edit User') }}
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="space-y-4">
+                <!-- Name -->
+                <div>
+                    <x-label for="name" value="{{ __('Name') }}" />
+                    <x-input id="name" type="text" class="mt-1 block w-full" wire:model="nameToEdit" required autofocus />
+                    <x-input-error for="nameToEdit" class="mt-1" />
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <x-label for="email" value="{{ __('Email') }}" />
+                    <x-input id="email" type="email" class="mt-1 block w-full" wire:model="emailToEdit" required />
+                    <x-input-error for="emailToEdit" class="mt-1" />
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <x-label for="password" value="{{ __('Password') }}" />
+                    <x-input id="password" type="password" class="mt-1 block w-full" wire:model="passwordToEdit" required autocomplete="new-password" />
+                    <x-input-error for="passwordToEdit" class="mt-1" />
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                    <x-input id="password_confirmation" type="password" class="mt-1 block w-full" wire:model="password_confirmation" required autocomplete="new-password" />
+                    <x-input-error for="password_confirmation" class="mt-1" />
+                </div>
+
+
+                <!-- Role -->
+                <div>
+                    <x-label for="userRole" value="{{ __('Role') }}" />
+                    <select id="userRole" wire:model="userRole" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                        <option value="admin">Administrator</option>
+                        <option value="vet">Veterinarian</option>
+                        <option value="owner">Pet Owner</option>
+                    </select>
+                    <x-input-error for="userRole" class="mt-1" />
+                </div>
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showEditModal', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-button class="ml-3" wire:click="editUser" wire:loading.attr="disabled">
+                {{ __('Edit User') }}
             </x-button>
         </x-slot>
     </x-dialog-modal>
