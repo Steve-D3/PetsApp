@@ -54,6 +54,6 @@ class VeterinarianProfile extends Model
      */
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'veterinarian_id');
+        return $this->hasMany(Appointment::class, 'veterinarian_id', 'user_id');
     }
 }

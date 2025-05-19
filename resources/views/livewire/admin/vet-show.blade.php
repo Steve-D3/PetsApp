@@ -126,8 +126,6 @@
 
         </div>
 
-
-
         <!-- Right Column - Calendar -->
         <div class="lg:col-span-2">
             <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-gray-800">
@@ -246,9 +244,6 @@
             </div>
 
             <!-- Upcoming Appointments -->
-             <div class="hidden debug-data">
-                <pre>{{ $appointmentsJson }}</pre>
-            </div>
             <div class="mt-6 bg-white overflow-hidden shadow rounded-lg dark:bg-gray-800">
                 <div class="px-4 py-5 sm:px-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-white">Upcoming Appointments</h2>
@@ -311,9 +306,9 @@
          data-vet-id="{{ $veterinarianProfile->user_id }}"
          class="hidden">
     </div>
-</div>
 
-@push('styles')
+
+    @push('styles')
     <!-- FullCalendar CSS -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
 
@@ -322,122 +317,11 @@
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tX/miZyoHS5obTRR9BMY="
           crossorigin=""/>
 
-    <style>
-        .fc {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-        .fc .fc-toolbar-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-        .fc .fc-button {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border-radius: 0.375rem;
-            background-color: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            color: #374151;
-        }
-        .fc .fc-button-primary:not(:disabled).fc-button-active,
-        .fc .fc-button-primary:not(:disabled):active {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            color: white;
-        }
-        .fc .fc-button-primary:not(:disabled):hover {
-            background-color: #e5e7eb;
-            border-color: #d1d5db;
-        }
-        .fc-event {
-            font-size: 0.75rem;
-            padding: 0.125rem 0.25rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            border: none;
-        }
-        .fc-daygrid-day-number {
-            color: #4b5563;
-            font-weight: 500;
-        }
-        .fc-day-today {
-            background-color: #eff6ff !important;
-        }
-        .fc-day-today .fc-daygrid-day-number {
-            color: #1d4ed8;
-            font-weight: 700;
-        }
-        .fc-day-past .fc-daygrid-day-number {
-            color: #9ca3af;
-        }
-        .fc-daygrid-event-harness {
-            margin-bottom: 2px;
-        }
-        .fc .fc-daygrid-day.fc-day-today {
-            background-color: rgba(59, 130, 246, 0.1);
-        }
-        .fc-daygrid-day-top {
-            padding: 4px 8px;
-        }
-        .fc-daygrid-day-events {
-            min-height: 2.5rem;
-        }
-        /* Dark mode styles */
-        .dark .fc {
-            --fc-border-color: #374151;
-            --fc-page-bg-color: #1f2937;
-            --fc-neutral-bg-color: #1f2937;
-            --fc-list-event-hover-bg-color: #374151;
-            --fc-now-indicator-color: #3b82f6;
-        }
-        .dark .fc .fc-button {
-            background-color: #374151;
-            border-color: #4b5563;
-            color: #f3f4f6;
-        }
-        .dark .fc .fc-button:not(:disabled):hover {
-            background-color: #4b5563;
-            border-color: #6b7280;
-        }
-        .dark .fc .fc-button-primary:not(:disabled).fc-button-active,
-        .dark .fc .fc-button-primary:not(:disabled):active {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            color: white;
-        }
-        .dark .fc-daygrid-day-number {
-            color: #e5e7eb;
-        }
-        .dark .fc-day-today {
-            background-color: rgba(37, 99, 235, 0.2) !important;
-        }
-        .dark .fc-day-today .fc-daygrid-day-number {
-            color: #60a5fa;
-        }
-        .dark .fc-day-past .fc-daygrid-day-number {
-            color: #6b7280;
-        }
-        .dark .fc-col-header-cell {
-            background-color: #1f2937;
-        }
-        .dark .fc-col-header-cell .fc-col-header-cell-cushion {
-            color: #e5e7eb;
-        }
-        /* Fix for loading indicator */
-        #calendar-loading {
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-        .dark #calendar-loading {
-            background-color: rgba(17, 24, 39, 0.5);
-        }
-    </style>
+
 @endpush
 
 @push('scripts')
+
     <!-- SweetAlert2 for beautiful alerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -449,11 +333,6 @@
 
     <!-- FullCalendar Plugins -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -477,7 +356,9 @@
 
     function initCalendar() {
         const calendarEl = document.getElementById('calendar');
-        if (!calendarEl) return;
+        const calendarDataEl = document.getElementById('calendar-data');
+
+        if (!calendarEl && !calendarDataEl) return;
 
         // Show loading indicator
         const loadingEl = document.getElementById('calendar-loading');
@@ -485,6 +366,12 @@
             loadingEl.classList.remove('hidden');
             loadingEl.style.display = 'flex';
         }
+
+        const appointments = JSON.parse(calendarDataEl.dataset.appointments);
+        const vetId = calendarDataEl.dataset.vetId;
+
+        console.log(appointments);
+
 
         // Initialize the calendar with enhanced options
         calendar = new FullCalendar.Calendar(calendarEl, {
@@ -494,12 +381,14 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
+            events: appointments,
             height: 'auto',
             aspectRatio: 1.8,
             nowIndicator: true,
             selectable: true,
             selectMirror: true,
             dayMaxEvents: 3,
+            eventDisplay: 'block',
             firstDay: 1, // Monday
             locale: '{{ app()->getLocale() }}',
             timeZone: '{{ config('app.timezone') }}',
@@ -510,75 +399,16 @@
                 day: 'Day',
                 list: 'List'
             },
-            events: {
-                url: '/api/appointments',
-                method: 'GET',
-                extraParams: {
-                    _token: '{{ csrf_token() }}',
-                    veterinarian_id: '{{ $veterinarianProfile->user_id }}',
-                    include: 'pet,pet.owner,veterinarian'
-                },
-                failure: function(error) {
-                    console.error('Calendar event load error:', error);
-                    const errorMessage = error.message || 'Failed to load appointments. Please try again later.';
 
-                    // Show error toast
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 5000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer);
-                            toast.addEventListener('mouseleave', Swal.resumeTimer);
-                        }
-                    });
-
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMessage
-                    });
-                },
-                loading: function(isLoading) {
-                    const loadingEl = document.getElementById('calendar-loading');
-                    if (loadingEl) {
-                        loadingEl.style.display = isLoading ? 'flex' : 'none';
-                    }
+            eventDidMount: function(info) {
+                // Add tooltip with more details
+                if (info.event.extendedProps.notes) {
+                    info.el.setAttribute('title', info.event.extendedProps.notes);
                 }
-            },
-            eventDataTransform: function(eventData) {
-                // Format the event for FullCalendar
-                const event = {
-                    id: eventData.id,
-                    title: eventData.title || 'Appointment',
-                    start: eventData.start_time || eventData.start,
-                    end: eventData.end_time || eventData.end,
-                    allDay: eventData.all_day || false,
-                    extendedProps: {
-                        status: eventData.status || 'scheduled',
-                        pet: eventData.pet || {},
-                        description: eventData.description || '',
-                        reason: eventData.reason || '',
-                        veterinarian: eventData.veterinarian || {}
-                    },
-                    className: `fc-event-${eventData.status || 'scheduled'}`,
-                    backgroundColor: getStatusColor(eventData.status),
-                    borderColor: getStatusColor(eventData.status, true),
-                    textColor: '#ffffff'
-                };
-
-                // If we have pet data, include it in the title for better display
-                if (eventData.pet && eventData.pet.name) {
-                    event.title = `${event.title} - ${eventData.pet.name}`;
-                }
-
-                return event;
             },
             eventClick: function(info) {
                 const event = info.event;
-                const pet = event.extendedProps.pet;
+                const props = event.extendedProps;
                 const eventEl = info.el;
 
                 // Add pulse effect to clicked event
@@ -589,15 +419,14 @@
                 Swal.fire({
                     title: event.title,
                     html: `
-                        <div class="text-left">
-                            ${pet ? `<p class="mb-2"><strong>Pet:</strong> ${pet.name}</p>` : ''}
-                            <p class="mb-2"><strong>When:</strong> ${formatDateTimeRange(event.start, event.end, event.allDay)}</p>
-                            ${event.extendedProps.reason ? `<p class="mb-2"><strong>Reason:</strong> ${event.extendedProps.reason}</p>` : ''}
-                            ${event.extendedProps.description ? `<p class="mb-2"><strong>Notes:</strong> ${event.extendedProps.description}</p>` : ''}
-                            <p class="mt-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(event.extendedProps.status)}">
-                                ${event.extendedProps.status.charAt(0).toUpperCase() + event.extendedProps.status.slice(1)}
-                            </span></p>
-                        </div>
+                        <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">${event.title}</h3>
+                        <p><strong>Status:</strong> <span class="capitalize">${event.extendedProps.status || 'scheduled'}</span></p>
+                        <p><strong>Date:</strong> ${event.start?.toLocaleString()}</p>
+                        ${props.pet_name ? `<p><strong>Pet:</strong> ${props.pet_name}</p>` : ''}
+                        ${props.owner_name ? `<p><strong>Owner:</strong> ${props.owner_name}</p>` : ''}
+                        ${props.notes ? `<p class="mt-2"><strong>Notes:</strong> ${props.notes}</p>` : ''}
+                    </div>
                     `,
                     icon: 'info',
                     showCancelButton: true,
@@ -605,11 +434,9 @@
                     cancelButtonText: 'Close',
                     showDenyButton: true,
                     denyButtonText: 'Cancel Appointment',
-                    customClass: {
-                        confirmButton: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
-                        cancelButton: 'inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
-                        denyButton: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
-                    },
+                    confirmButtonColor: '#3b82f6',
+                    cancelButtonColor: '#6b7280',
+                    denyButtonColor: '#ef4444',
                     buttonsStyling: false
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -623,8 +450,23 @@
                 info.jsEvent.preventDefault();
             },
             dateClick: function(info) {
-                // Handle date click to create a new appointment
-                window.location.href = `{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}?date=${info.dateStr}`;
+                // Only allow future dates
+                const clickedDate = new Date(info.date);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (clickedDate >= today) {
+                    window.location.href = `{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}?date=${info.dateStr}`;
+                    
+                    console.log(info.dateStr);
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Date',
+                        text: 'Please select a current or future date.',
+                        confirmButtonColor: '#3b82f6',
+                    });
+                }
             },
             loading: function(isLoading) {
                 const loadingEl = document.getElementById('calendar-loading');
@@ -772,3 +614,5 @@
     }
 </script>
 @endpush
+
+</div>
