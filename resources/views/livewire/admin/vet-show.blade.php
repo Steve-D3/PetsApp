@@ -220,14 +220,14 @@
                     </div>
 
                     <!-- Legend -->
-                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-white">
                         <div class="flex flex-wrap items-center justify-center gap-4 text-sm">
                             <div class="flex items-center">
-                                <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
                                 <span>Pending</span>
                             </div>
                             <div class="flex items-center">
-                                <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                                <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
                                 <span>Confirmed</span>
                             </div>
                             <div class="flex items-center">
@@ -235,7 +235,7 @@
                                 <span>Cancelled</span>
                             </div>
                             <div class="flex items-center">
-                                <span class="w-3 h-3 rounded-full bg-gray-500 mr-2"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
                                 <span>Completed</span>
                             </div>
                         </div>
@@ -262,9 +262,13 @@
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
                                         {{ $appointment->pet->name }}
                                         <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full {{
-                                            $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                                            ($appointment->status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                                            'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200')
+                                            match($appointment->status) {
+                                                'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                                                'confirmed' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                                                'cancelled' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                                                'completed' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+                                                default => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                                            }
                                         }}">
                                             {{ ucfirst($appointment->status) }}
                                         </span>
@@ -441,290 +445,233 @@
 
     <!-- Moment.js for date handling -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
 
-    <!-- FullCalendar Core Package -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <!-- FullCalendar Core -->
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"></script>
 
-    <!-- FullCalendar Plugins -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
+    <!-- Tippy.js for tooltips -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize the calendar
-        initCalendar();
+        let calendar = null;
 
-        // Handle dark mode changes
-        const darkModeToggle = document.querySelector('*[x-data]');
-        if (darkModeToggle) {
-            const observer = new MutationObserver(() => {
-                if (typeof calendar !== 'undefined') {
-                    calendar.render();
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            const calendarDataEl = document.getElementById('calendar-data');
+
+            if (!calendarEl || !calendarDataEl) return;
+
+            const appointments = JSON.parse(calendarDataEl.dataset.appointments);
+            const vetId = calendarDataEl.dataset.vetId;
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: appointments,
+                nowIndicator: true,
+                timeZone: 'local',
+                firstDay: 1,
+                dayMaxEvents: 3,
+                eventDisplay: 'block',
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    meridiem: false,
+                    hour12: false
+                },
+                eventDidMount: function(info) {
+                    const event = info.event;
+                    const eventEl = info.el;
+
+                    // Add status-based classes
+                    eventEl.classList.add('cursor-pointer', 'transition-all', 'duration-200', 'hover:shadow-md');
+
+                    // Add tooltip with more details
+                    if (window.tippy) {
+                        tippy(eventEl, {
+                            content: `
+                                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-[400px] px-12">
+                                    <div class="space-y-3 space-x-3 gap-4">
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-gray-400">🐾</span>
+                                            <span class="font-medium">${event.extendedProps.pet || 'N/A'}</span>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-gray-400">👤</span>
+                                            <span class="font-medium">${event.extendedProps.owner_name || 'N/A'}</span>
+                                        </div>
+                                        ${event.extendedProps.notes ? `
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-gray-400">📝</span>
+                                                <span class="text-sm text-gray-600 dark:text-gray-300">${event.extendedProps.notes}</span>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-gray-400">📅</span>
+                                                <span class="text-sm text-gray-600 dark:text-gray-300">${event.extendedProps.status}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>`,
+                            placement: 'top',
+                            arrow: true,
+                            theme: 'light',
+                            interactive: true,
+                            allowHTML: true
+                        });
+                    }
+                },
+                eventClick: function(info) {
+                    const event = info.event;
+                    const props = event.extendedProps;
+                    const eventDetails = `
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold mb-2">${event.title}</h3>
+                            <p><strong>Status:</strong> <span class="capitalize">${event.extendedProps.status || 'scheduled'}</span></p>
+                            <p><strong>Date:</strong> ${event.start?.toLocaleString()}</p>
+                            ${props.pet_name ? `<p><strong>Pet:</strong> ${props.pet_name}</p>` : ''}
+                            ${props.owner_name ? `<p><strong>Owner:</strong> ${props.owner_name}</p>` : ''}
+                            ${props.notes ? `<p class="mt-2"><strong>Notes:</strong> ${props.notes}</p>` : ''}
+                        </div>
+                    `;
+
+                    Swal.fire({
+                        html: eventDetails,
+                        showCancelButton: true,
+                        confirmButtonText: 'Edit',
+                        cancelButtonText: 'Close',
+                        showDenyButton: true,
+                        denyButtonText: 'Cancel Appointment',
+                        confirmButtonColor: '#3b82f6',
+                        cancelButtonColor: '#6b7280',
+                        denyButtonColor: '#ef4444',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `/appointments/${event.id}`;
+                        } else if (result.isDenied) {
+                            cancelAppointment(event.id);
+                        }
+                    });
+
+                    info.jsEvent.preventDefault();
+                },
+                dateClick: function(info) {
+                    // Only allow future dates
+                    const clickedDate = new Date(info.date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    if (clickedDate >= today) {
+                        window.location.href = `{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}?date=${info.dateStr}`;
+                        window.Livewire.emit('openAppointmentForm', info.dateStr);
+
+                        console.log(info.dateStr);
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Invalid Date',
+                            text: 'Please select a current or future date.',
+                            confirmButtonColor: '#3b82f6',
+                        });
+                    }
+                },
+                loading: function(isLoading) {
+                    const loadingEl = document.getElementById('calendar-loading');
+                    if (loadingEl) {
+                        loadingEl.style.opacity = isLoading ? '1' : '0';
+                        loadingEl.style.pointerEvents = isLoading ? 'auto' : 'none';
+                    }
                 }
             });
-            observer.observe(darkModeToggle, { attributes: true, attributeFilter: ['class'] });
-        }
-    });
 
-    // Global calendar instance
-    let calendar;
-
-    function initCalendar() {
-        const calendarEl = document.getElementById('calendar');
-        const calendarDataEl = document.getElementById('calendar-data');
-
-        if (!calendarEl && !calendarDataEl) return;
-
-        // Show loading indicator
-        const loadingEl = document.getElementById('calendar-loading');
-        if (loadingEl) {
-            loadingEl.classList.remove('hidden');
-            loadingEl.style.display = 'flex';
+            // Render the calendar
+            calendar.render();
         }
 
-        const appointments = JSON.parse(calendarDataEl.dataset.appointments);
-        const vetId = calendarDataEl.dataset.vetId;
-
-        console.log(appointments);
-
-
-        // Initialize the calendar with enhanced options
-        calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            events: appointments,
-            height: 'auto',
-            aspectRatio: 1.8,
-            nowIndicator: true,
-            selectable: true,
-            selectMirror: true,
-            dayMaxEvents: 3,
-            eventDisplay: 'block',
-            firstDay: 1, // Monday
-            locale: '{{ app()->getLocale() }}',
-            timeZone: '{{ config('app.timezone') }}',
-            buttonText: {
-                today: 'Today',
-                month: 'Month',
-                week: 'Week',
-                day: 'Day',
-                list: 'List'
-            },
-
-            eventDidMount: function(info) {
-                // Add tooltip with more details
-                if (info.event.extendedProps.notes) {
-                    info.el.setAttribute('title', info.event.extendedProps.notes);
-                }
-            },
-            eventClick: function(info) {
-                const event = info.event;
-                const props = event.extendedProps;
-                const eventEl = info.el;
-
-                // Add pulse effect to clicked event
-                eventEl.classList.add('animate-pulse');
-                setTimeout(() => eventEl.classList.remove('animate-pulse'), 1000);
-
-                // Create and show the modal
-                Swal.fire({
-                    title: event.title,
-                    html: `
-                        <div class="p-4">
-                        <h3 class="text-lg font-semibold mb-2">${event.title}</h3>
-                        <p><strong>Status:</strong> <span class="capitalize">${event.extendedProps.status || 'scheduled'}</span></p>
-                        <p><strong>Date:</strong> ${event.start?.toLocaleString()}</p>
-                        ${props.pet_name ? `<p><strong>Pet:</strong> ${props.pet_name}</p>` : ''}
-                        ${props.owner_name ? `<p><strong>Owner:</strong> ${props.owner_name}</p>` : ''}
-                        ${props.notes ? `<p class="mt-2"><strong>Notes:</strong> ${props.notes}</p>` : ''}
-                    </div>
-                    `,
-                    showCancelButton: true,
-                    confirmButtonText: 'Edit',
-                    cancelButtonText: 'Close',
-                    showDenyButton: true,
-                    denyButtonText: 'Cancel Appointment',
-                    confirmButtonColor: '#3b82f6',
-                    cancelButtonColor: '#6b7280',
-                    denyButtonColor: '#ef4444',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/appointments/${event.id}`;
-                    } else if (result.isDenied) {
-                        // Handle cancel appointment
-                        cancelAppointment(event.id);
-                    }
-                });
-
-                info.jsEvent.preventDefault();
-            },
-            dateClick: function(info) {
-                // Only allow future dates
-                const clickedDate = new Date(info.date);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-                if (clickedDate >= today) {
-                    window.location.href = `{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}?date=${info.dateStr}`;
-
-                    console.log(info.dateStr);
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Invalid Date',
-                        text: 'Please select a current or future date.',
-                        confirmButtonColor: '#3b82f6',
-                    });
-                }
-            },
-            loading: function(isLoading) {
-                const loadingEl = document.getElementById('calendar-loading');
-                if (loadingEl) {
-                    loadingEl.style.display = isLoading ? 'flex' : 'none';
-                }
-            },
-            eventDidMount: function(info) {
-                const event = info.event;
-                const eventEl = info.el;
-
-                // Add status-based classes
-                eventEl.classList.add('cursor-pointer', 'transition-all', 'duration-200', 'hover:shadow-md');
-
-                // Add tooltip with more details
-                if (window.tippy) {
-                    const pet = event.extendedProps.pet || {};
-                    const timeText = info.timeText ? `${info.timeText} • ` : '';
-                    const petText = pet.name ? `\nPet: ${pet.name}` : '';
-                    const statusText = `\nStatus: ${event.extendedProps.status.charAt(0).toUpperCase() + event.extendedProps.status.slice(1)}`;
-
-                    tippy(info.el, {
-                        content: `${timeText}${event.title}${petText}${statusText}`,
-                        theme: 'light',
-                        placement: 'top',
-                        animation: 'scale',
-                        arrow: true,
-                        delay: [100, 0],
-                        duration: [200, 0],
-                        interactive: true,
-                        allowHTML: true
-                    });
-                }
-            }
-        });
-
-        // Render the calendar
-        calendar.render();
-
-        // Hide loading indicator after render
-        if (loadingEl) loadingEl.classList.add('hidden');
-    }
-
-    function formatDateTimeRange(start, end, allDay = false) {
-        const startDate = moment(start);
-        const endDate = moment(end);
-
-        if (allDay) {
-            if (startDate.isSame(endDate, 'day') || !endDate.isValid()) {
-                return startDate.format('MMM D, YYYY (All Day)');
-            } else {
-                return `${startDate.format('MMM D')} - ${endDate.subtract(1, 'day').format('MMM D, YYYY')}`;
+        function getStatusClasses(status) {
+            switch (status?.toLowerCase()) {
+                case 'confirmed':
+                    return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+                case 'cancelled':
+                    return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+                case 'completed':
+                    return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+                default:
+                    return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
             }
         }
 
-        if (startDate.isSame(endDate, 'day')) {
-            return `${startDate.format('MMM D, YYYY')} • ${startDate.format('h:mm A')} - ${endDate.format('h:mm A')}`;
-        } else {
-            return `${startDate.format('MMM D, h:mm A')} - ${endDate.format('MMM D, h:mm A YYYY')}`;
-        }
-    }
-
-    function getStatusColor(status, isBorder = false) {
-        const colors = {
-            'confirmed': isBorder ? '#059669' : '#10B981',
-            'pending': isBorder ? '#D97706' : '#F59E0B',
-            'cancelled': isBorder ? '#DC2626' : '#EF4444',
-            'completed': isBorder ? '#4B5563' : '#6B7280'
-        };
-        return colors[status] || (isBorder ? '#3B82F6' : '#60A5FA');
-    }
-
-    function getStatusBadgeClass(status) {
-        const classes = {
-            'confirmed': 'bg-green-100 text-green-800',
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'cancelled': 'bg-red-100 text-red-800',
-            'completed': 'bg-gray-100 text-gray-800'
-        };
-        return classes[status] || 'bg-blue-100 text-blue-800';
-    }
-
-    function cancelAppointment(appointmentId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, cancel it!',
-            cancelButtonText: 'No, keep it',
-            reverseButtons: true,
-            customClass: {
-                confirmButton: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
-                cancelButton: 'inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-3',
-            },
-            buttonsStyling: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Send request to cancel appointment
-                fetch(`/api/appointments/${appointmentId}/cancel`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    credentials: 'same-origin'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Refresh the calendar
-                        if (calendar) {
-                            calendar.refetchEvents();
+        function cancelAppointment(appointmentId) {
+            Swal.fire({
+                title: 'Cancel Appointment',
+                text: 'Are you sure you want to cancel this appointment?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, cancel it',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/api/appointments/${appointmentId}/cancel`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                         }
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Cancelled!',
-                            text: 'The appointment has been cancelled.',
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    } else {
-                        throw new Error(data.message || 'Failed to cancel appointment');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: error.message || 'Failed to cancel appointment',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    }).then(data => {
+                        if (data.success) {
+                            Swal.fire(
+                                'Cancelled!',
+                                'The appointment has been cancelled.',
+                                'success'
+                            );
+                            // Refresh the calendar
+                            window.Livewire.emit('refreshCalendar');
+                        } else {
+                            throw new Error(data.message || 'Failed to cancel appointment');
+                        }
+                    }).catch(error => {
+                        Swal.fire(
+                            'Error',
+                            error.message,
+                            'error'
+                        );
                     });
-                });
+                }
+            });
+        }
+
+        // Initialize the calendar when Livewire is ready
+        if (window.Livewire) {
+            initCalendar();
+        }
+
+        // Also listen for Livewire's load event
+        window.addEventListener('livewire:load', () => {
+            initCalendar();
+        });
+
+        // Fallback to DOMContentLoaded as a last resort
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.Livewire) {
+                initCalendar();
             }
         });
-    }
-</script>
+    </script>
 @endpush
 
-</div>
+        </div>

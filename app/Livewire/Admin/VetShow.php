@@ -17,19 +17,23 @@ class VetShow extends Component
     {
         $this->veterinarianProfile = $veterinarianProfile->load(['user', 'clinic', 'appointments']);
 
-        $appointments = $this->veterinarianProfile->appointments()->get()
+        $appointments = $this->veterinarianProfile->appointments()->with('pet.owner')->get()
         ->map(function ($appt) {
             return [
                 'id' => $appt->id,
-                'title' => $appt->pet->name . ' (' . ucfirst($appt->status) . ')',
+                'title' => $appt->pet->name,
                 'start' => Carbon::parse($appt->start_time)->toIso8601String(),
                 'end' => Carbon::parse($appt->end_time)->toIso8601String(),
                 'color' => match($appt->status) {
-                    'cancelled' => '#f87171',
-                    'confirmed' => '#34d399',
-                    default => '#60a5fa',
+                    'pending' => '#fbbf24', // Yellow for pending
+                    'confirmed' => '#60a5fa', // Blue for confirmed
+                    'cancelled' => '#f87171', // Red for cancelled
+                    'completed' => '#34d399', // Green for completed
+                    default => '#60a5fa', // Default blue
                 },
                 'extendedProps' => [
+                    'pet' => $appt->pet->name,
+                    'owner_name' => $appt->pet->owner->name,
                     'notes' => $appt->notes,
                     'status' => $appt->status,
                     'pet_id' => $appt->pet->id,
