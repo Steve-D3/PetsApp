@@ -7,7 +7,7 @@
                     <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Veterinary Clinics</h2>
                     <div class="mt-4 md:mt-0">
                         <button
-                            wire:click="$set('showModal', true)"
+                            wire:click="$set('showAddModal', true)"
                             class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150"
                         >
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -186,11 +186,10 @@
                                                 </a>
                                                 <button
                                                     wire:click="editClinic({{ $clinic->id }})"
-                                                    class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
-                                                    title="Edit"
+                                                    class="text-yellow-600 hover:text-yellow-800 dark:text-yellow-400 dark:hover:text-yellow-300"
                                                 >
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                                     </svg>
                                                 </button>
                                                 <button
@@ -225,88 +224,174 @@
         </div>
     </div>
 
-    <!-- Create/Edit Clinic Modal -->
-    <x-dialog-modal wire:model.live="showModal">
+    <!-- Add Clinic Modal -->
+    <x-dialog-modal wire:model.live="showAddModal">
         <x-slot name="title">
-            {{ $editing ? 'Edit Clinic' : 'Add New Clinic' }}
+            Add New Clinic
         </x-slot>
 
         <x-slot name="content">
             <div class="space-y-4">
                 <!-- Name -->
                 <div>
-                    <x-label for="name" value="{{ __('Clinic Name') }}" />
-                    <x-input id="name" type="text" class="mt-1 block w-full" wire:model="name" required autofocus />
-                    <x-input-error for="name" class="mt-1" />
+                    <x-label for="addName" value="{{ __('Clinic Name') }}" />
+                    <x-input id="addName" type="text" class="mt-1 block w-full" wire:model="addName" required autofocus />
+                    <x-input-error for="addName" class="mt-1" />
                 </div>
 
                 <!-- Address -->
                 <div>
-                    <x-label for="address" value="{{ __('Address') }}" />
-                    <x-input id="address" type="text" class="mt-1 block w-full" wire:model="address" required />
-                    <x-input-error for="address" class="mt-1" />
+                    <x-label for="addAddress" value="{{ __('Address') }}" />
+                    <x-input id="addAddress" type="text" class="mt-1 block w-full" wire:model="addAddress" required />
+                    <x-input-error for="addAddress" class="mt-1" />
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- City -->
                     <div>
-                        <x-label for="cityInput" value="{{ __('City') }}" />
-                        <x-input id="cityInput" type="text" class="mt-1 block w-full" wire:model="cityInput" required />
-                        <x-input-error for="cityInput" class="mt-1" />
+                        <x-label for="addCityInput" value="{{ __('City') }}" />
+                        <x-input id="addCityInput" type="text" class="mt-1 block w-full" wire:model="addCityInput" required />
+                        <x-input-error for="addCityInput" class="mt-1" />
                     </div>
 
                     <!-- Postal Code -->
                     <div>
-                        <x-label for="postalCode" value="{{ __('Postal Code') }}" />
-                        <x-input id="postalCode" type="text" class="mt-1 block w-full" wire:model="postalCode" required />
-                        <x-input-error for="postalCode" class="mt-1" />
+                        <x-label for="addPostalCode" value="{{ __('Postal Code') }}" />
+                        <x-input id="addPostalCode" type="text" class="mt-1 block w-full" wire:model="addPostalCode" required />
+                        <x-input-error for="addPostalCode" class="mt-1" />
                     </div>
                 </div>
 
                 <!-- Country -->
                 <div>
-                    <x-label for="countryInput" value="{{ __('Country') }}" />
-                    <select id="countryInput" wire:model="countryInput" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                    <x-label for="addCountryInput" value="{{ __('Country') }}" />
+                    <select id="addCountryInput" wire:model="addCountryInput" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
                         @foreach($countries as $country)
-                            <option value="{{ $country }}" @if($country === $countryInput) selected @endif>{{ $country }}</option>
+                            <option value="{{ $country }}" @if($country === $addCountryInput) selected @endif>{{ $country }}</option>
                         @endforeach
                     </select>
-                    <x-input-error for="countryInput" class="mt-1" />
+                    <x-input-error for="addCountryInput" class="mt-1" />
                 </div>
 
                 <!-- Contact Info -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Phone -->
                     <div>
-                        <x-label for="phone" value="{{ __('Phone') }}" />
-                        <x-input id="phone" type="tel" class="mt-1 block w-full" wire:model="phone" />
-                        <x-input-error for="phone" class="mt-1" />
+                        <x-label for="addPhone" value="{{ __('Phone') }}" />
+                        <x-input id="addPhone" type="tel" class="mt-1 block w-full" wire:model="addPhone" />
+                        <x-input-error for="addPhone" class="mt-1" />
                     </div>
 
                     <!-- Email -->
                     <div>
-                        <x-label for="email" value="{{ __('Email') }}" />
-                        <x-input id="email" type="email" class="mt-1 block w-full" wire:model="email" />
-                        <x-input-error for="email" class="mt-1" />
+                        <x-label for="addEmail" value="{{ __('Email') }}" />
+                        <x-input id="addEmail" type="email" class="mt-1 block w-full" wire:model="addEmail" />
+                        <x-input-error for="addEmail" class="mt-1" />
                     </div>
                 </div>
 
                 <!-- Website -->
                 <div>
-                    <x-label for="website" value="{{ __('Website') }}" />
-                    <x-input id="website" type="url" class="mt-1 block w-full" wire:model="website" placeholder="https://" />
-                    <x-input-error for="website" class="mt-1" />
+                    <x-label for="addWebsite" value="{{ __('Website') }}" />
+                    <x-input id="addWebsite" type="url" class="mt-1 block w-full" wire:model="addWebsite" placeholder="https://" />
+                    <x-input-error for="addWebsite" class="mt-1" />
                 </div>
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$set('showModal', false)" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$set('showAddModal', false)" class="mr-2">
                 {{ __('Cancel') }}
             </x-secondary-button>
 
-            <x-button class="ml-3" wire:click="{{ $editing ? 'updateClinic' : 'createClinic' }}" wire:loading.attr="disabled">
-                {{ $editing ? 'Update Clinic' : 'Create Clinic' }}
+            <x-button wire:click="createClinic" wire:loading.attr="disabled">
+                {{ __('Create Clinic') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
+
+    <!-- Edit Clinic Modal -->
+    <x-dialog-modal wire:model.live="showEditModal">
+        <x-slot name="title">
+            Edit Clinic
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="space-y-4">
+                <!-- Name -->
+                <div>
+                    <x-label for="editName" value="{{ __('Clinic Name') }}" />
+                    <x-input id="editName" type="text" class="mt-1 block w-full" wire:model="editName" required autofocus />
+                    <x-input-error for="editName" class="mt-1" />
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <x-label for="editAddress" value="{{ __('Address') }}" />
+                    <x-input id="editAddress" type="text" class="mt-1 block w-full" wire:model="editAddress" required />
+                    <x-input-error for="editAddress" class="mt-1" />
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- City -->
+                    <div>
+                        <x-label for="editCityInput" value="{{ __('City') }}" />
+                        <x-input id="editCityInput" type="text" class="mt-1 block w-full" wire:model="editCityInput" required />
+                        <x-input-error for="editCityInput" class="mt-1" />
+                    </div>
+
+                    <!-- Postal Code -->
+                    <div>
+                        <x-label for="editPostalCode" value="{{ __('Postal Code') }}" />
+                        <x-input id="editPostalCode" type="text" class="mt-1 block w-full" wire:model="editPostalCode" required />
+                        <x-input-error for="editPostalCode" class="mt-1" />
+                    </div>
+                </div>
+
+                <!-- Country -->
+                <div>
+                    <x-label for="editCountryInput" value="{{ __('Country') }}" />
+                    <select id="editCountryInput" wire:model="editCountryInput" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                        @foreach($countries as $country)
+                            <option value="{{ $country }}" @if($country === $editCountryInput) selected @endif>{{ $country }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error for="editCountryInput" class="mt-1" />
+                </div>
+
+                <!-- Contact Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Phone -->
+                    <div>
+                        <x-label for="editPhone" value="{{ __('Phone') }}" />
+                        <x-input id="editPhone" type="tel" class="mt-1 block w-full" wire:model="editPhone" />
+                        <x-input-error for="editPhone" class="mt-1" />
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <x-label for="editEmail" value="{{ __('Email') }}" />
+                        <x-input id="editEmail" type="email" class="mt-1 block w-full" wire:model="editEmail" />
+                        <x-input-error for="editEmail" class="mt-1" />
+                    </div>
+                </div>
+
+                <!-- Website -->
+                <div>
+                    <x-label for="editWebsite" value="{{ __('Website') }}" />
+                    <x-input id="editWebsite" type="url" class="mt-1 block w-full" wire:model="editWebsite" placeholder="https://" />
+                    <x-input-error for="editWebsite" class="mt-1" />
+                </div>
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showEditModal', false)" class="mr-2">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-button wire:click="updateClinic" wire:loading.attr="disabled">
+                {{ __('Update Clinic') }}
             </x-button>
         </x-slot>
     </x-dialog-modal>

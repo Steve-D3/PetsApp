@@ -20,18 +20,28 @@ class ClinicsIndex extends Component
     public $selectedClinics = [];
     public $selectAll = false;
     
-    // Create/Edit Modal
-    public $showModal = false;
-    public $editing = false;
+    // Add Clinic Modal
+    public $showAddModal = false;
+    public $addName = '';
+    public $addAddress = '';
+    public $addCityInput = '';
+    public $addPostalCode = '';
+    public $addCountryInput = 'Belgium';
+    public $addPhone = '';
+    public $addEmail = '';
+    public $addWebsite = '';
+    
+    // Edit Clinic Modal
+    public $showEditModal = false;
     public $clinicId = null;
-    public $name = '';
-    public $address = '';
-    public $cityInput = '';
-    public $postalCode = '';
-    public $countryInput = 'Belgium';
-    public $phone = '';
-    public $email = '';
-    public $website = '';
+    public $editName = '';
+    public $editAddress = '';
+    public $editCityInput = '';
+    public $editPostalCode = '';
+    public $editCountryInput = '';
+    public $editPhone = '';
+    public $editEmail = '';
+    public $editWebsite = '';
     
     // Delete Confirmation
     public $confirmingClinicDeletion = false;
@@ -127,73 +137,72 @@ class ClinicsIndex extends Component
     public function createClinic()
     {
         $this->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'cityInput' => 'required|string|max:255',
-            'postalCode' => 'required|string|max:20',
-            'countryInput' => 'required|string|max:100',
-            'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'website' => 'nullable|url|max:255',
+            'addName' => 'required|string|max:255',
+            'addAddress' => 'required|string|max:255',
+            'addCityInput' => 'required|string|max:255',
+            'addPostalCode' => 'required|string|max:20',
+            'addCountryInput' => 'required|string|max:100',
+            'addPhone' => 'nullable|string|max:20',
+            'addEmail' => 'nullable|email|max:255',
+            'addWebsite' => 'nullable|url|max:255',
         ]);
 
         VetClinic::create([
-            'name' => $this->name,
-            'address' => $this->address,
-            'city' => $this->cityInput,
-            'postal_code' => $this->postalCode,
-            'country' => $this->countryInput,
-            'phone' => $this->phone,
-            'email' => $this->email,
-            'website' => $this->website,
+            'name' => $this->addName,
+            'address' => $this->addAddress,
+            'city' => $this->addCityInput,
+            'postal_code' => $this->addPostalCode,
+            'country' => $this->addCountryInput,
+            'phone' => $this->addPhone,
+            'email' => $this->addEmail,
+            'website' => $this->addWebsite,
         ]);
 
-        $this->resetModal();
+        $this->showAddModal = false;
         session()->flash('message', 'Clinic created successfully.');
     }
     
     public function editClinic($clinicId)
     {
         $clinic = VetClinic::findOrFail($clinicId);
-        $this->editing = true;
         $this->clinicId = $clinic->id;
-        $this->name = $clinic->name;
-        $this->address = $clinic->address;
-        $this->cityInput = $clinic->city;
-        $this->postalCode = $clinic->postal_code;
-        $this->countryInput = $clinic->country;
-        $this->phone = $clinic->phone;
-        $this->email = $clinic->email;
-        $this->website = $clinic->website;
-        $this->showModal = true;
+        $this->editName = $clinic->name;
+        $this->editAddress = $clinic->address;
+        $this->editCityInput = $clinic->city;
+        $this->editPostalCode = $clinic->postal_code;
+        $this->editCountryInput = $clinic->country;
+        $this->editPhone = $clinic->phone;
+        $this->editEmail = $clinic->email;
+        $this->editWebsite = $clinic->website;
+        $this->showEditModal = true;
     }
     
     public function updateClinic()
     {
         $this->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'cityInput' => 'required|string|max:255',
-            'postalCode' => 'required|string|max:20',
-            'countryInput' => 'required|string|max:100',
-            'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'website' => 'nullable|url|max:255',
+            'editName' => 'required|string|max:255',
+            'editAddress' => 'required|string|max:255',
+            'editCityInput' => 'required|string|max:255',
+            'editPostalCode' => 'required|string|max:20',
+            'editCountryInput' => 'required|string|max:100',
+            'editPhone' => 'nullable|string|max:20',
+            'editEmail' => 'nullable|email|max:255',
+            'editWebsite' => 'nullable|url|max:255',
         ]);
 
         $clinic = VetClinic::findOrFail($this->clinicId);
         $clinic->update([
-            'name' => $this->name,
-            'address' => $this->address,
-            'city' => $this->cityInput,
-            'postal_code' => $this->postalCode,
-            'country' => $this->countryInput,
-            'phone' => $this->phone,
-            'email' => $this->email,
-            'website' => $this->website,
+            'name' => $this->editName,
+            'address' => $this->editAddress,
+            'city' => $this->editCityInput,
+            'postal_code' => $this->editPostalCode,
+            'country' => $this->editCountryInput,
+            'phone' => $this->editPhone,
+            'email' => $this->editEmail,
+            'website' => $this->editWebsite,
         ]);
 
-        $this->resetModal();
+        $this->showEditModal = false;
         session()->flash('message', 'Clinic updated successfully.');
     }
     
