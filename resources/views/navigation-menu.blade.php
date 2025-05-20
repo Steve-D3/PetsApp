@@ -12,21 +12,29 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
-                        {{ __('Pets') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
-                        {{ __('Users') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
-                        {{ __('Vets') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.index')">
-                        {{ __('Clinics') }}
-                    </x-nav-link>
+                    @if (auth()->user()->role === 'admin')
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @elseif (auth()->user()->role === 'vet')
+                        <x-nav-link href="{{ route('vet.dashboard') }}" :active="request()->routeIs('vet.dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endif
+                    @if (auth()->user()->role === 'admin')
+                        <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
+                            {{ __('Pets') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
+                            {{ __('Users') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
+                            {{ __('Vets') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.index')">
+                            {{ __('Clinics') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

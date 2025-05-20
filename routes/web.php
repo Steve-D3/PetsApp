@@ -21,6 +21,7 @@ use App\Livewire\Admin\VetsEdit;
 use App\Livewire\Appointments\Form;
 use App\Livewire\Forms\AppointmentForm;
 use App\Livewire\Admin\MedicalRecordsIndex;
+use App\Livewire\VetDashboard;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -36,6 +37,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/', DashboardOverview::class)->name('dashboard');
 
+    Route::get('/vet/dashboard', VetDashboard::class)->name('vet.dashboard');
     Route::get('/admin/dashboard', DashboardOverview::class)->name('admin.dashboard');
     Route::get('/admin/pets', PetsIndex::class)->name('pets.index');
     Route::get('/admin/vet/create', VetsCreate::class)->name('admin.vets.create');
