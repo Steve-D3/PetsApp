@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Appointment;
 use App\Models\MedicalRecord;
+use App\Models\Pet;
 use App\Models\VaccineType;
 use App\Models\VetClinic;
 use App\Models\VeterinarianProfile;
@@ -11,7 +12,7 @@ use Livewire\Component;
 
 class VetDashboard extends Component
 {
-    public $upcomingAppointments = '';
+    public $upcomingAppointments;
     public $recentMedicalRecords;
     public $clinicStats;
     public $vaccineStats;
@@ -36,10 +37,10 @@ class VetDashboard extends Component
     public function mount()
     {
         $user = auth()->user()->load('veterinarianProfiles');
-        dump($user);
 
         // Initialize all properties as empty collections
-        $this->recentMedicalRecords = '';
+
+        $this->recentMedicalRecords = collect([]);
         $this->clinicStats = [
             'total_appointments' => 0,
             'total_patients' => 0,
@@ -52,11 +53,11 @@ class VetDashboard extends Component
         $this->quickActions = collect([]);
 
         // Check if user has a veterinarian profile
-        if (!$user->veterinarianProfile) {
+        if (!$user->veterinarianProfiles) {
             return;
         }
 
-        $vetProfile = $user->veterinarianProfiles->user_id;
+        $vetProfile = $user->veterinarianProfiles->first();
         $vetProfileId = $vetProfile->user_id;
 
         // Quick Actions
@@ -64,30 +65,30 @@ class VetDashboard extends Component
             [
                 'icon' => 'calendar',
                 'title' => 'Schedule Appointment',
-                'route' => route('appointments.create', ['veterinarianProfile' => $vetProfileId]),
+                'route' => route('vet.appointments.calendar', ['veterinarian_profile_id' => $vetProfileId]),
             ],
             [
                 'icon' => 'medical-record',
                 'title' => 'New Medical Record',
-                'route' => route('medical-records.create', ['veterinarianProfile' => $vetProfileId]),
+                // 'route' => route('medical-records.create', ['veterinarian_profile_id' => $vetProfileId]),
             ],
             [
                 'icon' => 'vaccine',
                 'title' => 'Record Vaccination',
-                'route' => route('vaccinations.create', ['veterinarianProfile' => $vetProfileId]),
+                // 'route' => route('vaccinations.create', ['veterinarian_profile_id' => $vetProfileId]),
             ],
             [
                 'icon' => 'clinic',
                 'title' => 'Manage Clinic',
-                'route' => route('vet-clinics.index'),
+                // 'route' => route('vet-clinics.index'),
             ],
         ]);
 
         // Upcoming Appointments
-        $this->upcomingAppointments = Appointment::where('veterinarian_id', $vetProfileId)
-            ->take(5)
-            ->get()
-            ->toJson();
+        $this->upcomingAppointments = Appointment::where('veterinarian_id', $user->veterinarianProfiles->first()->user_id)
+        ->with('pet')
+        ->orderBy('start_time', 'asc')
+        ->get();
 
         // Recent Medical Records
         $this->recentMedicalRecords = MedicalRecord::where('veterinarian_profile_id', $vetProfileId)
@@ -97,9 +98,9 @@ class VetDashboard extends Component
 
         // Clinic Stats
         $this->clinicStats = [
-            'total_appointments' => Appointment::where('veterinarian_profile_id', $vetProfileId)->count(),
-            'total_patients' => $vetProfile->pets()->distinct()->count(),
-            'today_appointments' => Appointment::where('veterinarian_profile_id', $vetProfileId)
+            'total_appointments' => Appointment::where('veterinarian_id', $vetProfileId)->count(),
+            'total_patients' => Appointment::where('veterinarian_id', $vetProfileId)->distinct('pet_id')->count(),
+            'today_appointments' => Appointment::where('veterinarian_id', $vetProfileId)
                 ->whereDate('start_time', today())
                 ->count(),
         ];
@@ -109,15 +110,18 @@ class VetDashboard extends Component
             'total_vaccinations' => MedicalRecord::where('veterinarian_profile_id', $vetProfileId)
                 ->whereHas('vaccinations')
                 ->count(),
-            'unique_vaccines' => MedicalRecord::where('veterinarian_profile_id', $vetProfileId)
-                ->whereHas('vaccinations')
-                ->distinct('vaccine_type_id')
-                ->count('vaccine_type_id'),
+            'unique_vaccines' => 0,
         ];
     }
 
     public function render()
     {
-        return view('livewire.vet-dashboard');
+        return view('livewire.vet-dashboard', [
+            'upcomingAppointments' => $this->upcomingAppointments,
+            'recentMedicalRecords' => $this->recentMedicalRecords,
+            'clinicStats' => $this->clinicStats,
+            'vaccineStats' => $this->vaccineStats,
+            'quickActions' => $this->quickActions,
+        ]);
     }
 }

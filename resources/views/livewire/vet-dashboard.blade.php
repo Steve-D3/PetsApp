@@ -60,8 +60,8 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ $action['route'] }}" class="mt-4 block text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
-                    Get started
+                <a href="{{ $quickActions[0]['route'] }}" class="mt-4 block text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium text-center">
+                    View Calendar
                 </a>
             </div>
             @endforeach
@@ -160,7 +160,32 @@
             </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden">
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                    {{ $upcomingAppointments }}
+                    @foreach($upcomingAppointments as $appointment)
+                        <li class="py-4 px-4 flex items-center justify-between">
+                            <div class="flex-1 flex items-center space-x-4">
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ $appointment->pet->name }}
+                                </div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $appointment->start_time->format('M j, Y g:i A') }}
+                                </div>
+                            </div>
+                            <div class="flex-1 flex items-center space-x-4">
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ $appointment->pet->owner->name }}
+                                </div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $appointment->pet->owner->email }}
+                                </div>
+                            </div>
+                            <div class="flex-none">
+                                <a href="#"
+                                   class="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+                                    View
+                                </a>
+                            </div>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -172,7 +197,7 @@
             </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden">
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                  
+
             </div>
         </div>
     </div>
