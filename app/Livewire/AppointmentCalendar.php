@@ -62,6 +62,8 @@ class AppointmentCalendar extends Component
     {
         $this->showCreateModal = false;
         $this->reset('newAppointment');
+        $this->redirect(route('vet.appointments.calendar', ['veterinarian_profile_id' => $this->vetProfileId]));
+
     }
 
     public function createAppointment()
@@ -90,12 +92,14 @@ class AppointmentCalendar extends Component
             $this->loadAppointments();
             $this->closeCreateModal();
 
-            $this->dispatch('notify',
+            $this->dispatch(
+                'notify',
                 type: 'success',
                 message: 'Appointment created successfully!'
             );
         } catch (\Exception $e) {
-            $this->dispatch('notify',
+            $this->dispatch(
+                'notify',
                 type: 'error',
                 message: 'Failed to create appointment. Please try again.'
             );
@@ -112,7 +116,7 @@ class AppointmentCalendar extends Component
             ->whereDate('start_time', '<=', $this->selectedDate->endOfMonth())
             ->get();
 
-        $this->appointments = $appointments->map(function($appointment) {
+        $this->appointments = $appointments->map(function ($appointment) {
             return [
                 'id' => $appointment->id,
                 'title' => $appointment->pet->name . ' @ ' . $appointment->start_time->format('g:i A'),
