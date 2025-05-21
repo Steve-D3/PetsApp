@@ -71,10 +71,10 @@
                                 <div>
                                     <h4 class="font-medium text-gray-900 dark:text-white">Status:</h4>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                        @if($selectedAppointment['status'] === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                                                        @elseif($selectedAppointment['status'] === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
-                                                            @else bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                                        @endif">
+                                                                                                @if($selectedAppointment['status'] === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                                                                                @elseif($selectedAppointment['status'] === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                                                                                                    @else bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                                                                                                @endif">
                                         {{ ucfirst($selectedAppointment['status']) }}
                                     </span>
                                 </div>
@@ -122,10 +122,10 @@
                                                     </div>
                                                     <div class="ml-4 flex-shrink-0">
                                                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
-                                                                                                @if($appointment['status'] === 'completed') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
-                                                                                                @elseif($appointment['status'] === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
-                                                                                                    @else bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400
-                                                                                                @endif">
+                                                                        @if($appointment['status'] === 'completed') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+                                                                        @elseif($appointment['status'] === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
+                                                                            @else bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400
+                                                                        @endif">
                                                             {{ ucfirst($appointment['status']) }}
                                                         </span>
                                                     </div>
@@ -273,41 +273,41 @@
                             const event = info.event;
                             const props = event.extendedProps;
                             const eventDetails = `
-                                        <div class="text-left">
-                                            <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">${event.title}</h3>
-                                            <div class="space-y-2">
-                                                <p class="flex items-center">
-                                                    <span class="w-24 text-gray-600 dark:text-gray-300">Status:</span>
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                        ${props.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : ''}
-                                                        ${props.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : ''}
-                                                        ${!['completed', 'cancelled'].includes(props.status) ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' : ''}
-                                                        capitalize">
-                                                        ${props.status || 'scheduled'}
-                                                    </span>
-                                                </p>
-                                                <p class="flex items-center">
-                                                    <span class="w-24 text-gray-600 dark:text-gray-300">Date:</span>
-                                                    <span class="text-gray-900 dark:text-white">${event.start ? event.start.toLocaleString() : 'N/A'}</span>
-                                                </p>
-                                                ${props.pet_name ? `
-                                                <p class="flex items-center">
-                                                    <span class="w-24 text-gray-600 dark:text-gray-300">Pet:</span>
-                                                    <span class="text-gray-900 dark:text-white">${props.pet_name}</span>
-                                                </p>` : ''}
-                                                ${props.owner_name ? `
-                                                <p class="flex items-center">
-                                                    <span class="w-24 text-gray-600 dark:text-gray-300">Owner:</span>
-                                                    <span class="text-gray-900 dark:text-white">${props.owner_name}</span>
-                                                </p>` : ''}
-                                                ${props.notes ? `
-                                                <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Notes:</h4>
-                                                    <p class="text-gray-900 dark:text-white">${props.notes}</p>
-                                                </div>` : ''}
-                                            </div>
-                                        </div>
-                                    `;
+                                                            <div class="text-left">
+                                                                <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">${event.title}</h3>
+                                                                <div class="space-y-2">
+                                                                    <p class="flex items-center">
+                                                                        <span class="w-24 text-gray-600 dark:text-gray-300">Status:</span>
+                                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                                            ${props.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : ''}
+                                                                            ${props.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : ''}
+                                                                            ${!['completed', 'cancelled'].includes(props.status) ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' : ''}
+                                                                            capitalize">
+                                                                            ${props.status || 'scheduled'}
+                                                                        </span>
+                                                                    </p>
+                                                                    <p class="flex items-center">
+                                                                        <span class="w-24 text-gray-600 dark:text-gray-300">Date:</span>
+                                                                        <span class="text-gray-900 dark:text-white">${event.start ? event.start.toLocaleString() : 'N/A'}</span>
+                                                                    </p>
+                                                                    ${props.pet_name ? `
+                                                                    <p class="flex items-center">
+                                                                        <span class="w-24 text-gray-600 dark:text-gray-300">Pet:</span>
+                                                                        <span class="text-gray-900 dark:text-white">${props.pet_name}</span>
+                                                                    </p>` : ''}
+                                                                    ${props.owner_name ? `
+                                                                    <p class="flex items-center">
+                                                                        <span class="w-24 text-gray-600 dark:text-gray-300">Owner:</span>
+                                                                        <span class="text-gray-900 dark:text-white">${props.owner_name}</span>
+                                                                    </p>` : ''}
+                                                                    ${props.notes ? `
+                                                                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                                                        <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Notes:</h4>
+                                                                        <p class="text-gray-900 dark:text-white">${props.notes}</p>
+                                                                    </div>` : ''}
+                                                                </div>
+                                                            </div>
+                                                        `;
 
                             Swal.fire({
                                 html: eventDetails,
@@ -348,13 +348,13 @@
                                 if (window.tippy) {
                                     tippy(info.el, {
                                         content: `
-                                                    <div class="text-sm">
-                                                        <div class="font-medium">${info.event.extendedProps.pet_name}</div>
-                                                        <div>${info.event.extendedProps.owner_name}</div>
-                                                        <div>${info.event.extendedProps.start_time}</div>
-                                                        <div>Status: ${info.event.extendedProps.status}</div>
-                                                    </div>
-                                                `,
+                                                                        <div class="text-sm">
+                                                                            <div class="font-medium">${info.event.extendedProps.pet_name}</div>
+                                                                            <div>${info.event.extendedProps.owner_name}</div>
+                                                                            <div>${info.event.extendedProps.start_time}</div>
+                                                                            <div>Status: ${info.event.extendedProps.status}</div>
+                                                                        </div>
+                                                                    `,
                                         allowHTML: true,
                                         theme: 'light-border',
                                         interactive: true,
