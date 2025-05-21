@@ -38,8 +38,18 @@ Route::middleware([
 ])->group(function () {
     Route::get('/', DashboardOverview::class)->name('dashboard');
 
-    Route::get('/vet/dashboard', VetDashboard::class)->name('vet.dashboard');
-    Route::get('/vet/appointments/calendar/{veterinarian_profile_id}', AppointmentCalendar::class)->name('vet.appointments.calendar');
+    // Vet-specific routes
+    Route::prefix('vet')->name('vet.')->middleware('role:vet')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', VetDashboard::class)->name('dashboard');
+        
+        // Appointments
+        Route::get('/appointments', \App\Livewire\VetAppointments::class)->name('appointments.index');
+        Route::get('/appointments/calendar/{veterinarian_profile_id}', AppointmentCalendar::class)->name('appointments.calendar');
+        
+        // Patients
+        Route::get('/patients', \App\Livewire\VetPatients::class)->name('patients.index');
+    });
     Route::get('/admin/dashboard', DashboardOverview::class)->name('admin.dashboard');
     Route::get('/admin/pets', PetsIndex::class)->name('pets.index');
     Route::get('/admin/vet/create', VetsCreate::class)->name('admin.vets.create');

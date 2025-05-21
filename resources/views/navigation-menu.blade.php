@@ -20,6 +20,15 @@
                         <x-nav-link href="{{ route('vet.dashboard') }}" :active="request()->routeIs('vet.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+                        <x-nav-link href="{{ route('vet.appointments.index') }}" :active="request()->routeIs('vet.appointments.*')">
+                            {{ __('Appointments') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('vet.patients.index') }}" :active="request()->routeIs('vet.patients.*')">
+                            {{ __('My Patients') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => auth()->user()->veterinarianProfiles->first()->user_id ?? 0]) }}" :active="request()->routeIs('vet.appointments.calendar')">
+                            {{ __('Calendar') }}
+                        </x-nav-link>
                     @endif
                     @if (auth()->user()->role === 'admin')
                         <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
@@ -159,9 +168,36 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->role === 'admin')
+                <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
+                    {{ __('Pets') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
+                    {{ __('Vets') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.index')">
+                    {{ __('Clinics') }}
+                </x-responsive-nav-link>
+            @elseif (auth()->user()->role === 'vet')
+                <x-responsive-nav-link href="{{ route('vet.dashboard') }}" :active="request()->routeIs('vet.dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('vet.appointments.index') }}" :active="request()->routeIs('vet.appointments.index')">
+                    {{ __('Appointments') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('vet.patients.index') }}" :active="request()->routeIs('vet.patients.index')">
+                    {{ __('My Patients') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => auth()->user()->veterinarianProfiles->first()->id ?? 0]) }}" :active="request()->routeIs('vet.appointments.calendar')">
+                    {{ __('Calendar') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

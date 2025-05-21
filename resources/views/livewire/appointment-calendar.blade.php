@@ -121,12 +121,18 @@
                                                         </p>
                                                     </div>
                                                     <div class="ml-4 flex-shrink-0">
-                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
-                                                                        @if($appointment['status'] === 'completed') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
-                                                                        @elseif($appointment['status'] === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
-                                                                            @else bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400
-                                                                        @endif">
-                                                            {{ ucfirst($appointment['status']) }}
+                                                        @php
+                                                            $statusClasses = [
+                                                                'scheduled' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+                                                                'confirmed' => 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
+                                                                'completed' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                                                                'cancelled' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+                                                                'no_show' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
+                                                            ];
+                                                            $statusClass = $statusClasses[$appointment['status']] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+                                                        @endphp
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ $statusClass }}">
+                                                            {{ ucfirst(str_replace('_', ' ', $appointment['status'])) }}
                                                         </span>
                                                     </div>
                                                 </div>
