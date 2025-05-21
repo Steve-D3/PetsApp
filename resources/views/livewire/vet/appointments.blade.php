@@ -54,7 +54,7 @@
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date & Time</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Pet & Owner</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Notes</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                                     </tr>
@@ -64,10 +64,10 @@
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                    {{ $appointment->appointment_date->format('M d, Y') }}
+                                                    {{ $appointment->start_time->format('M d, Y') }}
                                                 </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                    {{ $appointment->appointment_date->format('h:i A') }}
+                                                    {{ $appointment->start_time->format('h:i A') }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
@@ -86,9 +86,9 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                                    {{ $appointment->type }}
-                                                </span>
+                                                <div class="text-sm text-gray-900 dark:text-gray-200 max-w-xs truncate" title="{{ $appointment->notes }}">
+                                                    {{ $appointment->notes ?: 'No notes' }}
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 @php

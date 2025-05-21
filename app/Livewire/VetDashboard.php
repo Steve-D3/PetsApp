@@ -77,7 +77,7 @@ class VetDashboard extends Component
             [
                 'icon' => 'calendar',
                 'title' => 'Schedule Appointment',
-                'route' => route('vet.appointments.calendar', ['veterinarian_profile_id' => $vetProfileId]),
+                'route' => route('vet.appointments.index'),
             ],
             [
                 'icon' => 'medical-record',

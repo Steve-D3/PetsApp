@@ -26,9 +26,6 @@
                         <x-nav-link href="{{ route('vet.patients.index') }}" :active="request()->routeIs('vet.patients.*')">
                             {{ __('My Patients') }}
                         </x-nav-link>
-                        <x-nav-link href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => auth()->user()->veterinarianProfiles->first()->user_id ?? 0]) }}" :active="request()->routeIs('vet.appointments.calendar')">
-                            {{ __('Calendar') }}
-                        </x-nav-link>
                     @endif
                     @if (auth()->user()->role === 'admin')
                         <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
