@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ auth()->user()->role === 'vet' ? route('vet.dashboard') : route('dashboard') }}">
+                    <a href="{{ auth()->user()->role === 'vet' ? route('vet.dashboard') : route('admin.dashboard') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (auth()->user()->role === 'admin')
-                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     @elseif (auth()->user()->role === 'vet')
@@ -28,16 +28,16 @@
                         </x-nav-link>
                     @endif
                     @if (auth()->user()->role === 'admin')
-                        <x-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
+                        <x-nav-link href="{{ route('admin.pets.index') }}" :active="request()->routeIs('admin.pets.*')">
                             {{ __('Pets') }}
                         </x-nav-link>
-                        <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
+                        <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')">
                             {{ __('Users') }}
                         </x-nav-link>
-                        <x-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
+                        <x-nav-link href="{{ route('admin.vets.index') }}" :active="request()->routeIs('admin.vets.*')">
                             {{ __('Vets') }}
                         </x-nav-link>
-                        <x-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.index')">
+                        <x-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.*')">
                             {{ __('Clinics') }}
                         </x-nav-link>
                     @endif
@@ -169,13 +169,13 @@
                 <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('pets.index') }}" :active="request()->routeIs('pets.index')">
+                <x-responsive-nav-link href="{{ route('admin.pets.index') }}" :active="request()->routeIs('admin.pets.*')">
                     {{ __('Pets') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
                     {{ __('Users') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('vets.index') }}" :active="request()->routeIs('vets.index')">
+                <x-responsive-nav-link href="{{ route('admin.vets.index') }}" :active="request()->routeIs('admin.vets.*')">
                     {{ __('Vets') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.index')">

@@ -4,7 +4,7 @@
 
     @if (session()->has('success'))
     <div x-data="{ show: true }" x-init="setTimeout(() => { show = false;
-            window.location.href = '{{ route('pets.index') }}'; }, 2000)" x-show="show"
+            window.location.href = '{{ route('admin.pets.index') }}'; }, 2000)" x-show="show"
         class="bg-green-100 text-green-800 p-3 rounded mb-4 transition-opacity duration-500">
         {{ session('success') }}
     </div>

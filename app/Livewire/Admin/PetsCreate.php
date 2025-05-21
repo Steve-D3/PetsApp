@@ -66,7 +66,7 @@ class PetsCreate extends Component
         $pet->save();
 
         session()->flash('message', 'Pet added successfully.');
-        return redirect()->route('pets.index');
+        return redirect()->route('admin.pets.index');
     }
 
     public function render()
