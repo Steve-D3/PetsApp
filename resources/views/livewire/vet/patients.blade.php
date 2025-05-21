@@ -5,7 +5,7 @@
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                     <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">My Patients</h2>
                     <div class="mt-4 md:mt-0">
-                        <a href="#" 
+                        <a href="#"
                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -26,18 +26,18 @@
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input 
-                                    id="search" 
-                                    type="text" 
-                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white sm:text-sm" 
+                                <input
+                                    id="search"
+                                    type="text"
+                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white sm:text-sm"
                                     placeholder="Search patients..."
                                     wire:model.live.debounce.300ms="search">
                             </div>
                         </div>
                         <div>
                             <label for="species" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Species</label>
-                            <select 
-                                id="species" 
+                            <select
+                                id="species"
                                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white sm:text-sm rounded-md"
                                 wire:model.live="speciesFilter">
                                 <option value="">All Species</option>
@@ -115,7 +115,7 @@
                                                             @if($pet->microchip_number)
                                                                 #{{ $pet->microchip_number }}
                                                             @else
-                                                                No ID
+                                                                No microchip
                                                             @endif
                                                         </div>
                                                     </div>
@@ -146,8 +146,8 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">View</a>
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">Records</a>
+                                                <a href="{{ route('admin.pets.show', $pet) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">View</a>
+                                                <a href="{{ route('medical-records.index', $pet) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">Records</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -164,15 +164,15 @@
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No patients found</h3>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                {{ $search || $speciesFilter || $statusFilter 
-                                    ? 'No patients match your current filters.' 
+                                {{ $search || $speciesFilter
+                                    ? 'No patients match your current filters.'
                                     : 'You have no patients yet.' }}
                             </p>
-                            @if($search || $speciesFilter || $statusFilter)
+                            @if($search || $speciesFilter)
                                 <div class="mt-6">
-                                    <button 
-                                        type="button" 
-                                        wire:click="$set('search', ''); $set('speciesFilter', ''); $set('statusFilter', '');"
+                                    <button
+                                        type="button"
+                                        wire:click="$set('search', ''); $set('speciesFilter', '');"
                                         class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                     >
                                         Clear filters

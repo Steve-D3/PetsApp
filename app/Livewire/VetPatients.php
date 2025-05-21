@@ -29,7 +29,7 @@ class VetPatients extends Component
 
     public function mount()
     {
-        $this->vetId = auth()->user()->veterinarianProfiles->first()->id ?? null;
+        $this->vetId = auth()->user()->veterinarianProfiles->first()->user_id ?? null;
     }
 
     public function updatingSearch()
@@ -64,25 +64,25 @@ class VetPatients extends Component
         $query = Pet::query()
             ->select([
                 'pets.*',
-                DB::raw('(SELECT COUNT(*) FROM appointments WHERE appointments.pet_id = pets.id AND appointments.veterinarian_profile_id = ' . (int)$this->vetId . ') as appointment_count'),
-                DB::raw('(SELECT MAX(appointment_date) FROM appointments WHERE appointments.pet_id = pets.id AND appointments.veterinarian_profile_id = ' . (int)$this->vetId . ') as last_visit')
+                DB::raw('(SELECT COUNT(*) FROM appointments WHERE appointments.pet_id = pets.id AND appointments.veterinarian_id = ' . (int) $this->vetId . ') as appointment_count'),
+                DB::raw('(SELECT MAX(start_time) FROM appointments WHERE appointments.pet_id = pets.id AND appointments.veterinarian_id = ' . (int) $this->vetId . ') as last_visit')
             ])
             ->with(['owner'])
-            ->whereHas('appointments', function($q) {
-                $q->where('veterinarian_profile_id', $this->vetId);
+            ->whereHas('appointments', function ($q) {
+                $q->where('veterinarian_id', $this->vetId);
             })
             ->distinct();
 
         // Apply search
         if ($this->search) {
             $searchTerm = '%' . $this->search . '%';
-            $query->where(function($q) use ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
                 $q->where('pets.name', 'like', $searchTerm)
-                  ->orWhere('pets.microchip_number', 'like', $searchTerm)
-                  ->orWhereHas('owner', function($q) use ($searchTerm) {
-                      $q->where('name', 'like', $searchTerm)
-                        ->orWhere('email', 'like', $searchTerm);
-                  });
+                    ->orWhere('pets.microchip_number', 'like', $searchTerm)
+                    ->orWhereHas('owner', function ($q) use ($searchTerm) {
+                        $q->where('name', 'like', $searchTerm)
+                            ->orWhere('email', 'like', $searchTerm);
+                    });
             });
         }
 
@@ -103,7 +103,7 @@ class VetPatients extends Component
         // Get unique species for filter
         $species = Pet::select('species')
             ->join('appointments', 'pets.id', '=', 'appointments.pet_id')
-            ->where('appointments.veterinarian_profile_id', $this->vetId)
+            ->where('appointments.veterinarian_id', $this->vetId)
             ->distinct()
             ->pluck('species')
             ->filter()
