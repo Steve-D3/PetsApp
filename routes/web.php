@@ -35,10 +35,15 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Shared dashboard for both roles
-    Route::get('/', DashboardOverview::class)
-        ->middleware('role:admin,vet')
-        ->name('dashboard');
+    // Redirect based on user role
+    Route::get('/', function () {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif (auth()->user()->role === 'vet') {
+            return redirect()->route('vet.dashboard');
+        }
+        return redirect()->route('login');
+    })->name('home');
 
     // Vet-specific routes
     Route::prefix('vet')

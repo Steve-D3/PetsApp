@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ auth()->user()->role === 'vet' ? route('vet.dashboard') : route('admin.dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -166,7 +166,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @if (auth()->user()->role === 'admin')
-                <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.pets.index') }}" :active="request()->routeIs('admin.pets.*')">
@@ -185,15 +185,17 @@
                 <x-responsive-nav-link href="{{ route('vet.dashboard') }}" :active="request()->routeIs('vet.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('vet.appointments.index') }}" :active="request()->routeIs('vet.appointments.index')">
+                <x-responsive-nav-link href="{{ route('vet.appointments.index') }}" :active="request()->routeIs('vet.appointments.*')">
                     {{ __('Appointments') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('vet.patients.index') }}" :active="request()->routeIs('vet.patients.index')">
+                <x-responsive-nav-link href="{{ route('vet.patients.index') }}" :active="request()->routeIs('vet.patients.*')">
                     {{ __('My Patients') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => auth()->user()->veterinarianProfiles->first()->id ?? 0]) }}" :active="request()->routeIs('vet.appointments.calendar')">
+                @if(auth()->user()->veterinarianProfiles->isNotEmpty())
+                <x-responsive-nav-link href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => auth()->user()->veterinarianProfiles->first()->id]) }}" :active="request()->routeIs('vet.appointments.calendar')">
                     {{ __('Calendar') }}
                 </x-responsive-nav-link>
+                @endif
             @endif
         </div>
 
