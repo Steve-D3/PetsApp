@@ -89,7 +89,10 @@ return [
      * ],
      * ```
      */
-    'servers' => null,
+    'servers' => [
+        'Live' => 'api',
+        'Prod' => 'https://petdashboard-app-sdkgp.ondigitalocean.app/api',
+    ],
 
     /**
      * Determines how Scramble stores the descriptions of enum cases.

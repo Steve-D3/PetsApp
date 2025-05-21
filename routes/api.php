@@ -9,12 +9,20 @@ use App\Http\Controllers\VaccinationController;
 use App\Http\Controllers\VaccineTypeController;
 use App\Http\Controllers\VetClinicController;
 use App\Http\Controllers\VeterinarianProfileController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+// User API routes
+Route::get('/user', [User::class, 'index']);
+Route::get('/user/{user}', [User::class, 'show']);
+Route::post('/user', [User::class, 'store']);
+Route::put('/user/{user}', [User::class, 'update']);
+Route::delete('/user/{user}', [User::class, 'destroy']);
 
 // Pets API routes
 Route::get('/pets', [PetController::class, 'index']);
