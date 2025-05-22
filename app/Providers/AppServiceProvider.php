@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
@@ -15,11 +17,19 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
+
+
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        Scramble::afterOpenApiGenerated(function ($openApi) {
+            $openApi->secure(
+                SecurityScheme::http('bearer')
+            );
+        });
+
         if ($this->app->environment('production') || $this->app->environment('staging')) {
             URL::forceScheme('https');
         }
