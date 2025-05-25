@@ -20,36 +20,41 @@ class AppointmentController extends Controller
      * Display a listing of the resource.
      */
     public function index(FilterAppointmentsRequest $request)
-{
-    // Start building the query for appointments
-    $query = Appointment::query();
+    {
+        // Start building the query for appointments
+        $query = Appointment::query();
 
-    // Filter by veterinarian (if provided)
-    if ($request->filled('veterinarian_id')) {
-        $query->where('veterinarian_id', $request->veterinarian_id);
+        // Filter by veterinarian (if provided)
+        if ($request->filled('veterinarian_id')) {
+            $query->where('veterinarian_id', $request->veterinarian_id);
+        }
+
+        // Filter by pet (if provided)
+        if ($request->filled('pet_id')) {
+            $query->where('pet_id', $request->pet_id);
+        }
+
+        // Filter by status (if provided)
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range (start and end date)
+        if ($request->filled('start_date')) {
+            $query->whereDate('start_time', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('start_time', '<=', $request->end_date);
+        }
+
+        // Apply pagination or return all results
+        $appointments = $query->with(['pet', 'veterinarian'])->get(); // Or use paginate() if you want pagination
+
+        return response()->json([
+            'data' => $appointments,
+        ]);
     }
-
-    // Filter by status (if provided)
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    // Filter by date range (start and end date)
-    if ($request->filled('start_date')) {
-        $query->whereDate('start_time', '>=', $request->start_date);
-    }
-
-    if ($request->filled('end_date')) {
-        $query->whereDate('start_time', '<=', $request->end_date);
-    }
-
-    // Apply pagination or return all results
-    $appointments = $query->with(['pet', 'veterinarian'])->get(); // Or use paginate() if you want pagination
-
-    return response()->json([
-        'data' => $appointments,
-    ]);
-}
 
 
     /**
@@ -108,34 +113,42 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'pet_id' => 'required|exists:pets,id',
-            'veterinarian_id' => ['required', 'exists:users,id', function ($attribute, $value, $fail) {
-                // Check if the user has the role 'vet'
-                $user = User::find($value);
+            'veterinarian_id' => [
+                'required',
+                'exists:users,id',
+                function ($attribute, $value, $fail) {
+                    // Check if the user has the role 'vet'
+                    $user = User::find($value);
 
-                if (!$user || $user->role !== 'vet') {
-                    $fail('The selected user is not a valid veterinarian.');
-                }
-            }],
-            'start_time' => ['required', 'date', function ($attribute, $value, $fail) {
-                try {
-                    $start = Carbon::parse($value);
-
-                    // Only allow times between 09:00–12:00 or 13:00–16:00
-                    $hour = $start->hour;
-                    $minute = $start->minute;
-
-                    $allowed =
-                        ($hour >= 9 && $hour < 12) ||
-                        ($hour >= 13 && $hour < 16) ||
-                        ($hour == 12 && $minute == 0); // Edge case if needed
-
-                    if (!$allowed) {
-                        $fail('Appointments must be scheduled between 09:00–12:00 or 13:00–16:00.');
+                    if (!$user || $user->role !== 'vet') {
+                        $fail('The selected user is not a valid veterinarian.');
                     }
-                } catch (\Exception $e) {
-                    $fail('The start time is not a valid datetime.');
                 }
-            }],
+            ],
+            'start_time' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    try {
+                        $start = Carbon::parse($value);
+
+                        // Only allow times between 09:00–12:00 or 13:00–16:00
+                        $hour = $start->hour;
+                        $minute = $start->minute;
+
+                        $allowed =
+                            ($hour >= 9 && $hour < 12) ||
+                            ($hour >= 13 && $hour < 16) ||
+                            ($hour == 12 && $minute == 0); // Edge case if needed
+
+                        if (!$allowed) {
+                            $fail('Appointments must be scheduled between 09:00–12:00 or 13:00–16:00.');
+                        }
+                    } catch (\Exception $e) {
+                        $fail('The start time is not a valid datetime.');
+                    }
+                }
+            ],
             'status' => 'nullable|string|in:pending,confirmed,cancelled',
             'notes' => 'nullable|string',
         ]);
@@ -183,7 +196,7 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        return response()->json($appointment);  
+        return response()->json($appointment);
     }
 
     /**
