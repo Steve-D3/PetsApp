@@ -23,6 +23,7 @@ class FilterAppointmentsRequest extends FormRequest
     {
         return [
             'veterinarian_id' => 'nullable|exists:users,id',  // Ensure it's a valid vet user
+            'pet_id' => 'nullable|exists:pets,id',
             'status' => 'nullable|in:pending,confirmed,cancelled,completed',
             'start_date' => 'nullable|date|before_or_equal:end_date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
