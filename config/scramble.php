@@ -106,8 +106,9 @@ return [
     'enum_cases_description_strategy' => 'description',
 
     'middleware' => [
+        \Illuminate\Http\Middleware\HandleCors::class,
         'web',
-        RestrictedDocsAccess::class,
+        // RestrictedDocsAccess::class,
     ],
 
     'extensions' => [],
