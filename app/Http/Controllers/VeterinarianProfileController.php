@@ -13,7 +13,7 @@ class VeterinarianProfileController extends Controller
      */
     public function index()
     {
-        $veterinarianProfiles = VeterinarianProfile::all()->with('user');
+        $veterinarianProfiles = VeterinarianProfile::all()->load(['user', 'clinic']);
         return response()->json($veterinarianProfiles);
     }
 
@@ -43,7 +43,7 @@ class VeterinarianProfileController extends Controller
      */
     public function show(VeterinarianProfile $veterinarianProfile)
     {
-        return response()->json($veterinarianProfile->load('user'));
+        return response()->json($veterinarianProfile->load(['user', 'clinic']));
     }
 
     /**
