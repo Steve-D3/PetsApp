@@ -36,7 +36,7 @@ class Appointment extends Model
 
     public function veterinarian()
     {
-        return $this->belongsTo(VeterinarianProfile::class, 'veterinarian_id', 'user_id')->with('clinic');
+        return $this->belongsTo(VeterinarianProfile::class, 'veterinarian_id', 'user_id')->with('clinic', 'user');
     }
 
     public function clinic()
@@ -44,7 +44,8 @@ class Appointment extends Model
         return $this->belongsTo(VetClinic::class, 'clinic_id');
     }
 
-    public function vaccinations() {
+    public function vaccinations()
+    {
         return $this->hasMany(Vaccination::class, 'pet_id', 'pet_id')->with('vaccinationType');
     }
 }
