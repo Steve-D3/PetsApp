@@ -51,23 +51,28 @@ class MedicalRecord extends Model
         'follow_up_required' => 'boolean',
     ];
 
-    public function pet(){
+    public function pet()
+    {
         return $this->belongsTo(Pet::class, 'pet_id');
     }
 
-    public function vet(){
+    public function vet()
+    {
         return $this->belongsTo(VeterinarianProfile::class, 'veterinarian_profile_id');
     }
 
-    public function appointment(){
+    public function appointment()
+    {
         return $this->belongsTo(Appointment::class, 'appointment_id');
     }
 
-    public function treatments(){
+    public function treatments()
+    {
         return $this->hasMany(Treatment::class, 'medical_record_id');
     }
 
-    public function vaccinations(){
-        return $this->hasMany(Vaccination::class, 'medical_record_id', 'id');
+    public function vaccinations()
+    {
+        return $this->hasMany(Vaccination::class, 'medical_record_id', 'id')->with(['vaccinationType' => 'vaccine_type_id']);
     }
 }
