@@ -73,6 +73,6 @@ class MedicalRecord extends Model
 
     public function vaccinations()
     {
-        return $this->hasMany(Vaccination::class, 'medical_record_id', 'id')->with(['vaccinationType' => 'vaccine_type_id']);
+        return $this->hasMany(Vaccination::class, 'medical_record_id', 'id')->with('vaccinationType', 'vaccine_type_id');
     }
 }
