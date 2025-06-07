@@ -55,6 +55,15 @@ Route::middleware([
             Route::get('/appointments/calendar/{veterinarian_profile_id}', AppointmentCalendar::class)
                 ->name('appointments.calendar');
             Route::get('/patients', \App\Livewire\VetPatients::class)->name('patients.index');
+
+
+            // Pets
+            Route::prefix('pets')->name('pets.')->group(function () {
+                Route::get('/', PetsIndex::class)->name('index');
+                Route::get('/create', PetsCreate::class)->name('create');
+                Route::get('/{pet}/edit', PetsEdit::class)->name('edit');
+                Route::get('/{pet}', PetShow::class)->name('show');
+            });
         });
 
     // Admin-specific routes
@@ -79,6 +88,7 @@ Route::middleware([
                 Route::get('/create', VetsCreate::class)->name('create');
                 Route::get('/{veterinarianProfile}', VetShow::class)->name('show');
                 Route::get('/{veterinarianProfile}/edit', VetsEdit::class)->name('edit');
+                Route::get('/{veterinarianProfile}/available-slots', [AppointmentController::class, 'availableSlots'])->name('available-slots');
             });
 
             // Users
