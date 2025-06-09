@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 use App\Livewire\Admin\AppointmentDetails;
 use App\Livewire\Admin\AppointmentEdit;
 use App\Livewire\Admin\ClinicShow;
@@ -23,13 +27,28 @@ use App\Livewire\Forms\AppointmentForm;
 use App\Livewire\Admin\MedicalRecordsIndex;
 use App\Livewire\VetDashboard;
 use App\Livewire\AppointmentCalendar;
-use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 
+// Email Verification Routes
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('home')->with('status', 'Email verified successfully!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('status', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// Protected routes that require email verification
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

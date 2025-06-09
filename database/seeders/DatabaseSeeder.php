@@ -43,37 +43,39 @@ class DatabaseSeeder extends Seeder
 
 
 
+        // Create regular users and pets
         User::factory(20)->create();
         Pet::factory(20)->create();
 
-        // Seed vet clinics before veterinarian profiles since profiles reference clinics
+        // 1. Seed vet clinics first (required for veterinarian profiles)
         $this->call(VetClinicSeeder::class);
 
-
-        VeterinarianProfile::factory()->create([
+        // 2. Create veterinarian profiles
+        $testVet = VeterinarianProfile::factory()->create([
             'user_id' => 2,
             "license_number" => "123456",
             "specialty" => "General Practice",
             "biography" => "I am a veterinarian with 10 years of experience.",
             "phone_number" => "123-456-7890",
             "vet_clinic_id" => 1,
-            "off_days" => [
-                "Monday"
-            ]
+            "off_days" => json_encode(["Monday"]) // Ensure off_days is properly encoded
         ]);
 
-
+        // Create additional veterinarian profiles
         $this->call(VeterinarianProfileSeeder::class);
 
+        // 3. Seed treatment types (needed for treatments)
+        $this->call(TreatmentTypesSeeder::class);
+        
+        // 4. Seed vaccine types (needed for vaccinations)
+        $this->call(VaccineTypeSeeder::class);
+        
+        // 5. Create appointments and medical records
         Appointment::factory()->count(30)->create();
         MedicalRecord::factory()->count(30)->create();
 
-        // Treatment types should be seeded before treatments
-        $this->call(TreatmentTypesSeeder::class);
+        // 6. Create treatments and vaccinations
         $this->call(TreatmentSeeder::class);
-
-        // Vaccine types should be seeded before vaccinations
-        $this->call(VaccineTypeSeeder::class);
         $this->call(VaccinationSeeder::class);
     }
 }

@@ -42,6 +42,17 @@ class VetDashboard extends Component
             'total_vaccinations' => 0,
             'unique_vaccines' => 0,
         ];
+        $this->appointmentStats = [
+            'today' => 0,
+            'this_week' => 0,
+            'pending' => 0,
+        ];
+        $this->patientStats = [
+            'new_this_month' => 0,
+            'returning' => 0,
+            'total' => 0,
+        ];
+        $this->pendingTasks = [];  // Initialize as empty array
         $this->quickActions = collect([]);
     }
 
@@ -64,13 +75,34 @@ class VetDashboard extends Component
         $this->quickActions = collect([]);
 
         // Check if user has a veterinarian profile
-        if (!$user->veterinarianProfiles) {
+        if (!$user->veterinarianProfiles || $user->veterinarianProfiles->isEmpty()) {
+            // If user doesn't have a vet profile, we'll use their user ID
+            // and set a flag to show a warning
+            $this->vetId = $user->id;
+            session()->flash('warning', 'No veterinarian profile found. Please complete your profile to access all features.');
+            
+            // Initialize empty stats for users without a vet profile
+            $this->appointmentStats = [
+                'today' => 0,
+                'this_week' => 0,
+                'pending' => 0,
+            ];
+            $this->patientStats = [
+                'new_this_month' => 0,
+                'returning' => 0,
+                'total' => 0,
+            ];
+            $this->vaccineStats = [
+                'total_vaccinations' => 0,
+                'unique_vaccines' => 0,
+                'due_soon' => 0,
+            ];
+            $this->pendingTasks = [];  // Ensure pendingTasks is always an array
             return;
         }
 
         $vetProfile = $user->veterinarianProfiles->first();
-        $vetProfileId = $vetProfile->user_id;
-        $this->vetId = $vetProfileId;
+        $this->vetId = $vetProfile->user_id;
 
         // Quick Actions
         $this->quickActions = collect([
@@ -97,14 +129,14 @@ class VetDashboard extends Component
         ]);
 
         // Upcoming Appointments
-        $this->upcomingAppointments = Appointment::where('veterinarian_id', $user->veterinarianProfiles->first()->user_id)
+        $this->upcomingAppointments = Appointment::where('veterinarian_id', $this->vetId)
             ->with('pet')
             ->orderBy('start_time', 'asc')
             ->get();
 
         // Load available pets for filtering
-        $this->availablePets = \App\Models\Pet::whereHas('appointments', function ($query) use ($vetProfileId) {
-            $query->where('veterinarian_id', $vetProfileId);
+        $this->availablePets = \App\Models\Pet::whereHas('appointments', function ($query) {
+            $query->where('veterinarian_id', $this->vetId);
         })->get(['id', 'name']);
 
         // Load recent medical records
@@ -112,39 +144,38 @@ class VetDashboard extends Component
 
         // Clinic Stats
         $this->clinicStats = [
-            'total_appointments' => Appointment::where('veterinarian_id', $vetProfileId)->count(),
-            'total_patients' => Appointment::where('veterinarian_id', $vetProfileId)->distinct('pet_id')->count(),
-            'today_appointments' => Appointment::where('veterinarian_id', $vetProfileId)
+            'total_appointments' => Appointment::where('veterinarian_id', $this->vetId)->count(),
+            'total_patients' => Appointment::where('veterinarian_id', $this->vetId)->distinct('pet_id')->count(),
+            'today_appointments' => Appointment::where('veterinarian_id', $this->vetId)
                 ->whereDate('start_time', today())
                 ->count(),
         ];
 
-        // Vaccine Stats
         // Appointment Statistics
         $this->appointmentStats = [
-            'today' => Appointment::where('veterinarian_id', $vetProfileId)
+            'today' => Appointment::where('veterinarian_id', $this->vetId)
                 ->whereDate('start_time', today())
                 ->count(),
-            'this_week' => Appointment::where('veterinarian_id', $vetProfileId)
+            'this_week' => Appointment::where('veterinarian_id', $this->vetId)
                 ->whereBetween('start_time', [now()->startOfWeek(), now()->endOfWeek()])
                 ->count(),
-            'pending' => Appointment::where('veterinarian_id', $vetProfileId)
+            'pending' => Appointment::where('veterinarian_id', $this->vetId)
                 ->where('status', 'pending')
                 ->count(),
         ];
 
         // Patient Statistics
         $newPatientCutoff = now()->subMonth();
-        $allPatientIds = Appointment::where('veterinarian_id', $vetProfileId)
+        $allPatientIds = Appointment::where('veterinarian_id', $this->vetId)
             ->pluck('pet_id')
             ->unique();
 
         $this->patientStats = [
-            'new_this_month' => Appointment::where('veterinarian_id', $vetProfileId)
+            'new_this_month' => Appointment::where('veterinarian_id', $this->vetId)
                 ->where('created_at', '>=', now()->startOfMonth())
                 ->distinct('pet_id')
                 ->count('pet_id'),
-            'returning' => $allPatientIds->count() - Appointment::where('veterinarian_id', $vetProfileId)
+            'returning' => $allPatientIds->count() - Appointment::where('veterinarian_id', $this->vetId)
                 ->where('created_at', '>=', $newPatientCutoff)
                 ->distinct('pet_id')
                 ->count('pet_id'),
@@ -153,7 +184,7 @@ class VetDashboard extends Component
 
         // Vaccine Statistics
         $this->vaccineStats = [
-            'total_vaccinations' => MedicalRecord::where('veterinarian_profile_id', $vetProfileId)
+            'total_vaccinations' => MedicalRecord::where('veterinarian_profile_id', $this->vetId)
                 ->whereHas('vaccinations')
                 ->count(),
             'unique_vaccines' => 0, // TODO: Implement unique vaccines count
@@ -177,10 +208,8 @@ class VetDashboard extends Component
 
     public function loadMedicalRecords()
     {
-        $vetProfileId = auth()->user()->veterinarianProfiles->first()->user_id;
-
         $query = MedicalRecord::with(['pet', 'vet.user'])
-            ->where('veterinarian_profile_id', $vetProfileId)
+            ->where('veterinarian_profile_id', $this->vetId)
             ->orderBy('record_date', 'desc');
 
         // Apply filters

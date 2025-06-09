@@ -14,6 +14,7 @@ class MedicalRecord extends Model
         'pet_id',
         'veterinarian_profile_id',
         'appointment_id',
+        'follow_up_appointment_id',
         'record_date',
         'chief_complaint',
         'history',
@@ -74,5 +75,13 @@ class MedicalRecord extends Model
     public function vaccinations()
     {
         return $this->hasMany(Vaccination::class, 'medical_record_id', 'id')->with('vaccinationType');
+    }
+
+    /**
+     * Get the follow-up appointment associated with the medical record.
+     */
+    public function followUpAppointment()
+    {
+        return $this->belongsTo(Appointment::class, 'follow_up_appointment_id');
     }
 }
