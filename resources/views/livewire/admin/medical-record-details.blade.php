@@ -105,7 +105,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="text-sm text-gray-600">
-                                                    {{ $treatment->treatmentType->category }}
+                                                    {{ $treatment->treatmentType?->category ?? 'N/A' }}
                                                 </div>
                                             </div>
                                         @endforeach

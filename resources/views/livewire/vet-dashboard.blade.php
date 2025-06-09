@@ -37,53 +37,6 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Quick Actions -->
-        @if(isset($quickActions) && $quickActions->isNotEmpty())
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                @foreach($quickActions as $action)
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-{{ $action['icon'] === 'calendar' ? 'blue' : ($action['icon'] === 'medical-record' ? 'green' : ($action['icon'] === 'vaccine' ? 'purple' : 'orange')) }}-500"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    @if($action['icon'] === 'calendar')
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    @elseif($action['icon'] === 'medical-record')
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    @elseif($action['icon'] === 'vaccine')
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    @else
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    @endif
-                                </svg>
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                    {{ $action['title'] }}
-                                </div>
-                                <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                    Quick access
-                                </div>
-                            </div>
-                        </div>
-                        <a href="{{ $action['route'] }}"
-                            class="mt-4 block text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium text-center">
-                            {{ $action['title'] }}
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        @else
-            <div class="text-center py-6 text-gray-500 dark:text-gray-400">
-                No quick actions available
-            </div>
-        @endif
-
-
 
         <!-- Enhanced Statistics Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

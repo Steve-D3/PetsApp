@@ -589,7 +589,7 @@
                         <x-label for="chief_complaint" value="Chief Complaint *" />
                         <x-input id="chief_complaint" class="block mt-1 w-full" type="text"
                             wire:model.live="chief_complaint" required />
-                        @error('chief_complaint') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('chief_complaint')) <span class="text-red-500 text-xs">{{ $errors->first('chief_complaint') }}</span> @endif
                     </div>
 
                     <!-- History -->
@@ -598,7 +598,7 @@
                         <textarea id="history"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             rows="3" wire:model.live="history"></textarea>
-                        @error('history') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('history')) <span class="text-red-500 text-xs">{{ $errors->first('history') }}</span> @endif
                     </div>
 
                     <!-- Physical Examination -->
@@ -607,7 +607,7 @@
                         <textarea id="physical_examination"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             rows="3" wire:model.live="physical_examination"></textarea>
-                        @error('physical_examination') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('physical_examination')) <span class="text-red-500 text-xs">{{ $errors->first('physical_examination') }}</span> @endif
                     </div>
 
                     <!-- Diagnosis -->
@@ -615,7 +615,7 @@
                         <x-label for="diagnosis" value="Diagnosis *" />
                         <x-input id="diagnosis" class="block mt-1 w-full" type="text" wire:model.live="diagnosis"
                             required />
-                        @error('diagnosis') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('diagnosis')) <span class="text-red-500 text-xs">{{ $errors->first('diagnosis') }}</span> @endif
                     </div>
 
                     <!-- Treatment Plan -->
@@ -624,7 +624,7 @@
                         <textarea id="treatment_plan"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             rows="3" wire:model.live="treatment_plan"></textarea>
-                        @error('treatment_plan') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('treatment_plan')) <span class="text-red-500 text-xs">{{ $errors->first('treatment_plan') }}</span> @endif
                     </div>
 
                     <!-- Medications -->
@@ -635,7 +635,7 @@
                             rows="2" wire:model.live="medications"></textarea>
                         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">List all prescribed medications, dosages,
                             and instructions</p>
-                        @error('medications') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('medications')) <span class="text-red-500 text-xs">{{ $errors->first('medications') }}</span> @endif
                     </div>
 
                     <!-- Notes -->
@@ -644,7 +644,7 @@
                         <textarea id="notes"
                             class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             rows="2" wire:model.live="notes"></textarea>
-                        @error('notes') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        @if($errors->has('notes')) <span class="text-red-500 text-xs">{{ $errors->first('notes') }}</span> @endif
                     </div>
 
                     <!-- Vitals Section -->
@@ -656,7 +656,7 @@
                                 <x-label for="weight" value="Weight (kg)" />
                                 <x-input id="weight" class="block mt-1 w-full" type="number" step="0.1"
                                     wire:model.live="weight" />
-                                @error('weight') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                @if($errors->has('weight')) <span class="text-red-500 text-xs">{{ $errors->first('weight') }}</span> @endif
                             </div>
 
                             <!-- Temperature -->
@@ -664,7 +664,7 @@
                                 <x-label for="temperature" value="Temperature (°C)" />
                                 <x-input id="temperature" class="block mt-1 w-full" type="number" step="0.1"
                                     wire:model.live="temperature" />
-                                @error('temperature') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                @if($errors->has('temperature')) <span class="text-red-500 text-xs">{{ $errors->first('temperature') }}</span> @endif
                             </div>
 
                             <!-- Heart Rate -->
@@ -672,7 +672,7 @@
                                 <x-label for="heart_rate" value="Heart Rate (bpm)" />
                                 <x-input id="heart_rate" class="block mt-1 w-full" type="number"
                                     wire:model.live="heart_rate" />
-                                @error('heart_rate') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                @if($errors->has('heart_rate')) <span class="text-red-500 text-xs">{{ $errors->first('heart_rate') }}</span> @endif
                             </div>
 
                             <!-- Respiratory Rate -->
@@ -680,8 +680,7 @@
                                 <x-label for="respiratory_rate" value="Respiratory Rate (bpm)" />
                                 <x-input id="respiratory_rate" class="block mt-1 w-full" type="number"
                                     wire:model.live="respiratory_rate" />
-                                @error('respiratory_rate') <span class="text-red-500 text-xs">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('respiratory_rate')) <span class="text-red-500 text-xs">{{ $errors->first('respiratory_rate') }}</span> @endif
                             </div>
                         </div>
                     </div>
@@ -698,9 +697,9 @@
                                 class="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Schedule Follow-up
                             </label>
-                            @error('follow_up_required')
-                                <span class="text-red-500 text-xs ml-2">{{ $message }}</span>
-                            @enderror
+                            @if($errors->has('follow_up_required'))
+                                <span class="text-red-500 text-xs ml-2">{{ $errors->first('follow_up_required') }}</span>
+                            @endif
                         </div>
 
                         @if($follow_up_required)
@@ -716,9 +715,9 @@
                                         min="{{ now()->format('Y-m-d') }}"
                                         required
                                     />
-                                    @error('selectedDate')
-                                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                                    @enderror
+                                    @if($errors->has('selectedDate'))
+                                        <span class="text-red-500 text-xs">{{ $errors->first('selectedDate') }}</span>
+                                    @endif
                                 </div>
 
                                 <!-- Debug Info (temporary) -->
@@ -747,9 +746,9 @@
                                                 </button>
                                             @endforeach
                                         </div>
-                                        @error('selectedTime')
-                                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                                        @enderror
+                                        @if($errors->has('selectedTime'))
+                                            <span class="text-red-500 text-xs">{{ $errors->first('selectedTime') }}</span>
+                                        @endif
                                     </div>
                                 @elseif($selectedDate && $showTimeSlots)
                                     <div class="text-sm text-gray-500 dark:text-gray-400">
@@ -786,29 +785,118 @@
     <!-- Treatment Form Modal -->
     @if($showTreatmentForm)
         <x-modal wire:model.live="showTreatmentForm">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Add New Treatment</h3>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Add a new treatment for {{ $appointment->pet->name }}
+                </p>
+            </div>
             <form wire:submit.prevent="createTreatment">
-                <div class="space-y-4">
+                <div class="px-6 py-4 space-y-4 max-h-[calc(100vh-14rem)] overflow-y-auto">
+                    <!-- Treatment Type -->
                     <div>
-                        <x-label for="treatment_type_id" value="Treatment Type" />
+                        <x-label for="treatment_type_id" value="Treatment Type *" />
                         <select id="treatment_type_id"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            wire:model.live="treatment_type_id">
-                            <option value="">Select Treatment Type</option>
-                            @foreach($treatment_types as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                wire:model.live="treatment_type_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm">
+                            <option value="">Select a treatment type</option>
+                            @foreach($treatmentTypes as $type)
+                                <option value="{{ $type->id }}">{{ $type->name }} ({{ $type->category }})</option>
                             @endforeach
                         </select>
+                        @if($errors->has('treatment_type_id')) <span class="text-red-500 text-xs">{{ $errors->first('treatment_type_id') }}</span> @endif
                     </div>
+
+                    <!-- Quantity and Unit -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <x-label for="quantity" value="Quantity *" />
+                            <x-input id="quantity"
+                                    type="number"
+                                    step="0.01"
+                                    min="0.1"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="quantity"
+                                    required />
+                            @if($errors->has('quantity')) <span class="text-red-500 text-xs">{{ $errors->first('quantity') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="unit" value="Unit *" />
+                            <x-input id="unit"
+                                    type="text"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="unit"
+                                    required />
+                            @if($errors->has('unit')) <span class="text-red-500 text-xs">{{ $errors->first('unit') }}</span> @endif
+                        </div>
+                    </div>
+
+                    <!-- Cost -->
+                    <div>
+                        <x-label for="cost" value="Cost ({{ config('app.currency', 'USD') }}) *" />
+                        <x-input id="cost"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                class="block mt-1 w-full"
+                                wire:model.live="cost"
+                                required />
+                        @if($errors->has('cost')) <span class="text-red-500 text-xs">{{ $errors->first('cost') }}</span> @endif
+                    </div>
+
+                    <!-- Administered Details -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <x-label for="administered_at" value="Administered At" />
+                            <x-input id="administered_at"
+                                    type="datetime-local"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="administered_at" />
+                            @if($errors->has('administered_at')) <span class="text-red-500 text-xs">{{ $errors->first('administered_at') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="administered_by" value="Administered By" />
+                            <x-input id="administered_by"
+                                    type="text"
+                                    class="block mt-1 w-full bg-gray-100 dark:bg-gray-700 cursor-not-allowed"
+                                    wire:model.live="administered_by"
+                                    readonly />
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">This will be recorded as administered by you</p>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label class="inline-flex items-center">
+                            <input type="checkbox"
+                                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                                   wire:model.live="completed">
+                            <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Mark as completed</span>
+                        </label>
+                    </div>
+
+                    <!-- Notes -->
                     <div>
                         <x-label for="notes" value="Notes" />
                         <textarea id="notes"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            rows="3" wire:model.live="notes"></textarea>
+                                 rows="3"
+                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm"
+                                 wire:model.live="notes"></textarea>
+                        @if($errors->has('notes')) <span class="text-red-500 text-xs">{{ $errors->first('notes') }}</span> @endif
                     </div>
                 </div>
-                <div class="mt-4 flex justify-end">
-                    <x-button type="submit" class="bg-green-600 hover:bg-green-700 text-white">
-                        Add Treatment
+
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 text-right">
+                    <x-secondary-button type="button"
+                                      class="mr-2"
+                                      wire:click="$set('showTreatmentForm', false)"
+                                      wire:loading.attr="disabled">
+                        Cancel
+                    </x-secondary-button>
+                    <x-button type="submit"
+                             wire:loading.attr="disabled">
+                        <span wire:loading.remove>Add Treatment</span>
+                        <span wire:loading>Adding...</span>
                     </x-button>
                 </div>
             </form>
@@ -818,27 +906,220 @@
     <!-- Vaccine Form Modal -->
     @if($showVaccineForm)
         <x-modal wire:model.live="showVaccineForm">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Add New Vaccination</h3>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Record a new vaccination for {{ $appointment->pet->name }}
+                </p>
+            </div>
             <form wire:submit.prevent="createVaccine">
-                <div class="space-y-4">
+                <div class="px-6 py-4 space-y-4 max-h-[calc(100vh-14rem)] overflow-y-auto">
+                    <!-- Vaccine Type -->
                     <div>
-                        <x-label for="vaccine_type_id" value="Vaccine Type" />
+                        <x-label for="vaccine_type_id" value="Vaccine Type *" />
                         <select id="vaccine_type_id"
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            wire:model.live="vaccine_type_id">
-                            <option value="">Select Vaccine Type</option>
+                                wire:model.live="vaccine_type_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm">
+                            <option value="">Select a vaccine type</option>
                             @foreach($vaccine_types as $type)
-                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                <option value="{{ $type->id }}">{{ $type->name }} ({{ $type->category ?? 'General' }})</option>
                             @endforeach
                         </select>
+                        @if($errors->has('vaccine_type_id')) <span class="text-red-500 text-xs">{{ $errors->first('vaccine_type_id') }}</span> @endif
                     </div>
+
+                    <!-- Manufacturer -->
                     <div>
-                        <x-label for="manufacturer" value="Manufacturer" />
-                        <x-input id="manufacturer" class="block mt-1 w-full" type="text" wire:model.live="manufacturer" />
+                        <x-label for="manufacturer" value="Manufacturer *" />
+                        <x-input id="manufacturer"
+                                type="text"
+                                class="block mt-1 w-full"
+                                wire:model.live="manufacturer"
+                                required />
+                        @if($errors->has('manufacturer')) <span class="text-red-500 text-xs">{{ $errors->first('manufacturer') }}</span> @endif
+                    </div>
+
+                    <!-- Batch and Serial Numbers -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <x-label for="batch_number" value="Batch Number" />
+                            <x-input id="batch_number"
+                                    type="text"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="batch_number" />
+                            @if($errors->has('batch_number')) <span class="text-red-500 text-xs">{{ $errors->first('batch_number') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="serial_number" value="Serial Number" />
+                            <x-input id="serial_number"
+                                    type="text"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="serial_number" />
+                            @if($errors->has('serial_number')) <span class="text-red-500 text-xs">{{ $errors->first('serial_number') }}</span> @endif
+                        </div>
+                    </div>
+
+                    <!-- Dates -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <x-label for="administration_date" value="Administered On *" />
+                            <x-input id="administration_date"
+                                    type="datetime-local"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="administration_date"
+                                    required />
+                            @if($errors->has('administration_date')) <span class="text-red-500 text-xs">{{ $errors->first('administration_date') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="expiration_date" value="Expiration Date *" />
+                            <x-input id="expiration_date"
+                                    type="date"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="expiration_date"
+                                    required />
+                            @if($errors->has('expiration_date')) <span class="text-red-500 text-xs">{{ $errors->first('expiration_date') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="next_due_date" value="Next Due Date *" />
+                            <x-input id="next_due_date"
+                                    type="date"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="next_due_date"
+                                    required />
+                            @if($errors->has('next_due_date')) <span class="text-red-500 text-xs">{{ $errors->first('next_due_date') }}</span> @endif
+                        </div>
+                    </div>
+
+                    <!-- Administered By -->
+                    <div>
+                        <x-label for="administered_by_display" value="Administered By *" />
+                        <x-input id="administered_by_display"
+                                type="text"
+                                class="block mt-1 w-full bg-gray-100 dark:bg-gray-700 cursor-not-allowed"
+                                value="{{ auth()->user()->name }}"
+                                readonly />
+                        <input type="hidden" name="vaccine_administered_by" wire:model="vaccine_administered_by" value="{{ auth()->id() }}">
+                        @if($errors->has('vaccine_administered_by')) <span class="text-red-500 text-xs">{{ $errors->first('vaccine_administered_by') }}</span> @endif
+                    </div>
+
+                    <!-- Administration Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <x-label for="administration_site" value="Administration Site" />
+                            <x-input id="administration_site"
+                                    type="text"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="administration_site" />
+                            @if($errors->has('administration_site')) <span class="text-red-500 text-xs">{{ $errors->first('administration_site') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="administration_route" value="Administration Route" />
+                            <x-input id="administration_route"
+                                    type="text"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="administration_route" />
+                            @if($errors->has('administration_route')) <span class="text-red-500 text-xs">{{ $errors->first('administration_route') }}</span> @endif
+                        </div>
+                        <div class="flex items-end">
+                            <label class="inline-flex items-center mt-1">
+                                <input type="checkbox"
+                                       class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                                       wire:model.live="is_booster">
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-300">Is Booster</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Dose and Cost -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <x-label for="dose" value="Dose" />
+                            <x-input id="dose"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="dose" />
+                            @if($errors->has('dose')) <span class="text-red-500 text-xs">{{ $errors->first('dose') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="dose_unit" value="Unit" />
+                            <x-input id="dose_unit"
+                                    type="text"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="dose_unit" />
+                            @if($errors->has('dose_unit')) <span class="text-red-500 text-xs">{{ $errors->first('dose_unit') }}</span> @endif
+                        </div>
+                        <div>
+                            <x-label for="vaccine_cost" :value="'Cost (' . config('app.currency', 'USD') . ')'" />
+                            <x-input id="vaccine_cost"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    class="block mt-1 w-full"
+                                    wire:model.live="vaccine_cost" />
+                            @if($errors->has('vaccine_cost')) <span class="text-red-500 text-xs">{{ $errors->first('vaccine_cost') }}</span> @endif
+                        </div>
+                    </div>
+
+                    <!-- Certification Number -->
+                    <div>
+                        <x-label for="certification_number" value="Certification Number" />
+                        <x-input id="certification_number"
+                                type="text"
+                                class="block mt-1 w-full"
+                                wire:model.live="certification_number" />
+                        @if($errors->has('certification_number')) <span class="text-red-500 text-xs">{{ $errors->first('certification_number') }}</span> @endif
+                    </div>
+
+                    <!-- Reaction -->
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                        <div class="flex items-center mb-4">
+                            <input type="checkbox"
+                                   id="reaction_observed"
+                                   class="rounded border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-offset-0 focus:ring-red-200 focus:ring-opacity-50"
+                                   wire:model.live="reaction_observed">
+                            <label for="reaction_observed" class="ml-2 block text-sm font-medium text-red-600 dark:text-red-400">
+                                Adverse Reaction Observed
+                            </label>
+                        </div>
+
+                        @if($reaction_observed)
+                            <div class="mt-2">
+                                <x-label for="reaction_details" value="Reaction Details *" />
+                                <textarea id="reaction_details"
+                                          rows="2"
+                                          class="mt-1 block w-full rounded-md border-red-300 shadow-sm focus:border-red-500 focus:ring-red-500 dark:border-red-600 dark:bg-gray-700 dark:text-white sm:text-sm"
+                                          wire:model.live="reaction_details"
+                                          required></textarea>
+                                @if($errors->has('reaction_details')) <span class="text-red-500 text-xs">{{ $errors->first('reaction_details') }}</span> @endif
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Notes -->
+                    <div>
+                        <x-label for="vaccine_notes" value="Notes" />
+                        <textarea id="vaccine_notes"
+                                  rows="3"
+                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm"
+                                  wire:model.live="vaccine_notes"></textarea>
+                        @if($errors->has('vaccine_notes')) <span class="text-red-500 text-xs">{{ $errors->first('vaccine_notes') }}</span> @endif
                     </div>
                 </div>
-                <div class="mt-4 flex justify-end">
-                    <x-button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white">
-                        Add Vaccine
+
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 text-right">
+                    <x-secondary-button type="button"
+                                      class="mr-2"
+                                      wire:click="$set('showVaccineForm', false)"
+                                      wire:loading.attr="disabled">
+                        Cancel
+                    </x-secondary-button>
+                    <x-button type="submit"
+                             wire:loading.attr="disabled"
+                             class="bg-purple-600 hover:bg-purple-700 focus:ring-purple-500">
+                        <span wire:loading.remove>Add Vaccination</span>
+                        <span wire:loading>Adding...</span>
                     </x-button>
                 </div>
             </form>
@@ -1009,7 +1290,7 @@
                                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 <span class="ml-1 text-sm text-gray-700 dark:text-gray-300">
-                                                    {{ $medicalRecord->follow_up_date->format('F j, Y') }}
+                                                    {{ $medicalRecord->follow_up_date->format('Y-m-d') }}
                                                 </span>
                                             </div>
                                         @endif
@@ -1113,82 +1394,82 @@
                             return $t;
                         });
                     })->sortByDesc('record_date') as $treatment)
-                                <div class="p-6 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150">
-                                    <div class="flex flex-col sm:flex-row justify-between gap-4">
-                                        <div class="flex-1">
-                                            <div class="flex items-center justify-between">
-                                                <h3 class="text-base font-medium text-gray-900 dark:text-white">
-                                                    {{ $treatment->name ?? 'Unknown Treatment' }}</h3>
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400">
-                                                    {{ $treatment->record_date->format('M d, Y') }}
-                                                </span>
-                                            </div>
+                                                            <div class="p-6 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150">
+                                                                <div class="flex flex-col sm:flex-row justify-between gap-4">
+                                                                    <div class="flex-1">
+                                                                        <div class="flex items-center justify-between">
+                                                                            <h3 class="text-base font-medium text-gray-900 dark:text-white">
+                                                                                {{ $treatment->name ?? 'Unknown Treatment' }}</h3>
+                                                                            <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400">
+                                                                                {{ $treatment->record_date->format('M d, Y') }}
+                                                                            </span>
+                                                                        </div>
 
-                                            @if($treatment->description)
-                                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ $treatment->description }}</p>
-                                            @endif
+                                                                        @if($treatment->description)
+                                                                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ $treatment->description }}</p>
+                                                                        @endif
 
-                                            <div class="mt-3 grid grid-cols-2 gap-4 text-sm">
-                                                <div>
-                                                    <p class="text-gray-500 dark:text-gray-400">Category</p>
-                                                    <p class="font-medium text-gray-900 dark:text-white">{{ $treatment->category ?? 'N/A' }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p class="text-gray-500 dark:text-gray-400">Quantity</p>
-                                                    <p class="font-medium text-gray-900 dark:text-white">
-                                                        {{ $treatment->quantity }} {{ $treatment->unit }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p class="text-gray-500 dark:text-gray-400">Cost</p>
-                                                    <p class="font-medium text-gray-900 dark:text-white">
-                                                        ${{ number_format($treatment->cost, 2) }}
-                                                    </p>
-                                                </div>
-                                                @if($treatment->administered_by)
-                                                    <div>
-                                                        <p class="text-gray-500 dark:text-gray-400">Administered By</p>
-                                                        <p class="font-medium text-gray-900 dark:text-white">{{ $treatment->administered_by }}
-                                                        </p>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="mt-4 sm:mt-0 sm:ml-4">
-                                            <div class="flex flex-col items-end">
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $treatment->completed ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' }}">
-                                                    {{ $treatment->completed ? 'Completed' : 'Pending' }}
-                                                </span>
-                                                @if($treatment->administered_at)
-                                                    <div class="mt-2 text-right">
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">Administered</p>
-                                                        <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                                            {{ $treatment->administered_at->format('M d, Y') }}
-                                                            <span class="text-xs text-gray-500 dark:text-gray-400">
-                                                                {{ $treatment->administered_at->format('h:i A') }}
-                                                            </span>
-                                                        </p>
-                                                        @if($treatment->administered_by)
-                                                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                                                by {{ $treatment->administered_by }}
-                                                            </p>
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                        <div class="mt-3 grid grid-cols-2 gap-4 text-sm">
+                                                                            <div>
+                                                                                <p class="text-gray-500 dark:text-gray-400">Category</p>
+                                                                                <p class="font-medium text-gray-900 dark:text-white">{{ $treatment->category ?? 'N/A' }}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p class="text-gray-500 dark:text-gray-400">Quantity</p>
+                                                                                <p class="font-medium text-gray-900 dark:text-white">
+                                                                                    {{ $treatment->quantity }} {{ $treatment->unit }}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p class="text-gray-500 dark:text-gray-400">Cost</p>
+                                                                                <p class="font-medium text-gray-900 dark:text-white">
+                                                                                    ${{ number_format($treatment->cost, 2) }}
+                                                                                </p>
+                                                                            </div>
+                                                                            @if($treatment->administered_by)
+                                                                                <div>
+                                                                                    <p class="text-gray-500 dark:text-gray-400">Administered By</p>
+                                                                                    <p class="font-medium text-gray-900 dark:text-white">{{ $treatment->administered_by }}
+                                                                                    </p>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-4 sm:mt-0 sm:ml-4">
+                                                                        <div class="flex flex-col items-end">
+                                                                            <span
+                                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $treatment->completed ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' }}">
+                                                                                {{ $treatment->completed ? 'Completed' : 'Pending' }}
+                                                                            </span>
+                                                                            @if($treatment->administered_at)
+                                                                                <div class="mt-2 text-right">
+                                                                                    <p class="text-xs text-gray-500 dark:text-gray-400">Administered</p>
+                                                                                    <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                                                                        {{ $treatment->administered_at->format('M d, Y') }}
+                                                                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                                                            {{ $treatment->administered_at->format('h:i A') }}
+                                                                                        </span>
+                                                                                    </p>
+                                                                                    @if($treatment->administered_by)
+                                                                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                                                            by {{ $treatment->administered_by }}
+                                                                                        </p>
+                                                                                    @endif
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
-                                    @if($treatment->notes)
-                                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Notes</p>
-                                            <p class="text-sm text-gray-700 dark:text-gray-300">{{ $treatment->notes }}</p>
-                                        </div>
-                                    @endif
-                                </div>
+                                                                @if($treatment->notes)
+                                                                    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                                                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Notes</p>
+                                                                        <p class="text-sm text-gray-700 dark:text-gray-300">{{ $treatment->notes }}</p>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
                 @empty
                     <div class="p-8 text-center">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1224,7 +1505,7 @@
             </div>
 
             <div class="overflow-y-auto max-h-[calc(100vh-14rem)]">
-                @forelse($appointment->vaccinations->sortByDesc('administration_date') as $vaccine)
+                @forelse($appointment->pet->vaccinations->sortByDesc('administration_date') as $vaccine)
                     <div
                         class="p-6 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between">
@@ -1364,5 +1645,71 @@
             </div>
         </x-modal>
     @endif
+
+    <!-- Toast Notification -->
+    <div x-data="{
+        show: @entangle('showToast'),
+        message: @entangle('toastMessage'),
+        type: @entangle('toastType'),
+        init() {
+            // Auto-hide after 5 seconds
+            this.$watch('show', value => {
+                if (value) {
+                    setTimeout(() => {
+                        this.show = false;
+                    }, 5000);
+                }
+            });
+        }
+    }"
+    x-show="show"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 translate-y-2"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-2"
+    class="fixed bottom-4 right-4 z-50 max-w-sm w-full"
+    @click.away="show = false">
+        <div x-bind:class="{
+            'bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-400': type === 'success',
+            'bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-400': type === 'error'
+        }" class="rounded-lg p-4 shadow-lg border dark:border-transparent">
+            <div class="flex items-start">
+                <div x-bind:class="{
+                    'text-green-400': type === 'success',
+                    'text-red-400': type === 'error'
+                }" class="flex-shrink-0">
+                    <svg x-show="type === 'success'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <svg x-show="type === 'error'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                    <p x-text="message" class="text-sm font-medium"></p>
+                </div>
+                <div class="ml-4 flex-shrink-0 flex">
+                    <button @click="show = false" class="inline-flex text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('toast-timeout', () => {
+            // This is handled by Alpine.js
+        });
+    });
+</script>
+@endpush
 </div>

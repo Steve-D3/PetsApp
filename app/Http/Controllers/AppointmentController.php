@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
 {
@@ -62,40 +63,91 @@ class AppointmentController extends Controller
      */
     public function availableSlots(Request $request, VeterinarianProfile $veterinarianProfile)
     {
-        $date = Carbon::parse($request->query('date'));
+        try {
+            Log::info('Available slots request', [
+                'veterinarian_id' => $veterinarianProfile->id,
+                'date' => $request->query('date'),
+                'request_data' => $request->all()
+            ]);
 
-        // Decode off_days (stored as JSON), and compare to day name
-        $offDays = json_decode($veterinarianProfile->off_days ?? '[]', true);
-        $dayName = $date->format('l'); // e.g., 'Monday'
+            $date = Carbon::parse($request->query('date'));
+            $offDays = json_decode($veterinarianProfile->off_days ?? '[]', true);
+            $dayName = $date->format('l');
 
-        // If it's an off-day, return empty slots
-        if (in_array($dayName, $offDays)) {
-            return response()->json(['slots' => []]);
+            // Check if the selected day is an off day
+            if (in_array($dayName, $offDays)) {
+                Log::info('Selected day is an off day', ['day' => $dayName, 'off_days' => $offDays]);
+                return response()->json(['slots' => []]);
+            }
+
+            // Define working hours (9:00-12:00 and 13:00-16:00)
+            $morningStart = $date->copy()->setTime(9, 0);
+            $morningEnd = $date->copy()->setTime(12, 0);
+            $afternoonStart = $date->copy()->setTime(13, 0);
+            $afternoonEnd = $date->copy()->setTime(16, 0);
+
+            // Generate 30-minute slots
+            $morningSlots = CarbonPeriod::create($morningStart, '30 minutes', $morningEnd->copy()->subMinutes(30));
+            $afternoonSlots = CarbonPeriod::create($afternoonStart, '30 minutes', $afternoonEnd->copy()->subMinutes(30));
+
+            // Merge both morning and afternoon slots
+            $allSlots = collect(iterator_to_array($morningSlots))
+                ->merge(collect(iterator_to_array($afternoonSlots)));
+
+            // Format slots
+            $formattedSlots = $allSlots->map(function($slot) {
+                return [
+                    'time' => $slot->format('H:i:s'),
+                    'formatted' => $slot->format('g:i A'),
+                    'full' => $slot->toDateTimeString()
+                ];
+            });
+
+            // Get all booked slots for the veterinarian on this day
+            $booked = $veterinarianProfile->appointments()
+                ->whereDate('start_time', $date)
+                ->pluck('start_time')
+                ->map(function($time) {
+                    return Carbon::parse($time)->format('H:i:s');
+                })
+                ->toArray();
+
+            // Filter out booked slots
+            $available = $formattedSlots->filter(function($slot) use ($booked) {
+                return !in_array($slot['time'], $booked);
+            })->values();
+
+            $result = [
+                'slots' => $available->map(function($slot) {
+                    return [
+                        'time' => $slot['time'],
+                        'formatted' => $slot['formatted']
+                    ];
+                })->toArray()
+            ];
+
+            Log::info('Returning available slots', [
+                'total_slots' => count($allSlots),
+                'booked_slots' => count($booked),
+                'available_slots' => count($available),
+                'result' => $result
+            ]);
+
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            Log::error('Error in availableSlots', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'veterinarian_id' => $veterinarianProfile->id ?? null,
+                'date' => $request->query('date')
+            ]);
+
+            return response()->json([
+                'error' => 'Failed to fetch available time slots',
+                'message' => $e->getMessage()
+            ], 500);
         }
-
-        // Define the opening hours
-        $morningStart = $date->copy()->setTime(9, 0);
-        $morningEnd = $date->copy()->setTime(12, 0);
-        $afternoonStart = $date->copy()->setTime(13, 0);
-        $afternoonEnd = $date->copy()->setTime(16, 0);
-
-        // Create time slots for the morning and afternoon sessions
-        $morningSlots = CarbonPeriod::create($morningStart, '30 minutes', $morningEnd->subMinutes(30));
-        $afternoonSlots = CarbonPeriod::create($afternoonStart, '30 minutes', $afternoonEnd->subMinutes(30));
-
-        // Merge both morning and afternoon slots
-        $slots = collect($morningSlots)->merge($afternoonSlots)->map(fn($slot) => $slot->toDateTimeString());
-
-        // Get all booked slots for the veterinarian on this day
-        $booked = $veterinarianProfile->appointments()
-            ->whereDate('start_time', $date)
-            ->pluck('start_time')
-            ->map(fn($time) => Carbon::parse($time)->toDateTimeString());
-
-        // Find the available slots by excluding the booked ones
-        $available = $slots->diff($booked)->values();
-
-        return response()->json(['slots' => $available]);
     }
 
     /**
@@ -140,7 +192,7 @@ class AppointmentController extends Controller
                             ($hour >= 9 && $hour < 12) ||
                             ($hour >= 13 && $hour < 16) ||
                             ($hour == 12 && $minute == 0); // Edge case if needed
-
+        
                         if (!$allowed) {
                             $fail('Appointments must be scheduled between 09:00–12:00 or 13:00–16:00.');
                         }

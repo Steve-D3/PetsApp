@@ -88,7 +88,9 @@ Route::middleware([
                 Route::get('/create', VetsCreate::class)->name('create');
                 Route::get('/{veterinarianProfile}', VetShow::class)->name('show');
                 Route::get('/{veterinarianProfile}/edit', VetsEdit::class)->name('edit');
-                Route::get('/{veterinarianProfile}/available-slots', [AppointmentController::class, 'availableSlots'])->name('available-slots');
+                Route::get('/{veterinarianProfile}/available-slots', [AppointmentController::class, 'availableSlots'])
+                    ->name('available-slots')
+                    ->withoutMiddleware('role:admin');   // <-- only if vets also need to hit it directly
             });
 
             // Users
