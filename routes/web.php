@@ -141,6 +141,8 @@ Route::middleware([
         // Medical Records
         Route::get('/admin/pets/{pet}/medical-records', MedicalRecordsIndex::class)
             ->name('medical-records.index');
+        Route::get('/admin/pets/{pet}/medical-records/create', '\App\Http\Controllers\MedicalRecordController@create')
+            ->name('medical-records.create');
         Route::get('/admin/pets/{pet}/medical-records/{record}', MedicalRecordDetails::class)
             ->name('medical-records.show');
     });

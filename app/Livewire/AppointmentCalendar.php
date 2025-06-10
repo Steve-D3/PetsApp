@@ -30,6 +30,24 @@ class AppointmentCalendar extends Component
         $this->loadAppointments();
         $this->loadPets();
     }
+    
+    public function previousMonth()
+    {
+        $this->selectedDate = $this->selectedDate->copy()->subMonth();
+        $this->emit('monthChanged', $this->selectedDate->format('Y-m-d'));
+    }
+    
+    public function nextMonth()
+    {
+        $this->selectedDate = $this->selectedDate->copy()->addMonth();
+        $this->emit('monthChanged', $this->selectedDate->format('Y-m-d'));
+    }
+    
+    public function today()
+    {
+        $this->selectedDate = now();
+        $this->emit('monthChanged', $this->selectedDate->format('Y-m-d'));
+    }
 
     public function selectAppointment($appointmentId)
     {
@@ -109,32 +127,48 @@ class AppointmentCalendar extends Component
     public function loadAppointments()
     {
         $this->loading = true;
-
-        $appointments = Appointment::where('veterinarian_id', $this->vetProfileId)
-            ->with('pet', 'pet.owner')
-            ->whereDate('start_time', '>=', $this->selectedDate->startOfMonth())
-            ->whereDate('start_time', '<=', $this->selectedDate->endOfMonth())
-            ->get();
-
-        $this->appointments = $appointments->map(function ($appointment) {
-            return [
-                'id' => $appointment->id,
-                'title' => $appointment->pet->name . ' @ ' . $appointment->start_time->format('g:i A'),
-                'start' => $appointment->start_time->format('Y-m-d\TH:i:s'),
-                'end' => $appointment->end_time->format('Y-m-d\TH:i:s'),
-                'url' => route('admin.appointments.show', $appointment->id),
-                'backgroundColor' => '#2563eb',
-                'borderColor' => '#2563eb',
-                'textColor' => '#fff',
-                'pet_name' => $appointment->pet->name,
-                'owner_name' => $appointment->pet->owner->name,
-                'start_time' => $appointment->start_time->format('g:i A'),
-                'status' => $appointment->status,
-                'notes' => $appointment->notes
-            ];
-        });
-
+        
+        $startOfMonth = $this->selectedDate->copy()->startOfMonth();
+        $endOfMonth = $this->selectedDate->copy()->endOfMonth();
+        
+        $this->appointments = $this->getAppointmentsForRange($startOfMonth, $endOfMonth);
         $this->loading = false;
+    }
+    
+    public function loadAppointmentsForRange($range)
+    {
+        $start = Carbon::parse($range['start']);
+        $end = Carbon::parse($range['end']);
+        
+        $appointments = $this->getAppointmentsForRange($start, $end);
+        
+        return $appointments;
+    }
+    
+    protected function getAppointmentsForRange($start, $end)
+    {
+        return Appointment::where('veterinarian_id', $this->vetProfileId)
+            ->with('pet', 'pet.owner')
+            ->whereBetween('start_time', [$start, $end])
+            ->get()
+            ->map(function ($appointment) {
+                return [
+                    'id' => $appointment->id,
+                    'title' => $appointment->pet->name . ' @ ' . $appointment->start_time->format('g:i A'),
+                    'start' => $appointment->start_time->format('Y-m-d\TH:i:s'),
+                    'end' => $appointment->end_time->format('Y-m-d\TH:i:s'),
+                    'url' => route('admin.appointments.show', $appointment->id),
+                    'backgroundColor' => '#2563eb',
+                    'borderColor' => '#2563eb',
+                    'textColor' => '#fff',
+                    'pet_name' => $appointment->pet->name,
+                    'owner_name' => $appointment->pet->owner->name,
+                    'start_time' => $appointment->start_time->format('g:i A'),
+                    'status' => $appointment->status,
+                    'notes' => $appointment->notes,
+                    'className' => 'fc-event-' . $appointment->status,
+                ];
+            });
     }
 
     public function changeView($view)

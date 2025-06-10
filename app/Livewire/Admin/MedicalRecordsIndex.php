@@ -93,8 +93,17 @@ class MedicalRecordsIndex extends Component
         $records = $query->orderBy($this->sortField, $this->sortDirection)
                        ->paginate($this->perPage);
 
+        // Get unique diagnoses for the filter dropdown
+        $diagnoses = MedicalRecord::where('pet_id', $this->pet->id)
+            ->distinct()
+            ->pluck('diagnosis')
+            ->filter()
+            ->sort()
+            ->values();
+
         return view('livewire.admin.medical-records-index', [
             'records' => $records,
+            'diagnoses' => $diagnoses,
         ]);
     }
 }
