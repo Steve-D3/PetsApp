@@ -6,7 +6,210 @@
 @import '@fullcalendar/daygrid/main.css';
 @import '@fullcalendar/timegrid/main.css'; */
 
-
 [x-cloak] {
     display: none;
+}
+
+#calendar {
+    --fc-border-color: rgba(203, 213, 225, 0.3);
+    --fc-page-bg-color: transparent;
+    --fc-neutral-bg-color: rgba(241, 245, 249, 0.5);
+    --fc-today-bg-color: rgba(199, 210, 254, 0.15);
+    --fc-highlight-color: rgba(199, 210, 254, 0.3);
+    --fc-event-bg-color: #4f46e5;
+    --fc-event-border-color: #4338ca;
+    --fc-event-text-color: #000000;
+    --fc-button-bg-color: #ffffff;
+    --fc-button-border-color: #e2e8f0;
+    --fc-button-text-color: #1e293b;
+    --fc-button-hover-bg-color: #f8fafc;
+    --fc-button-hover-text-color: #4338ca;
+    --fc-button-active-bg-color: #f3f4f6;
+    --fc-button-active-border-color: #c7d2fe;
+    --fc-button-active-text-color: #4338ca;
+}
+
+.dark #calendar {
+    --fc-border-color: rgba(71, 85, 105, 0.5);
+    --fc-neutral-bg-color: rgba(30, 41, 59, 0.5);
+    --fc-today-bg-color: rgba(99, 102, 241, 0.15);
+    --fc-highlight-color: rgba(99, 102, 241, 0.3);
+    --fc-event-bg-color: #6366f1;
+    --fc-event-border-color: #4f46e5;
+    --fc-event-text-color: #e0e7ff;
+    --fc-button-bg-color: #1e293b;
+    --fc-button-border-color: #334155;
+    --fc-button-text-color: #e2e8f0;
+    --fc-button-hover-bg-color: #1e293b;
+    --fc-button-hover-text-color: #a5b4fc;
+    --fc-button-active-bg-color: #1e1b4b;
+    --fc-button-active-border-color: #4f46e5;
+    --fc-button-active-text-color: #c7d2fe;
+}
+
+.fc {
+    @apply bg-transparent;
+    transition: all 0.3s ease;
+}
+
+.dark .fc {
+    @apply shadow-lg shadow-indigo-900/10;
+}
+
+/* Header */
+.fc-header-toolbar {
+    @apply mb-4;
+}
+
+.fc-toolbar-title {
+    @apply text-xl font-bold text-gray-800 dark:text-white;
+}
+
+/* Navigation Buttons */
+.fc-toolbar-chunk {
+    @apply flex items-center gap-2;
+}
+
+.fc-button {
+    @apply bg-white border border-gray-200 text-black shadow-sm rounded px-4 py-1.5 text-sm font-medium transition-all duration-200;
+    background-color: var(--fc-button-bg-color);
+    border-color: var(--fc-button-border-color);
+    color: var(--fc-button-text-color);
+}
+
+.fc-button:hover {
+    @apply bg-gray-50 text-blue-600 shadow-md;
+    background-color: var(--fc-button-hover-bg-color);
+    color: var(--fc-button-hover-text-color);
+}
+
+.fc-button:active,
+.fc-button.fc-button-active {
+    @apply border-indigo-200 text-indigo-700 shadow-md;
+    background-color: var(--fc-button-active-bg-color);
+    border-color: var(--fc-button-active-border-color);
+    color: var(--fc-button-active-text-color);
+}
+
+.fc-button:not(:disabled):hover {
+    @apply bg-gray-50;
+}
+
+.fc-button:not(:disabled):active {
+    @apply bg-gray-100 border-gray-200 text-blue-600;
+}
+
+.fc-button:not(:disabled):focus {
+    @apply ring-2 ring-indigo-500 ring-offset-2 outline-none;
+}
+
+.fc-button:disabled {
+    @apply opacity-50 cursor-not-allowed shadow-none bg-gray-50 text-gray-400 border-gray-200;
+}
+
+/* Day Headers */
+.fc-col-header-cell-cushion {
+    @apply text-gray-600 dark:text-gray-300;
+}
+
+/* Day Cells */
+.fc-daygrid-day-number {
+    @apply text-gray-700 dark:text-gray-300;
+}
+
+.fc-day-today {
+    @apply bg-indigo-50/70 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400;
+}
+
+.fc-daygrid-day-top {
+    @apply p-2 text-right font-medium text-gray-700 dark:text-gray-300;
+}
+
+.fc-day-today .fc-daygrid-day-top {
+    @apply text-indigo-700 dark:text-indigo-400;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+    @apply font-bold;
+}
+
+/* Events */
+.fc-daygrid-event {
+    @apply cursor-pointer rounded-lg border border-opacity-20 shadow-sm px-2 py-1 text-xs font-medium transition-all duration-200;
+    background-color: var(--fc-event-bg-color);
+    border-color: var(--fc-event-border-color);
+    color: var(--fc-event-text-color);
+}
+
+.fc-daygrid-event-dot {
+    @apply hidden;
+}
+
+.fc-event-main {
+    @apply flex items-center gap-1;
+}
+
+.fc-event-time {
+    @apply font-medium;
+}
+
+.fc-event-title {
+    @apply truncate;
+}
+
+.fc-daygrid-dot-event {
+    @apply bg-transparent hover:bg-transparent focus:bg-transparent active:bg-transparent focus:ring-0 focus:ring-offset-0 focus:outline-none focus:shadow-none;
+}
+
+.fc-daygrid-dot-event .fc-event-time {
+    @apply font-semibold;
+}
+
+.fc-daygrid-event-harness {
+    @apply transition-all duration-200 hover:scale-[1.02] hover:z-10;
+}
+
+/* Event Status Colors */
+.fc-event[data-status="scheduled"] {
+    @apply bg-blue-500 border-blue-600 dark:bg-blue-600/90 dark:border-blue-700;
+}
+
+.fc-event[data-status="confirmed"] {
+    @apply bg-emerald-500 border-emerald-600 dark:bg-emerald-600/90 dark:border-emerald-700;
+}
+
+.fc-event[data-status="completed"] {
+    @apply bg-green-500 border-green-600 dark:bg-green-600/90 dark:border-green-700;
+}
+
+.fc-event[data-status="cancelled"] {
+    @apply bg-rose-500 border-rose-600 dark:bg-rose-600/90 dark:border-rose-700;
+}
+
+.fc-event[data-status="no_show"] {
+    @apply bg-amber-500 border-amber-600 dark:bg-amber-600/90 dark:border-amber-700;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-transparent rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 dark:bg-slate-600 rounded-full hover:bg-slate-400 dark:hover:bg-slate-500;
+}
+
+/* Loading State */
+.fc-loading {
+    @apply opacity-50 pointer-events-none;
+}
+
+.fc-loading::after {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent;
+    z-index: 10;
 }

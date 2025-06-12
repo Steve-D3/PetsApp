@@ -32,10 +32,17 @@ class PetFactory extends Factory
             'Bird' => [0.05, 1],
         ];
 
+        $photos = [
+            'cat' => 'https://petsastherapy.org/images/uploads/cutouts/Cats_for_website_2.0_copy_.png',
+            'dog' => 'https://cdn.pixabay.com/photo/2023/08/18/15/02/dog-8198719_1280.jpg',
+            'rabbit' => 'https://upload.wikimedia.org/wikipedia/commons/1/1f/Oryctolagus_cuniculus_Rcdo.jpg',
+            'bird' => 'https://media.newyorker.com/photos/5a95a5b13d9089123c9fdb7e/master/w_2560%2Cc_limit/Petrusich-Dont-Mess-with-the-Birds.jpg',
+        ];
+
         return [
             'user_id' => User::inRandomOrder()->first()->id, // Assumes users already seeded
             'name' => $this->faker->firstName(),
-            'photo' => $this->faker->imageUrl(300, 300, 'animals', true),
+            'photo' => $photos[strtolower($species)],
             'microchip_number' => $this->faker->optional()->regexify('[A-Z0-9]{10}'), //in the future the microchip will contain the owner information
             'sterilized' => $this->faker->boolean(70),
             'species' => $species,

@@ -131,7 +131,7 @@
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 h-10 w-10 relative">
                                                         <img class="h-10 w-10 rounded-full border-2 border-white dark:border-gray-700 shadow-sm"
-                                                             src="{{ $pet->profile_photo_url }}"
+                                                             src="{{ $pet->photo }}"
                                                              alt="{{ $pet->name }}"
                                                              onerror="this.onerror=null; this.src='{{ asset('images/default-pet-avatar.png') }}'"
                                                         >

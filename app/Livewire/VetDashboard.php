@@ -128,10 +128,12 @@ class VetDashboard extends Component
             ],
         ]);
 
-        // Upcoming Appointments
+        // Upcoming Appointments - Next 5 future appointments
         $this->upcomingAppointments = Appointment::where('veterinarian_id', $this->vetId)
+            ->where('start_time', '>=', now())
             ->with('pet')
             ->orderBy('start_time', 'asc')
+            ->take(5)
             ->get();
 
         // Load available pets for filtering
@@ -225,7 +227,7 @@ class VetDashboard extends Component
             $query->whereDate('record_date', '<=', $this->dateTo);
         }
 
-        $this->recentMedicalRecords = $query->take(10)->get();
+        $this->recentMedicalRecords = $query->take(5)->get();
     }
 
     public function resetFilters()
