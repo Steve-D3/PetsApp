@@ -145,6 +145,8 @@ Route::middleware([
             ->name('medical-records.create');
         Route::get('/admin/pets/{pet}/medical-records/{record}', MedicalRecordDetails::class)
             ->name('medical-records.show');
+
+
     });
 });
 

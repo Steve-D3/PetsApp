@@ -1,18 +1,32 @@
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-8">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                            Medical Records - {{ $pet->name }}
-                        </h1>
-                        <div
-                            class="px-6 py-4 whitespace-nowrap text-sm flex items-center gap-2 border-gray-100 dark:border-gray-700">
-                            <span class="font-medium text-gray-500 dark:text-gray-400">Owner:</span>
-                            <span class="text-gray-900 dark:text-white">{{ $pet->owner->name }}</span>
-                            <span class="text-gray-500 dark:text-gray-400">({{ $pet->owner->email }})</span>
+        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/20 rounded-2xl mb-8 border border-gray-100/50 dark:border-gray-700/50 transition-all duration-300 transform hover:shadow-2xl hover:shadow-gray-300/30 dark:hover:shadow-gray-900/30 hover:-translate-y-0.5">
+            <div class="p-6 sm:p-8">
+                <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-3">
+                            <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-purple-400">
+                                Medical Records
+                            </h1>
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200">
+                                {{ $pet->name }}
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+                            <div class="flex items-center text-gray-600 dark:text-gray-300">
+                                <svg class="h-4 w-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span class="font-medium">Owner:</span>
+                                <span class="ml-1 text-gray-900 dark:text-white">{{ $pet->owner->name }}</span>
+                            </div>
+                            <div class="flex items-center text-gray-500 dark:text-gray-400">
+                                <svg class="h-4 w-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                {{ $pet->owner->email }}
+                            </div>
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-2">
@@ -57,12 +71,12 @@
         <!-- Filters -->
         @if ($showFilters)
             <div
-                class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg mb-6 transition-all duration-300 ease-in-out border border-gray-200 dark:border-gray-700">
+                class="bg-white dark:bg-gray-800/95 overflow-hidden shadow-sm rounded-xl mb-6 transition-all duration-300 ease-in-out border border-gray-200/80 dark:border-gray-700/60 backdrop-blur-sm">
                 <div class="px-6 py-5">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Filter Records</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Filter Records</h3>
                         <button type="button" wire:click="$toggle('showFilters')"
-                            class="text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300">
+                            class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150">
                             <span class="sr-only">Close filters</span>
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -164,17 +178,16 @@
         @endif
 
         <!-- Records Table -->
-        <div class="overflow-x-auto">
-            <div class="align-middle inline-block min-w-full">
-                <div class="shadow overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
-                            <tr>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-150"
-                                    wire:click="sortBy('record_date')">
-                                    <div class="flex items-center">
-                                        <span>Date</span>
+        <div class="overflow-hidden rounded-2xl shadow-xl border border-gray-200/60 dark:border-gray-700/60 bg-white/90 dark:bg-gray-800/95 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300/30 dark:hover:shadow-gray-900/20">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200/60 dark:divide-gray-700/60">
+                    <thead class="bg-gray-50/90 dark:bg-gray-800/95 backdrop-blur-sm">
+                        <tr class="border-b border-gray-200/60 dark:border-gray-700/60">
+                            <th scope="col"
+                                class="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider cursor-pointer group hover:bg-gray-100/80 dark:hover:bg-gray-700/70 transition-colors duration-150"
+                                wire:click="sortBy('record_date')">
+                                <div class="flex items-center group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+                                    <span>Date</span>
                                         @if ($sortField === 'date')
                                             @if ($sortDirection === 'asc')
                                                 <svg class="ml-1.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
@@ -216,33 +229,44 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white/90 dark:bg-gray-800/95 divide-y divide-gray-200/80 dark:divide-gray-700/60">
                             @forelse ($records as $record)
-                                <tr
-                                    class="bg-white dark:bg-gray-800 even:bg-gray-50 dark:even:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+                                <tr class="bg-white/90 dark:bg-gray-800/95 hover:bg-gray-50/90 dark:hover:bg-gray-700/90 transition-colors duration-150 group border-b border-gray-100/50 dark:border-gray-700/60 last:border-0">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            {{ \Carbon\Carbon::parse($record->record_date)->format('M d, Y') }}
-                                        </div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400">
-                                            {{ \Carbon\Carbon::parse($record->record_date)->diffForHumans() }}
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 mr-3 ring-1 ring-indigo-100 dark:ring-indigo-800/50 shadow-sm">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                    {{ \Carbon\Carbon::parse($record->record_date)->format('M d, Y') }}
+                                                </div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                                    {{ \Carbon\Carbon::parse($record->record_date)->diffForHumans() }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
 
                                     <!-- Diagnosis Column -->
                                     <td class="px-6 py-4">
-                                        <div class="flex flex-col">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                {{ $record->veterinarian->name ?? 'N/A' }}
-                                            </div>
-                                            <div class="text-sm text-gray-900 dark:text-gray-200 font-medium mt-1">
-                                                {{ $record->diagnosis }}
-                                            </div>
-                                            @if($record->notes)
-                                                <div class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                                                    {{ $record->notes }}
+                                        <div class="flex flex-col space-y-1.5">
+                                            @if($record->veterinarian)
+                                                <div class="flex items-center text-sm text-gray-900 dark:text-white font-medium">
+                                                    <svg class="h-4 w-4 mr-1.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    {{ $record->veterinarian->name }}
                                                 </div>
                                             @endif
+                                            <div class="text-sm font-semibold text-gray-900 dark:text-white bg-indigo-50 dark:bg-indigo-900/20 px-2.5 py-1.5 rounded-md inline-flex items-center self-start border border-indigo-100 dark:border-indigo-800/50 shadow-sm">
+                                                <svg class="h-3.5 w-3.5 mr-1.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                {{ $record->diagnosis }}
+                                            </div>
                                         </div>
                                     </td>
 
@@ -251,189 +275,188 @@
                                         @if($record->treatments->count() > 0)
                                             <div class="flex flex-wrap gap-1.5">
                                                 @foreach($record->treatments->take(2) as $treatment)
-                                                    <span
-                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200 border border-blue-100 dark:border-blue-800/50 shadow-sm hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors duration-150">
+                                                        <svg class="h-3 w-3 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                        </svg>
                                                         {{ $treatment->name }}
                                                         @if($treatment->pivot && $treatment->pivot->details)
-                                                            <span
-                                                                class="ml-1 text-blue-600 dark:text-blue-300">({{ $treatment->pivot->details }})</span>
+                                                            <span class="ml-1 text-blue-600 dark:text-blue-300/90 text-opacity-80">({{ $treatment->pivot->details }})</span>
                                                         @endif
                                                     </span>
                                                 @endforeach
                                                 @if($record->treatments->count() > 2)
-                                                    <span
-                                                        class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-700/80 dark:text-gray-300 border border-gray-200 dark:border-gray-600/50 hover:bg-gray-200 dark:hover:bg-gray-600/80 transition-colors duration-150">
                                                         +{{ $record->treatments->count() - 2 }} more
                                                     </span>
                                                 @endif
                                             </div>
                                         @else
-                                            <span class="text-sm text-gray-500 dark:text-gray-400">No treatments</span>
+                                            <span class="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/60 px-2.5 py-1.5 rounded-md border border-gray-100 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-colors duration-150">
+                                                <svg class="h-3.5 w-3.5 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                </svg>
+                                                No treatments
+                                            </span>
                                         @endif
                                     </td>
 
-                                    <!-- Follow Up Column -->
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($record->follow_up_date)
-                                            <div class="flex items-center">
-                                                <span class="flex-shrink-0 w-2.5 h-2.5 rounded-full bg-yellow-400 mr-2"></span>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {{ \Carbon\Carbon::parse($record->follow_up_date)->format('M d, Y') }}
-                                                    </div>
-                                                    @if($record->follow_up_notes)
-                                                        <div class="text-xs text-gray-500 dark:text-gray-400 line-clamp-1"
-                                                            title="{{ $record->follow_up_notes }}">
-                                                            {{ $record->follow_up_notes }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                    <!-- Follow Up Required Column -->
+                                    <td class="px-6 py-4">
+                                        @if($record->follow_up_required)
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                            {{ \Carbon\Carbon::parse($record->follow_up_date)->format('M j, Y') }}
+                                            </span>
                                         @else
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                                                Not required
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                                No Follow-up Needed
                                             </span>
                                         @endif
                                     </td>
 
                                     <!-- Actions Column -->
-                                    <td
-                                        class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium border-r border-gray-100 dark:border-gray-700">
-                                        <div class="flex items-center justify-end space-x-3">
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <div class="flex items-center justify-end space-x-2">
                                             <a href="{{ route('medical-records.show', ['pet' => $pet->id, 'record' => $record->id]) }}"
-                                                class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors duration-150 ease-in-out">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </path>
+                                                class="inline-flex items-center px-3 py-1.5 bg-white dark:bg-gray-700/90 text-gray-700 dark:text-gray-200 text-xs font-medium rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition-all duration-150 ease-in-out group/action hover:shadow-md hover:-translate-y-0.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1.5 text-blue-500 group-hover/action:text-blue-600 dark:group-hover/action:text-blue-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                 </svg>
-                                                <span>View</span>
+                                                View
                                             </a>
-
+                                            @can('update', $record)
+                                                <a href="{{ route('medical-records.edit', ['pet' => $pet->id, 'record' => $record->id]) }}"
+                                                    class="inline-flex items-center px-3 py-1.5 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-medium rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition-all duration-150 ease-in-out group/action">
+                                                    <svg class="h-3.5 w-3.5 mr-1.5 text-indigo-500 group-hover/action:text-indigo-600 dark:group-hover/action:text-indigo-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    Edit
+                                                </a>
+                                            @endcan
                                         </div>
                                     </td>
-                                </tr>
+                               </tr>
                             @empty
                                 <tr>
                                     <td colspan="6" class="px-6 py-16 text-center">
-                                        <div class="flex flex-col items-center justify-center">
-                                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                                stroke="currentColor" aria-hidden="true">
-                                                <path vector-effect="non-scaling-stroke" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        <div class="flex flex-col items-center justify-center space-y-4">
+                                            <div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-full">
+                                    <svg class="h-12 w-12 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">No records found</h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+                                        No medical records have been added for {{ $pet->name }} yet. Create your first record to get started.
+                                    </p>
+                                </div>
+                                <div class="mt-4">
+                                    @can('create', \App\Models\MedicalRecord::class)
+                                        <a href="{{ route('medical-records.create', $pet) }}"
+                                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:from-indigo-700 dark:to-purple-700 dark:hover:from-indigo-600 dark:hover:to-purple-600 transition-all duration-200 transform hover:-translate-y-0.5">
+                                            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
-                                            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No medical
-                                                records found</h3>
-                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                Get started by creating a new medical record.
-                                            </p>
-                                            <div class="mt-6">
-                                                @can('create', \App\Models\MedicalRecord::class)
-                                                    <a href="{{ route('medical-records.create', $pet) }}"
-                                                        class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-700 dark:hover:bg-indigo-600">
-                                                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor"
-                                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                                        </svg>
-                                                        New Record
-                                                    </a>
-                                                @endcan
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
+                                            Add First Record
+                                        </a>
+                                    @endcan
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         @if ($records->hasPages())
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-600 dark:bg-gray-800">
-                <div class="flex flex-col sm:flex-row items-center justify-between">
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm text-gray-700 dark:text-gray-300">
-                            Showing <span class="font-medium">{{ $records->firstItem() }}</span> to <span
-                                class="font-medium">{{ $records->lastItem() }}</span> of <span
-                                class="font-medium">{{ $records->total() }}</span> results
-                            @if($filters['search'] || $filters['diagnosis'] || $filters['start_date'] || $filters['end_date'] || $filters['follow_up_required'])
-                                <span
-                                    class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
-                                    Filtered
-                                </span>
-                            @endif
-                        </div> results
+            <div class="px-6 py-4 border-t border-gray-200/50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
+                <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row items-center justify-between">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">
+                        Showing <span class="font-semibold text-gray-900 dark:text-white">{{ $records->firstItem() }}</span> to
+                        <span class="font-semibold text-gray-900 dark:text-white">{{ $records->lastItem() }}</span> of
+                        <span class="font-semibold text-gray-900 dark:text-white">{{ $records->total() }}</span> records
+                        @if($filters['search'] || $filters['diagnosis'] || $filters['start_date'] || $filters['end_date'] || $filters['follow_up_required'])
+                            <span class="ml-2 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200 border border-indigo-200 dark:border-indigo-700/50">
+                                <svg class="h-3.5 w-3.5 mr-1.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                </svg>
+                                Filtered
+                            </span>
+                        @endif
                     </div>
 
                     <!-- Pagination Links -->
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-1">
                         <!-- Previous Page Link -->
                         @if ($records->onFirstPage())
-                            <span
-                                class="relative inline-flex items-center px-3 py-1.5 rounded-md border border-gray-300 bg-white dark:bg-gray-700 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
+                            <span class="inline-flex items-center px-3 h-8 rounded-md border border-gray-200 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-1">Previous</span>
+                                <span>Previous</span>
                             </span>
                         @else
                             <button wire:click="previousPage"
-                                class="relative inline-flex items-center px-3 py-1.5 rounded-md border border-gray-300 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
+                                class="inline-flex items-center px-3 h-8 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
-                                <span class="ml-1">Previous</span>
+                                <span>Previous</span>
                             </button>
                         @endif
 
                         <!-- Page Numbers -->
-                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
-                            <div class="flex rounded-md shadow-sm">
-                                @foreach ($records->links()->elements[0] as $page => $url)
-                                    @if ($page == $records->currentPage())
-                                        <span
-                                            class="relative z-10 inline-flex items-center px-4 py-1.5 border border-indigo-500 bg-indigo-50 dark:bg-indigo-900 text-sm font-medium text-indigo-600 dark:text-indigo-200">
-                                            {{ $page }}
-                                        </span>
-                                    @else
-                                        <button wire:click="gotoPage({{ $page }})"
-                                            class="relative inline-flex items-center px-4 py-1.5 border border-gray-300 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                                            {{ $page }}
-                                        </button>
-                                    @endif
-                                @endforeach
-                            </div>
+                        <div class="hidden sm:flex items-center space-x-1">
+                            @php
+                                $current = $records->currentPage();
+                                $last = $records->lastPage();
+                                $window = 2; // Number of pages to show on each side of current
+
+                                // Show first page
+                                if ($current > $window + 2) {
+                                    echo '<button wire:click="gotoPage(1)" class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150">1</button>';
+                                    if ($current > $window + 3) {
+                                        echo '<span class="px-2 text-gray-500 dark:text-gray-400">...</span>';
+                                    }
+                                }
+
+                                // Show window around current page
+                                for ($i = max(1, $current - $window); $i <= min($last, $current + $window); $i++) {
+                                    if ($i == $current) {
+                                        echo '<span class="w-8 h-8 flex items-center justify-center rounded-md border border-indigo-500 bg-indigo-600 text-sm font-medium text-white">' . $i . '</span>';
+                                    } else {
+                                        echo '<button wire:click="gotoPage(' . $i . ')" class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150">' . $i . '</button>';
+                                    }
+                                }
+
+                                // Show last page
+                                if ($current < $last - $window - 1) {
+                                    if ($current < $last - $window - 2) {
+                                        echo '<span class="px-2 text-gray-500 dark:text-gray-400">...</span>';
+                                    }
+                                    echo '<button wire:click="gotoPage(' . $last . ')" class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150">' . $last . '</button>';
+                                }
+                            @endphp
                         </div>
 
                         <!-- Next Page Link -->
                         @if ($records->hasMorePages())
                             <button wire:click="nextPage"
-                                class="relative inline-flex items-center px-3 py-1.5 rounded-md border border-gray-300 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                <span class="mr-1">Next</span>
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd" />
+                                class="inline-flex items-center px-3 h-8 rounded-md border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500">
+                                <span>Next</span>
+                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </button>
                         @else
-                            <span
-                                class="relative inline-flex items-center px-3 py-1.5 rounded-md border border-gray-300 bg-white dark:bg-gray-700 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
-                                <span class="mr-1">Next</span>
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd" />
+                            <span class="inline-flex items-center px-3 h-8 rounded-md border border-gray-200 dark:border-gray-600 bg-white/50 dark:bg-gray-700/50 text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed">
+                                <span>Next</span>
+                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </span>
                         @endif
@@ -442,7 +465,6 @@
             </div>
         @endif
     </div>
-</div>
 </div>
 
 @push('styles')

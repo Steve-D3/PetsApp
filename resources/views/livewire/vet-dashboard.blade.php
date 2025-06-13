@@ -6,24 +6,31 @@
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center space-x-4">
                         <div class="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/50">
-                            <svg class="h-8 w-8 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            <svg class="h-8 w-8 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-purple-400 sm:text-3xl">
+                            <h1
+                                class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-purple-400 sm:text-3xl">
                                 Welcome back, {{ auth()->user()->name }}
                             </h1>
                             <div class="mt-1 flex flex-wrap items-center space-x-4 text-sm">
                                 <span class="inline-flex items-center text-gray-500 dark:text-gray-400">
-                                    <svg class="mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    <svg class="mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     Member since {{ auth()->user()->created_at->format('M Y') }}
                                 </span>
                                 <span class="inline-flex items-center text-gray-500 dark:text-gray-400">
-                                    <svg class="mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    <svg class="mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     {{ now()->format('l, F j, Y') }}
                                 </span>
@@ -32,10 +39,13 @@
                     </div>
                 </div>
                 <div class="mt-4 md:mt-0">
-                    <div class="inline-flex items-center px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white/50 dark:bg-gray-800/50 shadow-sm">
+                    <div
+                        class="inline-flex items-center px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white/50 dark:bg-gray-800/50 shadow-sm">
                         <div class="p-2 rounded-full bg-indigo-100 dark:bg-indigo-900/50 mr-3">
-                            <svg class="h-5 w-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <svg class="h-5 w-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                         <div>
@@ -59,61 +69,76 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <!-- Today's Appointments -->
-            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
+            <div
+                class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
                 <div class="flex items-center">
                     <div class="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mr-4">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Today's Appointments</p>
-                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $appointmentStats['today'] }}</p>
+                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $appointmentStats['today'] }}
+                        </p>
                     </div>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                     <div class="flex items-center justify-between text-sm">
                         <span class="text-gray-500 dark:text-gray-400">This Week</span>
-                        <span class="font-medium text-gray-900 dark:text-white">{{ $appointmentStats['this_week'] }}</span>
+                        <span
+                            class="font-medium text-gray-900 dark:text-white">{{ $appointmentStats['this_week'] }}</span>
                     </div>
                     <div class="flex items-center justify-between text-sm mt-2">
                         <span class="text-gray-500 dark:text-gray-400">Pending</span>
-                        <span class="font-medium text-yellow-600 dark:text-yellow-400">{{ $appointmentStats['pending'] }}</span>
+                        <span
+                            class="font-medium text-yellow-600 dark:text-yellow-400">{{ $appointmentStats['pending'] }}</span>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Patient Statistics -->
-            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
+            <div
+                class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
                 <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 mr-4">
+                    <div
+                        class="p-3 rounded-lg bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 mr-4">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                     </div>
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Patients</p>
-                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $patientStats['total'] ?? 0 }}</p>
+                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">
+                            {{ $patientStats['total'] ?? 0 }}
+                        </p>
                     </div>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                     <div class="flex items-center justify-between text-sm">
                         <span class="text-gray-500 dark:text-gray-400">New This Month</span>
-                        <span class="font-medium text-gray-900 dark:text-white">{{ $patientStats['new_this_month'] ?? 0 }}</span>
+                        <span
+                            class="font-medium text-gray-900 dark:text-white">{{ $patientStats['new_this_month'] ?? 0 }}</span>
                     </div>
                     <div class="flex items-center justify-between text-sm mt-2">
                         <span class="text-gray-500 dark:text-gray-400">Returning</span>
-                        <span class="font-medium text-green-600 dark:text-green-400">{{ $patientStats['returning'] ?? 0 }}</span>
+                        <span
+                            class="font-medium text-green-600 dark:text-green-400">{{ $patientStats['returning'] ?? 0 }}</span>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Pending Tasks -->
-            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
+            <div
+                class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
                 <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 mr-4">
+                    <div
+                        class="p-3 rounded-lg bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 mr-4">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                         </svg>
                     </div>
                     <div>
@@ -134,27 +159,6 @@
                     <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                         {{ $taskCount }} task{{ $taskCount != 1 ? 's' : '' }} pending completion
                     </p>
-                </div>
-            </div>
-            
-            <!-- Vaccination Alerts -->
-            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-lg bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 mr-4">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Vaccinations Due</p>
-                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $vaccineStats['due_soon'] ?? 0 }}</p>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div class="bg-red-500 h-2.5 rounded-full" style="width: {{ min(($vaccineStats['due_soon'] / max(($patientStats['total'] ?? 1), 1)) * 100, 100) }}%"></div>
-                    </div>
-                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">{{ $vaccineStats['due_soon'] ?? 0 }} pets need attention</p>
                 </div>
             </div>
 
@@ -204,20 +208,25 @@
 
         <!-- Tasks & Reminders Card -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
+            <div
+                class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 p-6 hover:shadow-md transition-shadow duration-300">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center">
-                        <div class="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 mr-3">
+                        <div
+                            class="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 mr-3">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                             </svg>
                         </div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Tasks & Reminders</h3>
                     </div>
-                    <button type="button" class="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400">
+                    <button type="button"
+                        class="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400">
                         <span class="sr-only">Add new task</span>
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                     </button>
                     <span
@@ -260,7 +269,8 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white">Vaccination Alerts</h3>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                         {{ $vaccineStats['due_soon'] }} Due Soon
                     </span>
                 </div>
@@ -312,36 +322,47 @@
         </div>
 
         <!-- Recent Medical Records -->
-        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 overflow-hidden mb-8 transition-all duration-300 hover:shadow-md">
-            <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div
+            class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 overflow-hidden mb-8 transition-all duration-300 hover:shadow-md">
+            <div
+                class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="space-y-1">
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Recent Medical Records</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Recently updated patient medical records and health information</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Recently updated patient medical records and
+                        health information</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <button @click="$wire.toggleFilters()" class="inline-flex items-center px-3.5 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-600/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                        <svg class="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    <button @click="$wire.toggleFilters()"
+                        class="inline-flex items-center px-3.5 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-600/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                        <svg class="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                         </svg>
                         Filters
                     </button>
                     @can('create', \App\Models\MedicalRecord::class)
-                    <a href="{{ route('medical-records.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                        <svg class="mr-2 -ml-0.5 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        New Record
-                    </a>
+                        <a href="{{ route('medical-records.create') }}"
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                            <svg class="mr-2 -ml-0.5 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            New Record
+                        </a>
                     @endcan
                 </div>
             </div>
 
             <!-- Filter Panel -->
             @if($showFilters)
-                <div class="bg-gray-50/50 dark:bg-gray-700/50 px-6 py-4 border-b border-gray-100 dark:border-gray-600 backdrop-blur-sm">
+                <div
+                    class="bg-gray-50/50 dark:bg-gray-700/50 px-6 py-4 border-b border-gray-100 dark:border-gray-600 backdrop-blur-sm">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
-                            <label for="petFilter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                            <label for="petFilter"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                                 Filter by Pet
                             </label>
                             <select wire:model.live="petFilter" id="petFilter"
@@ -370,14 +391,16 @@
                             <button wire:click="applyFilters"
                                 class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                                 <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                                 </svg>
                                 Apply Filters
                             </button>
                             <button wire:click="resetFilters"
                                 class="inline-flex items-center px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-600/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                                 <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
                                 Reset
                             </button>
@@ -397,9 +420,12 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-4 min-w-0">
                                             <div class="flex-shrink-0">
-                                                <div class="h-10 w-10 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors">
-                                                    <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                <div
+                                                    class="h-10 w-10 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors">
+                                                    <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                     </svg>
                                                 </div>
                                             </div>
@@ -408,7 +434,8 @@
                                                     <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
                                                         {{ $record->title }}
                                                     </p>
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                                                    <span
+                                                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
                                                         {{ ucfirst($record->record_type) }}
                                                     </span>
                                                 </div>
@@ -434,7 +461,8 @@
                     </ul>
                 @else
                     <div class="text-center py-12 px-6">
-                        <div class="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800/50 mb-3">
+                        <div
+                            class="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800/50 mb-3">
                             <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                                     d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -450,9 +478,11 @@
                         </p>
                         @if(auth()->user()->can('create', \App\Models\MedicalRecord::class))
                             <div class="mt-6">
-                                <a href="{{ route('medical-records.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                <a href="{{ route('medical-records.create') }}"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                                     <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
                                     Add New Record
                                 </a>
@@ -466,15 +496,20 @@
         </div>
 
         <!-- Upcoming Appointments -->
-        <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 overflow-hidden mb-8 transition-all duration-300 hover:shadow-md">
-            <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div
+            class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-gray-700/50 overflow-hidden mb-8 transition-all duration-300 hover:shadow-md">
+            <div
+                class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="space-y-1">
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Upcoming Appointments</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Your scheduled appointments for the next few days</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Your scheduled appointments for the next few
+                        days</p>
                 </div>
-                <a href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => $vetProfileId] ?? '') }}" class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200 group">
+                <a href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => $vetProfileId] ?? '') }}"
+                    class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200 group">
                     View Calendar
-                    <svg class="ml-1.5 h-4 w-4 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="ml-1.5 h-4 w-4 transform transition-transform group-hover:translate-x-1" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </a>
@@ -574,6 +609,6 @@
                 @endif
             </div>
         </div>
-        </div>
     </div>
+</div>
 </div>
