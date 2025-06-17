@@ -188,7 +188,7 @@
                                 wire:click="sortBy('record_date')">
                                 <div class="flex items-center group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
                                     <span>Date</span>
-                                        @if ($sortField === 'date')
+                                        @if ($sortField === 'record_date')
                                             @if ($sortDirection === 'asc')
                                                 <svg class="ml-1.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

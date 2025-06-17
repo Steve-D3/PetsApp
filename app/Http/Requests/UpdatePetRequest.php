@@ -23,13 +23,13 @@ class UpdatePetRequest extends FormRequest
     {
         return [
             'name' => 'string|max:255',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|string',
             'microchip_number' => 'nullable|string|max:255',
-            'sterilized' => 'boolean',
+            'sterilized' => 'nullable|boolean',
             'species' => 'nullable|string',
             'breed' => 'nullable|string',
             'gender' => 'nullable|in:Male,Female',
-            'weight' => 'numeric|min:0.01|max:100',
+            'weight' => 'nullable|numeric|min:0.01|max:100',
             'birth_date' => 'nullable|date|before:today',
             'allergies' => 'nullable|string',
             'food_preferences' => 'nullable|string',

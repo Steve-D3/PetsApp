@@ -28,7 +28,7 @@ class StorePetRequest extends FormRequest
             'name' => 'required|string|max:255',
             'photo' => 'nullable|string',
             'microchip_number' => 'nullable|string|unique:pets,microchip_number,' . $petId,
-            'sterilized' => 'required|boolean',
+            'sterilized' => 'nullable|boolean',
             'species' => 'required|string',
             'breed' => 'nullable|string',
             'gender' => 'nullable|in:Male,Female',
