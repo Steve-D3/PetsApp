@@ -27,6 +27,78 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
+// Password reset routes
+Route::post('/forgot-password', [UserController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password', [UserController::class, 'reset']);
+
+Route::get('/test-reset-email', function () {
+    try {
+        $user = \App\Models\User::first();
+        \Log::info('Starting password reset for user', ['user_id' => $user->id, 'email' => $user->email]);
+
+        if (!$user) {
+            \Log::error('No user found for password reset');
+            return response()->json(['error' => 'No users found in the database'], 404);
+        }
+
+        // Generate a token
+        $token = \Illuminate\Support\Str::random(60);
+        \Log::info('Generated token for password reset', ['token' => $token]);
+
+        \DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $user->email],
+            ['token' => \Illuminate\Support\Facades\Hash::make($token), 'created_at' => now()]
+        );
+
+        \Log::info('Token stored in database');
+
+        // Send the notification
+        \Log::info('Dispatching ResetPassword notification');
+        $user->notify(new \App\Notifications\ResetPassword($token));
+        \Log::info('Notification dispatched');
+
+        return response()->json([
+            'message' => 'Password reset email sent successfully',
+            'email' => $user->email,
+            'token' => $token
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Error in test-reset-email: ' . $e->getMessage(), [
+            'exception' => $e,
+            'trace' => $e->getTraceAsString()
+        ]);
+        return response()->json([
+            'error' => 'Failed to send test email',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+
+Route::get('/test-email', function () {
+    try {
+        \Log::info('Attempting to send test email');
+
+        \Mail::send([], [], function ($message) {
+            $message->to('test@example.com')
+                ->subject('Test Email')
+                ->html('<h1>Test Email</h1><p>This is a test email.</p>');
+        });
+
+        \Log::info('Test email sent successfully');
+        return response()->json(['message' => 'Test email sent']);
+
+    } catch (\Exception $e) {
+        \Log::error('Email error: ' . $e->getMessage());
+        \Log::error($e->getTraceAsString());
+        return response()->json([
+            'error' => 'Failed to send test email',
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     // User routes

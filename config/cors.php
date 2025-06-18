@@ -15,6 +15,6 @@ return [
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
-    'max_age' => 0,
+    'max_age' => 60 * 60 * 24, // 24 hours
     'supports_credentials' => true,
 ];
