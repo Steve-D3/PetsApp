@@ -18,12 +18,12 @@ class PetsIndex extends Component
     public function render()
     {
         $pets = Pet::query()
-            ->when($this->search, function($query) {
+            ->when($this->search, function ($query) {
                 $search = '%' . $this->search . '%';
-                return $query->where(function($q) use ($search) {
+                return $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', $search)
-                      ->orWhere('species', 'like', $search)
-                      ->orWhere('breed', 'like', $search);
+                        ->orWhere('species', 'like', $search)
+                        ->orWhere('breed', 'like', $search);
                 });
             })
             ->when($this->filterSpecies, fn($query) => $query->where('species', $this->filterSpecies))
@@ -37,13 +37,15 @@ class PetsIndex extends Component
             })
             ->with('owner')
             ->orderBy('name')
-            ->get();
+            ->paginate(7);
 
         return view('livewire.admin.pets-index', compact('pets'));
     }
 
-    public function calculateAge($birthDate){
-        if (!$birthDate) return null;
+    public function calculateAge($birthDate)
+    {
+        if (!$birthDate)
+            return null;
         $today = new DateTime();
         $birthDate = new DateTime($birthDate);
         $age = $today->diff($birthDate);
@@ -56,16 +58,16 @@ class PetsIndex extends Component
         if ($pet) {
             // Delete all associated appointments
             $pet->appointments()->delete();
-            
+
             // Delete the pet
             $pet->delete();
-            
+
             session()->flash('message', 'Pet and all associated appointments deleted successfully.');
         } else {
             session()->flash('error', 'Pet not found.');
         }
     }
-    
+
     public function resetFilters()
     {
         $this->reset(['search', 'filterSpecies', 'filterSterilized', 'filterMicrochip']);

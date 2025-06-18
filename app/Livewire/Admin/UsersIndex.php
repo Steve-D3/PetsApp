@@ -14,7 +14,7 @@ class UsersIndex extends Component
 
     public $search = '';
     public $role = '';
-    public $perPage = 10;
+    public $perPage = 7;
     public $sortField = 'name';
     public $sortDirection = 'asc';
     public $selectedUsers = [];

@@ -14,7 +14,7 @@ class VetForm extends Form
 {
     public ?User $user = null;
     public ?VeterinarianProfile $veterinarianProfile = null;
-    
+
     public $name;
     public $email;
     public $password = 'password';
@@ -24,12 +24,12 @@ class VetForm extends Form
     public $phone_number;
     public $vet_clinic_id;
     public $off_days = [];
-    
+
     public function setVeterinarian(VeterinarianProfile $veterinarianProfile)
     {
         $this->veterinarianProfile = $veterinarianProfile;
         $this->user = $veterinarianProfile->user;
-        
+
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->license_number = $veterinarianProfile->license_number;

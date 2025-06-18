@@ -1,4 +1,4 @@
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script>
         function initMap() {
             // Geocode the address when the component mounts
@@ -15,7 +15,7 @@
                 },
             });
 
-            const address = '{{ $clinic->address }}, {{ $clinic->postal_code }} {{ $clinic->city }}, {{ $clinic->country }}';
+            const address = '<?php echo e($clinic->address); ?>, <?php echo e($clinic->postal_code); ?> <?php echo e($clinic->city); ?>, <?php echo e($clinic->country); ?>';
 
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status === 'OK') {
@@ -23,7 +23,7 @@
                     new google.maps.Marker({
                         map: map,
                         position: results[0].geometry.location,
-                        title: '{{ $clinic->name }}',
+                        title: '<?php echo e($clinic->name); ?>',
                         animation: google.maps.Animation.DROP,
                     });
                 }
@@ -33,7 +33,7 @@
         // Load the Google Maps API with your API key
         function loadGoogleMaps() {
             const script = document.createElement('script');
-            const apiKey = '{{ config('services.google.maps_key') }}';
+            const apiKey = '<?php echo e(config('services.google.maps_key')); ?>';
             if (!apiKey) {
                 console.error('Google Maps API key is not configured');
                 document.getElementById('map').innerHTML = '<div class="p-4 text-center text-gray-500 dark:text-gray-400">Map cannot be loaded: Missing Google Maps API key</div>';
@@ -48,13 +48,13 @@
         // Load the map when the page is fully loaded
         document.addEventListener('DOMContentLoaded', loadGoogleMaps);
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Back Button -->
         <div class="mb-6">
-            <a href="{{ route('admin.clinics.index') }}"
+            <a href="<?php echo e(route('admin.clinics.index')); ?>"
                 class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -69,7 +69,7 @@
             <div class="px-4 py-5 sm:px-6">
                 <div class="flex flex-col md:flex-row md:items-start md:justify-between">
                     <div class="flex-1">
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $clinic->name }}</h1>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo e($clinic->name); ?></h1>
 
                         <!-- Contact Info -->
                         <div class="mt-4 space-y-2">
@@ -83,57 +83,61 @@
                                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 <div>
-                                    <p class="text-gray-900 dark:text-white">{{ $clinic->address }}</p>
-                                    <p class="text-gray-600 dark:text-gray-300">{{ $clinic->postal_code }}
-                                        {{ $clinic->city }}, {{ $clinic->country }}</p>
+                                    <p class="text-gray-900 dark:text-white"><?php echo e($clinic->address); ?></p>
+                                    <p class="text-gray-600 dark:text-gray-300"><?php echo e($clinic->postal_code); ?>
+
+                                        <?php echo e($clinic->city); ?>, <?php echo e($clinic->country); ?></p>
                                 </div>
                             </div>
 
-                            @if($clinic->phone || $clinic->email || $clinic->website)
+                            <!--[if BLOCK]><![endif]--><?php if($clinic->phone || $clinic->email || $clinic->website): ?>
                                 <div class="space-y-1">
-                                    @if($clinic->phone)
+                                    <!--[if BLOCK]><![endif]--><?php if($clinic->phone): ?>
                                         <div class="flex items-center">
                                             <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                             </svg>
-                                            <a href="tel:{{ $clinic->phone }}"
+                                            <a href="tel:<?php echo e($clinic->phone); ?>"
                                                 class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                                                {{ $clinic->phone }}
+                                                <?php echo e($clinic->phone); ?>
+
                                             </a>
                                         </div>
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                                    @if($clinic->email)
+                                    <!--[if BLOCK]><![endif]--><?php if($clinic->email): ?>
                                         <div class="flex items-center">
                                             <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                             </svg>
-                                            <a href="mailto:{{ $clinic->email }}"
+                                            <a href="mailto:<?php echo e($clinic->email); ?>"
                                                 class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                                                {{ $clinic->email }}
+                                                <?php echo e($clinic->email); ?>
+
                                             </a>
                                         </div>
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                                    @if($clinic->website)
+                                    <!--[if BLOCK]><![endif]--><?php if($clinic->website): ?>
                                         <div class="flex items-center">
                                             <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                     d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                             </svg>
-                                            <a href="{{ $clinic->website }}" target="_blank" rel="noopener noreferrer"
+                                            <a href="<?php echo e($clinic->website); ?>" target="_blank" rel="noopener noreferrer"
                                                 class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                                                {{ parse_url($clinic->website, PHP_URL_HOST) }}
+                                                <?php echo e(parse_url($clinic->website, PHP_URL_HOST)); ?>
+
                                             </a>
                                         </div>
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -143,12 +147,12 @@
                             <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Clinic Stats</h3>
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
-                                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $totalVets }}</p>
+                                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400"><?php echo e($totalVets); ?></p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Veterinarians</p>
                                 </div>
                                 <div class="text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                                     <p class="text-2xl font-bold text-green-600 dark:text-green-400">
-                                        {{ $upcomingAppointments }}</p>
+                                        <?php echo e($upcomingAppointments); ?></p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Upcoming Appointments</p>
                                 </div>
                             </div>
@@ -166,10 +170,11 @@
                     </div>
                     <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $clinic->address }}, {{ $clinic->postal_code }} {{ $clinic->city }},
-                            {{ $clinic->country }}
+                            <?php echo e($clinic->address); ?>, <?php echo e($clinic->postal_code); ?> <?php echo e($clinic->city); ?>,
+                            <?php echo e($clinic->country); ?>
+
                         </div>
-                        <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($clinic->address . ', ' . $clinic->postal_code . ' ' . $clinic->city . ', ' . $clinic->country) }}"
+                        <a href="https://www.google.com/maps/search/?api=1&query=<?php echo e(urlencode($clinic->address . ', ' . $clinic->postal_code . ' ' . $clinic->city . ', ' . $clinic->country)); ?>"
                             target="_blank" rel="noopener noreferrer"
                             class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-100 dark:bg-blue-800 dark:hover:bg-blue-700">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,37 +200,41 @@
                 </div>
             </div>
 
-            @if($veterinarians->count() > 0)
+            <!--[if BLOCK]><![endif]--><?php if($veterinarians->count() > 0): ?>
                 <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                        @foreach($veterinarians as $vet)
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $veterinarians; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <div class="flex items-center">
                                     <div
                                         class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                                         <span class="text-blue-600 dark:text-blue-300 font-medium">
-                                            {{ substr($vet->user->name, 0, 1) }}
+                                            <?php echo e(substr($vet->user->name, 0, 1)); ?>
+
                                         </span>
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                            {{ $vet->user->name }}
-                                            @if($vet->specialty)
+                                            <?php echo e($vet->user->name); ?>
+
+                                            <!--[if BLOCK]><![endif]--><?php if($vet->specialty): ?>
                                                 <span
                                                     class="ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                                    {{ $vet->specialty }}
+                                                    <?php echo e($vet->specialty); ?>
+
                                                 </span>
-                                            @endif
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $vet->user->email }}
-                                            @if($vet->license_number)
-                                                <span class="ml-2 text-xs text-gray-400">License: {{ $vet->license_number }}</span>
-                                            @endif
+                                            <?php echo e($vet->user->email); ?>
+
+                                            <!--[if BLOCK]><![endif]--><?php if($vet->license_number): ?>
+                                                <span class="ml-2 text-xs text-gray-400">License: <?php echo e($vet->license_number); ?></span>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                     </div>
                                     <div class="ml-auto">
-                                        <button wire:click="viewVet({{ $vet->id }})"
+                                        <button wire:click="viewVet(<?php echo e($vet->id); ?>)"
                                             class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                                             title="View Details">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,13 +247,14 @@
                                     </div>
                                 </div>
                             </li>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </ul>
                     <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
-                        {{ $veterinarians->links() }}
+                        <?php echo e($veterinarians->links()); ?>
+
                     </div>
                 </div>
-            @else
+            <?php else: ?>
                 <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
                     <div class="px-6 py-12 text-center">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,20 +263,20 @@
                         </svg>
                         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No veterinarians found</h3>
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            @if($searchVet)
+                            <!--[if BLOCK]><![endif]--><?php if($searchVet): ?>
                                 No veterinarians match your search criteria.
-                            @else
+                            <?php else: ?>
                                 There are currently no veterinarians assigned to this clinic.
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </p>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
 
     <!-- Veterinarian Details Modal -->
-    @if($showVetModal && $vetToView)
+    <!--[if BLOCK]><![endif]--><?php if($showVetModal && $vetToView): ?>
         <div class="fixed inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"
@@ -299,7 +309,8 @@
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
-                                {{ $vetToView->user->name }}
+                                <?php echo e($vetToView->user->name); ?>
+
                             </h3>
                             <div class="mt-2">
                                 <div class="text-sm text-gray-500 dark:text-gray-400 space-y-2">
@@ -309,29 +320,33 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
-                                        {{ $vetToView->user->email }}
+                                        <?php echo e($vetToView->user->email); ?>
+
                                     </p>
-                                    @if($vetToView->specialty)
+                                    <!--[if BLOCK]><![endif]--><?php if($vetToView->specialty): ?>
                                         <p class="mt-1">
                                             <span
                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                                {{ $vetToView->specialty }}
+                                                <?php echo e($vetToView->specialty); ?>
+
                                             </span>
                                         </p>
-                                    @endif
-                                    @if($vetToView->license_number)
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <!--[if BLOCK]><![endif]--><?php if($vetToView->license_number): ?>
                                         <p>
-                                            <span class="font-medium">License:</span> {{ $vetToView->license_number }}
+                                            <span class="font-medium">License:</span> <?php echo e($vetToView->license_number); ?>
+
                                         </p>
-                                    @endif
-                                    @if($vetToView->biography)
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <!--[if BLOCK]><![endif]--><?php if($vetToView->biography): ?>
                                         <div class="mt-4 text-left">
                                             <h4 class="text-sm font-medium text-gray-900 dark:text-white">About</h4>
                                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                                                {{ $vetToView->biography }}
+                                                <?php echo e($vetToView->biography); ?>
+
                                             </p>
                                         </div>
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                         </div>
@@ -346,5 +361,6 @@
                 </div>
             </div>
         </div>
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 </div>
+<?php /**PATH /var/www/html/resources/views/livewire/admin/clinic-show.blade.php ENDPATH**/ ?>
