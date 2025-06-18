@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-white dark:bg-gray-900">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,8 +18,9 @@
     <!-- Styles -->
     @livewireStyles
 </head>
+
 <body class="font-sans text-gray-900 dark:text-gray-100 antialiased">
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-700/30">
         {{ $slot }}
     </div>
 
@@ -29,4 +31,5 @@
 
     @stack('scripts')
 </body>
+
 </html>
