@@ -61,9 +61,15 @@ class UserController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
         $user = User::create($validated);
+
+        // Send email verification notification
+        $user->sendEmailVerificationNotification();
+
+        // Create token for immediate login if needed
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
+            'message' => 'Registration successful! Please check your email to verify your account.',
             'user' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -152,19 +158,11 @@ class UserController extends Controller
                     'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),
                 ])->save();
-
-                event(new PasswordReset($user));
             }
         );
 
-        if ($status == Password::PASSWORD_RESET) {
-            return response()->json([
-                'status' => __($status)
-            ]);
-        }
-
-        throw ValidationException::withMessages([
-            'email' => [__($status)],
-        ]);
+        return $status == Password::PASSWORD_RESET
+            ? response()->json(['status' => __($status)])
+            : response()->json(['email' => [__($status)]], 422);
     }
 }
