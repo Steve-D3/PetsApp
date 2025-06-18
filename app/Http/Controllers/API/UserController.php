@@ -31,21 +31,51 @@ class UserController extends Controller
     {
         $user = $request->user();
 
+        // Validate the request
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8'],
+            'current_password' => ['required_with:password', 'string', 'current_password:sanctum'],
+        ], [
+            'current_password.current_password' => 'The provided password is incorrect.',
         ]);
 
+        // If changing password
         if (isset($validated['password'])) {
+            // Verify current password if changing password
+            if (!Hash::check($request->current_password, $user->password)) {
+                return response()->json([
+                    'message' => 'The provided password does not match your current password.',
+                    'errors' => [
+                        'current_password' => ['The provided password does not match your current password.'],
+                    ],
+                ], 422);
+            }
+
             $validated['password'] = Hash::make($validated['password']);
         } else {
             unset($validated['password']);
         }
 
-        $user->update($validated);
+        // Remove current_password from the data before updating
+        unset($validated['current_password']);
 
-        return response()->json($user);
+        // Update user
+        $user->update($validated);
+        $user->refresh();
+
+        // If email was changed, update email_verified_at to null
+        if ($user->wasChanged('email')) {
+            $user->email_verified_at = null;
+            $user->save();
+            $user->sendEmailVerificationNotification();
+        }
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user->makeHidden(['email', 'name']),
+        ]);
     }
 
     /**

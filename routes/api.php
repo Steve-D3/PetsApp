@@ -10,6 +10,7 @@ use App\Http\Controllers\VaccinationController;
 use App\Http\Controllers\VaccineTypeController;
 use App\Http\Controllers\VetClinicController;
 use App\Http\Controllers\VeterinarianProfileController;
+use App\Http\Controllers\API\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,14 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/forgot-password', [UserController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [UserController::class, 'reset']);
 
+// Email Verification Routes
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->name('verification.verify');
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware('auth:sanctum')
+    ->name('verification.resend');
+
+// Routes
 Route::get('/test-reset-email', function () {
     try {
         $user = \App\Models\User::first();

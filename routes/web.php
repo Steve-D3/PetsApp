@@ -27,6 +27,7 @@ use App\Livewire\Forms\AppointmentForm;
 use App\Livewire\Admin\MedicalRecordsIndex;
 use App\Livewire\VetDashboard;
 use App\Livewire\AppointmentCalendar;
+use Laravel\Jetstream\Http\Controllers\ApiTokenController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -54,6 +55,10 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // API Tokens
+    Route::get('/user/api-tokens', function () {
+        return view('api-tokens.index');
+    })->name('api-tokens.index');
     // Redirect based on user role
     Route::get('/', function () {
         if (auth()->user()->role === 'admin') {
