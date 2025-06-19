@@ -57,10 +57,10 @@
                                 <select id="status" wire:model.live="status"
                                     class="appearance-none w-full pl-3 pr-10 py-2.5 text-sm border border-gray-200 dark:border-gray-600 rounded-xl bg-white/70 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 cursor-pointer"
                                     style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD1cIiA3ODhhZmZcIiBkPSJNNyAxMGw1IDUgNS01eiIvPjwvc3ZnPg==')">
-                                    <option value="upcoming">Upcoming Appointments</option>
                                     <option value="all">All Appointments</option>
                                     <option value="scheduled">Scheduled</option>
                                     <option value="confirmed">Confirmed</option>
+                                    <option value="pending">Pending</option>
                                     <option value="completed">Completed</option>
                                     <option value="cancelled">Cancelled</option>
                                 </select>
@@ -144,152 +144,152 @@
                                 <tbody
                                     class="bg-white dark:bg-gray-800/50 divide-y divide-gray-100 dark:divide-gray-700/50">
                                     @foreach($appointments as $appointment)
-                                                                    <tr
-                                                                        class="hover:bg-gray-50/80 dark:hover:bg-gray-700/30 transition-colors duration-150">
-                                                                        <td class="px-6 py-4 whitespace-nowrap">
-                                                                            <div class="flex items-center">
-                                                                                <div
-                                                                                    class="flex-shrink-0 h-9 w-9 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center mr-3">
-                                                                                    <svg class="h-5 w-5 text-indigo-500 dark:text-indigo-400" fill="none"
-                                                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                            stroke-width="1.5"
-                                                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                                    </svg>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                                                        {{ $appointment->start_time->format('M d, Y') }}
-                                                                                    </div>
-                                                                                    <div class="text-xs text-gray-500 dark:text-gray-400">
-                                                                                        {{ $appointment->start_time->format('h:i A') }}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="px-6 py-4">
-                                                                            <div class="flex items-center">
-                                                                                <div
-                                                                                    class="flex-shrink-0 h-10 w-10 rounded-xl overflow-hidden border-2 border-white dark:border-gray-700 shadow-sm">
-                                                                                    <img class="h-full w-full object-cover"
-                                                                                        src="{{ $appointment->pet->profile_photo_url }}"
-                                                                                        alt="{{ $appointment->pet->name }}"
-                                                                                        onerror="this.src='https://ui-avatars.com/api/?name='+encodeURIComponent('{{ $appointment->pet->name }}')+'&background=7c3aed&color=fff&size=128'" />
-                                                                                </div>
-                                                                                <div class="ml-4">
-                                                                                    <div
-                                                                                        class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                                                                        {{ $appointment->pet->name }}
-                                                                                    </div>
-                                                                                    <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                                                                                        <svg class="w-3.5 h-3.5 mr-1 text-gray-400" fill="none"
-                                                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                                stroke-width="2"
-                                                                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                                                        </svg>
-                                                                                        {{ $appointment->pet->owner->name }}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="px-6 py-4">
-                                                                            <div class="text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate group relative"
-                                                                                title="{{ $appointment->notes }}">
-                                                                                @if($appointment->notes)
-                                                                                    {{ $appointment->notes }}
-                                                                                    <div
-                                                                                        class="absolute z-10 hidden group-hover:block w-64 p-2 mt-1 text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600">
-                                                                                        {{ $appointment->notes }}
-                                                                                    </div>
-                                                                                @else
-                                                                                    <span class="text-gray-400 dark:text-gray-500 italic">No notes</span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="px-6 py-4 whitespace-nowrap">
-                                                                            @php
-                                                                                $statusConfig = [
-                                                                                    'scheduled' => [
-                                                                                        'bg' => 'bg-yellow-100 dark:bg-yellow-900/30',
-                                                                                        'text' => 'text-yellow-800 dark:text-yellow-200',
-                                                                                        'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
-                                                                                    ],
-                                                                                    'confirmed' => [
-                                                                                        'bg' => 'bg-blue-100 dark:bg-blue-900/30',
-                                                                                        'text' => 'text-blue-800 dark:text-blue-200',
-                                                                                        'icon' => 'M5 13l4 4L19 7',
-                                                                                    ],
-                                                                                    'completed' => [
-                                                                                        'bg' => 'bg-green-100 dark:bg-green-900/30',
-                                                                                        'text' => 'text-green-800 dark:text-green-200',
-                                                                                        'icon' => 'M5 13l4 4L19 7',
-                                                                                    ],
-                                                                                    'cancelled' => [
-                                                                                        'bg' => 'bg-red-100 dark:bg-red-900/30',
-                                                                                        'text' => 'text-red-800 dark:text-red-200',
-                                                                                        'icon' => 'M6 18L18 6M6 6l12 12',
-                                                                                    ],
-                                                                                    'no_show' => [
-                                                                                        'bg' => 'bg-gray-100 dark:bg-gray-700/50',
-                                                                                        'text' => 'text-gray-800 dark:text-gray-200',
-                                                                                        'icon' => 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
-                                                                                    ],
-                                                                                ];
+                                        <tr
+                                            class="hover:bg-gray-50/80 dark:hover:bg-gray-700/30 transition-colors duration-150">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="flex-shrink-0 h-9 w-9 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center mr-3">
+                                                        <svg class="h-5 w-5 text-indigo-500 dark:text-indigo-400" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="1.5"
+                                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {{ $appointment->start_time->format('M d, Y') }}
+                                                        </div>
+                                                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                                                            {{ $appointment->start_time->format('h:i A') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center">
+                                                    <div
+                                                        class="flex-shrink-0 h-10 w-10 rounded-xl overflow-hidden border-2 border-white dark:border-gray-700 shadow-sm">
+                                                        <img class="h-full w-full object-cover"
+                                                            src="{{ $appointment->pet->profile_photo_url }}"
+                                                            alt="{{ $appointment->pet->name }}"
+                                                            onerror="this.src='https://ui-avatars.com/api/?name='+encodeURIComponent('{{ $appointment->pet->name }}')+'&background=7c3aed&color=fff&size=128'" />
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div
+                                                            class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                                            {{ $appointment->pet->name }}
+                                                        </div>
+                                                        <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                                                            <svg class="w-3.5 h-3.5 mr-1 text-gray-400" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                            </svg>
+                                                            {{ $appointment->pet->owner->name }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate group relative"
+                                                    title="{{ $appointment->notes }}">
+                                                    @if($appointment->notes)
+                                                        {{ $appointment->notes }}
+                                                        <div
+                                                            class="absolute z-10 hidden group-hover:block w-64 p-2 mt-1 text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600">
+                                                            {{ $appointment->notes }}
+                                                        </div>
+                                                    @else
+                                                        <span class="text-gray-400 dark:text-gray-500 italic">No notes</span>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                @php
+                                                    $statusConfig = [
+                                                        'pending' => [
+                                                            'bg' => 'bg-yellow-100 dark:bg-yellow-900/30',
+                                                            'text' => 'text-yellow-800 dark:text-yellow-200',
+                                                            'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+                                                        ],
+                                                        'confirmed' => [
+                                                            'bg' => 'bg-blue-100 dark:bg-blue-900/30',
+                                                            'text' => 'text-blue-800 dark:text-blue-200',
+                                                            'icon' => 'M5 13l4 4L19 7',
+                                                        ],
+                                                        'completed' => [
+                                                            'bg' => 'bg-green-100 dark:bg-green-900/30',
+                                                            'text' => 'text-green-800 dark:text-green-200',
+                                                            'icon' => 'M5 13l4 4L19 7',
+                                                        ],
+                                                        'cancelled' => [
+                                                            'bg' => 'bg-red-100 dark:bg-red-900/30',
+                                                            'text' => 'text-red-800 dark:text-red-200',
+                                                            'icon' => 'M6 18L18 6M6 6l12 12',
+                                                        ],
+                                                        'no_show' => [
+                                                            'bg' => 'bg-gray-100 dark:bg-gray-700/50',
+                                                            'text' => 'text-gray-800 dark:text-gray-200',
+                                                            'icon' => 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
+                                                        ],
+                                                    ];
 
-                                                                                $status = $statusConfig[$appointment->status] ?? [
-                                                                                    'bg' => 'bg-gray-100 dark:bg-gray-700/50',
-                                                                                    'text' => 'text-gray-800 dark:text-gray-200',
-                                                                                    'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-                                                                                ];
-                                                                            @endphp
-                                          <div
-                                                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ $status['bg'] }} {{ $status['text'] }}">
-                                                                                <svg class="h-3 w-3 mr-1.5" fill="none" stroke="currentColor"
-                                                                                    viewBox="0 0 24 24">
-                                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                                        d="{{ $status['icon'] }}" />
-                                                                                </svg>
-                                                                                {{ str_replace('_', ' ', ucfirst($appointment->status)) }}
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                                            <div class="flex items-center justify-end space-x-2">
-                                                                                <a href="{{ route('admin.appointments.show', $appointment) }}"
-                                                                                    class="inline-flex items-center p-1.5 rounded-lg text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
-                                                                                    title="View details">
-                                                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                                                        viewBox="0 0 24 24">
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                            stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                            stroke-width="2"
-                                                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                                                    </svg>
-                                                                                </a>
-                                                                                @if(in_array($appointment->status, ['scheduled', 'confirmed']))
-                                                                                    <button wire:click="changeStatus('{{ $appointment->id }}', 'completed')"
-                                                                                        class="inline-flex items-center p-1.5 rounded-lg text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-150"
-                                                                                        title="Mark as completed">
-                                                                                        <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                                                            viewBox="0 0 24 24">
-                                                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                                stroke-width="2" d="M5 13l4 4L19 7" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                    <button wire:click="changeStatus('{{ $appointment->id }}', 'cancelled')"
-                                                                                        class="inline-flex items-center p-1.5 rounded-lg text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
-                                                                                        title="Cancel appointment">
-                                                                                        <svg class="h-4 w-4" fill="none" stroke="currentColor"
-                                                                                            viewBox="0 0 24 24">
-                                                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                @endif
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
+                                                    $status = $statusConfig[$appointment->status] ?? [
+                                                        'bg' => 'bg-gray-100 dark:bg-gray-700/50',
+                                                        'text' => 'text-gray-800 dark:text-gray-200',
+                                                        'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+                                                    ];
+                                                @endphp
+                                                <div
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ $status['bg'] }} {{ $status['text'] }}">
+                                                    <svg class="h-3 w-3 mr-1.5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="{{ $status['icon'] }}" />
+                                                    </svg>
+                                                    {{ str_replace('_', ' ', ucfirst($appointment->status)) }}
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex items-center justify-end space-x-2">
+                                                    <a href="{{ route('admin.appointments.show', $appointment) }}"
+                                                        class="inline-flex items-center p-1.5 rounded-lg text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
+                                                        title="View details">
+                                                        <svg class="h-4 w-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                        </svg>
+                                                    </a>
+                                                    @if(in_array($appointment->status, ['pending', 'confirmed']))
+                                                        <button wire:click="changeStatus('{{ $appointment->id }}', 'completed')"
+                                                            class="inline-flex items-center p-1.5 rounded-lg text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-150"
+                                                            title="Mark as completed">
+                                                            <svg class="h-4 w-4" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                        </button>
+                                                        <button wire:click="changeStatus('{{ $appointment->id }}', 'cancelled')"
+                                                            class="inline-flex items-center p-1.5 rounded-lg text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
+                                                            title="Cancel appointment">
+                                                            <svg class="h-4 w-4" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

@@ -26,6 +26,8 @@ class VetPatients extends Component
         'sortField' => ['except' => 'name'],
         'sortDirection' => ['except' => 'asc'],
     ];
+    
+    protected $listeners = ['appointment-created' => '$refresh'];
 
     public function mount()
     {

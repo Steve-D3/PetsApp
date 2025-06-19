@@ -6,12 +6,17 @@ use App\Models\User;
 use App\Models\VeterinarianProfile;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Title('Veterinarians')]
 class VetsIndex extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'tailwind';
+
     public $search = '';
-    public $perPage = 7;
+    public $perPage = 10;
 
     public function delete($vetId)
     {
@@ -35,6 +40,16 @@ class VetsIndex extends Component
         } else {
             session()->flash('error', 'Veterinarian not found.');
         }
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
+    {
+        $this->resetPage();
     }
 
     public function render()

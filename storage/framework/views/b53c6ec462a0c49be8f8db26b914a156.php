@@ -1,5 +1,14 @@
-<div class="min-h-screen bg-gray-200 dark:bg-gray-900/50 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
-    <div class="space-y-8">
+<div>
+    <!--[if BLOCK]><![endif]--><?php if($isLoading): ?>
+        <div class="min-h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-900/50">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                <p class="mt-4 text-gray-600 dark:text-gray-400">Loading pet information...</p>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="min-h-screen bg-gray-200 dark:bg-gray-900/50 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+            <div class="space-y-8">
         <!-- Flash Messages -->
         <div class="max-w-7xl mx-auto mb-6 space-y-3">
             <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
@@ -213,10 +222,17 @@
                                 <div class="relative group">
                                     <div
                                         class="aspect-w-1 aspect-h-1 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600">
-                                        <img src="<?php echo e($pet->photo ? $pet->photo : asset('images/default-pet.jpg')); ?>"
+                                        <?php
+                                            $imageUrl = $pet->photo ? (filter_var($pet->photo, FILTER_VALIDATE_URL) ? $pet->photo : asset('storage/' . $pet->photo)) : asset('images/default-pet.jpg');
+                                        ?>
+                                        <img src="<?php echo e($imageUrl); ?>"
                                             alt="<?php echo e($pet->name); ?>"
-                                            class="w-full h-full object-cover transition-opacity duration-300"
-                                            onload="this.style.opacity = '1'" style="opacity: 0;" loading="lazy">
+                                            class="w-full h-full object-cover transition-opacity duration-300 opacity-100"
+                                            <?php if(!$pet->photo): ?> 
+                                                style="object-position: center;"
+                                            <?php endif; ?>
+                                            loading="lazy"
+                                            onerror="this.onerror=null; this.src='<?php echo e(asset('images/default-pet.jpg')); ?>';">
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                                             <button type="button"
@@ -279,7 +295,7 @@
                                                 <dt class="text-xs font-medium text-gray-500 dark:text-gray-400">Species
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
-                                                    <?php echo e($pet->species->name ?? 'N/A'); ?>
+                                                    <?php echo e($pet->species ?? 'N/A'); ?>
 
                                                 </dd>
                                             </div>
@@ -287,7 +303,7 @@
                                                 <dt class="text-xs font-medium text-gray-500 dark:text-gray-400">Breed
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
-                                                    <?php echo e($pet->breed->name ?? 'Unknown'); ?>
+                                                    <?php echo e($pet->breed ?? 'Unknown'); ?>
 
                                                 </dd>
                                             </div>
@@ -304,11 +320,26 @@
                                                 <dt class="text-xs font-medium text-gray-500 dark:text-gray-400">Date of
                                                     Birth</dt>
                                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
-                                                    <!--[if BLOCK]><![endif]--><?php if($pet->date_of_birth): ?>
-                                                        <?php echo e($pet->date_of_birth->format('M d, Y')); ?>
+                                                    <!--[if BLOCK]><![endif]--><?php if($pet->birth_date): ?>
+                                                        <?php
+                                                            $birthDate = \Carbon\Carbon::parse($pet->birth_date);
+                                                            $now = \Carbon\Carbon::now();
+                                                            $age = $birthDate->diff($now);
+                                                            $ageString = '';
+                                                            if ($age->y > 0) {
+                                                                $ageString .= $age->y . ' year' . ($age->y > 1 ? 's' : '');
+                                                            }
+                                                            if ($age->m > 0) {
+                                                                if ($ageString !== '') $ageString .= ', ';
+                                                                $ageString .= $age->m . ' month' . ($age->m > 1 ? 's' : '');
+                                                            }
+                                                            if ($ageString === '') {
+                                                                $ageString = 'Less than a month';
+                                                            }
+                                                        ?>
+                                                        <?php echo e($pet->birth_date); ?>
 
-                                                        <span
-                                                            class="text-gray-500 dark:text-gray-400">(<?php echo e($pet->age ?? 'N/A'); ?>)</span>
+                                                        <span class="text-gray-500 dark:text-gray-400">(<?php echo e($ageString); ?>)</span>
                                                     <?php else: ?>
                                                         Not specified
                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -442,7 +473,7 @@
 
                             </p>
                         </div>
-                        <button wire:click="$set('showAddModal', true)"
+                        <!-- <button wire:click="$set('showAddModal', true)"
                             class="inline-flex items-center px-3.5 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150">
                             <svg class="-ml-0.5 mr-1.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -451,12 +482,12 @@
                                     clip-rule="evenodd" />
                             </svg>
                             New Appointment
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
                 <div class="overflow-x-auto no-scrollbar">
-                    <!--[if BLOCK]><![endif]--><?php if($pet->appointments->count() > 0): ?>
+                    <!--[if BLOCK]><![endif]--><?php if(count($appointments) > 0): ?>
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
@@ -482,7 +513,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $pet->appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
@@ -558,20 +589,27 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex justify-end space-x-2">
+                                                <div class="flex space-x-1">
+                                                    <button
+                                                        wire:click="$dispatch('showAppointmentModal', { id: <?php echo e($appointment->id); ?> })"
+                                                        class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 p-1.5 rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
+                                                        title="View/Edit Appointment">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        wire:click="confirmDelete(<?php echo e($appointment->id); ?>)"
+                                                        class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-150"
+                                                        title="Delete Appointment">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                                 <button
-                                                    wire:click="$dispatch('showAppointmentModal', { id: <?php echo e($appointment->id); ?> })"
-                                                    class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 p-1.5 rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
-                                                    title="View details">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    wire:click="$dispatch('editAppointment', { id: <?php echo e($appointment->id); ?> })"
+                                                    wire:click="editAppointment(<?php echo e($appointment->id); ?>)"
                                                     class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1.5 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors duration-150"
                                                     title="Edit appointment">
                                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -580,31 +618,71 @@
                                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
                                                 </button>
-                                                <button
-                                                    wire:click="$dispatch('confirmDeleteAppointment', { id: <?php echo e($appointment->id); ?> })"
-                                                    class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-150"
-                                                    title="Delete appointment">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
-                        <div
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-700/50 text-right border-t border-gray-200 dark:border-gray-700">
-                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                Showing <?php echo e($pet->appointments->count()); ?>
+                        <!--[if BLOCK]><![endif]--><?php if(is_array($pagination) && count($pagination) > 0): ?>
+                        <div class="px-6 py-3 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex flex-col md:flex-row items-center justify-between">
+                                <div class="mb-2 md:mb-0">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        <!--[if BLOCK]><![endif]--><?php if(isset($pagination['current_page']) && isset($pagination['per_page']) && isset($pagination['total'])): ?>
+                                            Showing <?php echo e(($pagination['current_page'] - 1) * $pagination['per_page'] + 1); ?> to <?php echo e(min($pagination['current_page'] * $pagination['per_page'], $pagination['total'])); ?> of <?php echo e($pagination['total']); ?> appointments
+                                        <?php else: ?>
+                                            Showing <?php echo e(count($appointments)); ?> appointments
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <select wire:model.live="perPage" class="text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="5">5 per page</option>
+                                        <option value="10">10 per page</option>
+                                        <option value="25">25 per page</option>
+                                        <option value="50">50 per page</option>
+                                    </select>
+                                    <!--[if BLOCK]><![endif]--><?php if(isset($pagination['links']) && is_array($pagination['links'])): ?>
+                                    <nav class="flex space-x-1">
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $pagination['links']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($link['url'] !== null): ?>
+                                                <?php
+                                                    $pageNumber = null;
+                                                    if (is_numeric(trim(strip_tags($link['label'])))) {
+                                                        $pageNumber = (int)trim(strip_tags($link['label']));
+                                                    } elseif (str_contains($link['label'], 'Previous')) {
+                                                        $pageNumber = max(1, $pagination['current_page'] - 1);
+                                                    } elseif (str_contains($link['label'], 'Next')) {
+                                                        $pageNumber = min($pagination['last_page'], $pagination['current_page'] + 1);
+                                                    }
+                                                ?>
 
-                                <?php echo e(Str::plural('appointment', $pet->appointments->count())); ?>
+                                                <!--[if BLOCK]><![endif]--><?php if($pageNumber !== null): ?>
+                                                    <button
+                                                        type="button"
+                                                        wire:click="$set('page', <?php echo e($pageNumber); ?>)"
+                                                        <?php if($link['active']): ?>
+                                                            aria-current="page"
+                                                        <?php endif; ?>
+                                                        class="px-3 py-1 border rounded <?php echo e($link['active'] ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-gray-700 border-gray-300 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'); ?>">
+                                                        <?php echo $link['label']; ?>
 
-                            </p>
+                                                    </button>
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php else: ?>
+                                                <span class="px-3 py-1 border rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                                                    <?php echo $link['label']; ?>
+
+                                                </span>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    </nav>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                </div>
+                            </div>
                         </div>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     <?php else: ?>
                         <div class="p-8 text-center">
                             <div
@@ -669,6 +747,24 @@
 
              <?php $__env->slot('content', null, []); ?> 
                 <div class="space-y-4">
+                    <!--[if BLOCK]><![endif]--><?php if(session('error')): ?>
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-red-700">
+                                        <?php echo e(session('error')); ?>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
                     <!-- Start Time -->
                     <div>
                         <?php if (isset($component)) { $__componentOriginald8ba2b4c22a13c55321e34443c386276 = $component; } ?>
@@ -693,14 +789,14 @@
 <?php endif; ?>
                         <?php if (isset($component)) { $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input','data' => ['id' => 'startTimeToEdit','type' => 'datetime-local','class' => 'mt-1 block w-full','wire:model' => 'startTimeToEdit','required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input','data' => ['id' => 'startTimeToEdit','type' => 'datetime-local','class' => 'mt-1 block w-full dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200','wire:model.defer' => 'startTimeToEdit','required' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['id' => 'startTimeToEdit','type' => 'datetime-local','class' => 'mt-1 block w-full','wire:model' => 'startTimeToEdit','required' => true]); ?>
+<?php $component->withAttributes(['id' => 'startTimeToEdit','type' => 'datetime-local','class' => 'mt-1 block w-full dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200','wire:model.defer' => 'startTimeToEdit','required' => true]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1)): ?>
@@ -755,12 +851,15 @@
 <?php $component = $__componentOriginald8ba2b4c22a13c55321e34443c386276; ?>
 <?php unset($__componentOriginald8ba2b4c22a13c55321e34443c386276); ?>
 <?php endif; ?>
-                        <select id="statusToEdit" wire:model="statusToEdit"
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
+                        <select 
+                            id="statusToEdit" 
+                            wire:model.defer="statusToEdit"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm"
+                        >
+                            <option value="pending" <?php if(old('statusToEdit', $statusToEdit ?? '') == 'pending'): ?> selected <?php endif; ?>>Pending</option>
+                            <option value="confirmed" <?php if(old('statusToEdit', $statusToEdit ?? '') == 'confirmed'): ?> selected <?php endif; ?>>Confirmed</option>
+                            <option value="completed" <?php if(old('statusToEdit', $statusToEdit ?? '') == 'completed'): ?> selected <?php endif; ?>>Completed</option>
+                            <option value="cancelled" <?php if(old('statusToEdit', $statusToEdit ?? '') == 'cancelled'): ?> selected <?php endif; ?>>Cancelled</option>
                         </select>
                         <?php if (isset($component)) { $__componentOriginalf94ed9c5393ef72725d159fe01139746 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf94ed9c5393ef72725d159fe01139746 = $attributes; } ?>
@@ -806,26 +905,12 @@
 <?php $component = $__componentOriginald8ba2b4c22a13c55321e34443c386276; ?>
 <?php unset($__componentOriginald8ba2b4c22a13c55321e34443c386276); ?>
 <?php endif; ?>
-                        <?php if (isset($component)) { $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input','data' => ['id' => 'notesToEdit','type' => 'text','class' => 'mt-1 block w-full','wire:model' => 'notesToEdit']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('input'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['id' => 'notesToEdit','type' => 'text','class' => 'mt-1 block w-full','wire:model' => 'notesToEdit']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1)): ?>
-<?php $attributes = $__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1; ?>
-<?php unset($__attributesOriginalc2fcfa88dc54fee60e0757a7e0572df1); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1)): ?>
-<?php $component = $__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1; ?>
-<?php unset($__componentOriginalc2fcfa88dc54fee60e0757a7e0572df1); ?>
-<?php endif; ?>
+                        <textarea 
+                            id="notesToEdit" 
+                            rows="3"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm"
+                            wire:model.defer="notesToEdit"
+                        ></textarea>
                         <?php if (isset($component)) { $__componentOriginalf94ed9c5393ef72725d159fe01139746 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf94ed9c5393ef72725d159fe01139746 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.input-error','data' => ['for' => 'notesToEdit','class' => 'mt-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -870,10 +955,15 @@
 <?php $component = $__componentOriginald8ba2b4c22a13c55321e34443c386276; ?>
 <?php unset($__componentOriginald8ba2b4c22a13c55321e34443c386276); ?>
 <?php endif; ?>
-                        <select id="veterinarianIdToEdit" wire:model="veterinarianIdToEdit"
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                        <select 
+                            id="veterinarianIdToEdit" 
+                            wire:model.defer="veterinarianIdToEdit"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm"
+                            required
+                        >
+                            <option value="">Select a veterinarian</option>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $veterinarians; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($vet->id); ?>">
+                                <option value="<?php echo e($vet->id); ?>" <?php if(old('veterinarianIdToEdit', $veterinarianIdToEdit ?? '') == $vet->id): ?> selected <?php endif; ?>>
                                     <?php echo e($vet->name); ?>
 
                                 </option>
@@ -929,16 +1019,21 @@
 
                 <?php if (isset($component)) { $__componentOriginald0f1fd2689e4bb7060122a5b91fe8561 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald0f1fd2689e4bb7060122a5b91fe8561 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.button','data' => ['class' => 'ml-3','wire:click' => 'updateAppointment','wire:loading.attr' => 'disabled']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.button','data' => ['class' => 'ml-3','wire:click' => 'updateAppointment','wire:loading.attr' => 'disabled','wire:target' => 'updateAppointment']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'ml-3','wire:click' => 'updateAppointment','wire:loading.attr' => 'disabled']); ?>
-                    <?php echo e(__('Update Appointment')); ?>
-
+<?php $component->withAttributes(['class' => 'ml-3','wire:click' => 'updateAppointment','wire:loading.attr' => 'disabled','wire:target' => 'updateAppointment']); ?>
+                    <span wire:loading wire:target="updateAppointment" class="mr-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                    <span><?php echo e(__('Update Appointment')); ?></span>
                  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginald0f1fd2689e4bb7060122a5b91fe8561)): ?>
@@ -1201,6 +1296,88 @@
 <?php $component = $__componentOriginal49bd1c1dd878e22e0fb84faabf295a3f; ?>
 <?php unset($__componentOriginal49bd1c1dd878e22e0fb84faabf295a3f); ?>
 <?php endif; ?>
-    </div>
+
+        <!-- Delete Confirmation Modal -->
+        <?php if (isset($component)) { $__componentOriginal49bd1c1dd878e22e0fb84faabf295a3f = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal49bd1c1dd878e22e0fb84faabf295a3f = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dialog-modal','data' => ['wire:model.live' => 'showDeleteModal']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('dialog-modal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['wire:model.live' => 'showDeleteModal']); ?>
+             <?php $__env->slot('title', null, []); ?> 
+                <?php echo e(__('Delete Appointment')); ?>
+
+             <?php $__env->endSlot(); ?>
+
+             <?php $__env->slot('content', null, []); ?> 
+                <?php echo e(__('Are you sure you want to delete this appointment? This action cannot be undone.')); ?>
+
+             <?php $__env->endSlot(); ?>
+
+             <?php $__env->slot('footer', null, []); ?> 
+                <?php if (isset($component)) { $__componentOriginal3b0e04e43cf890250cc4d85cff4d94af = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal3b0e04e43cf890250cc4d85cff4d94af = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.secondary-button','data' => ['wire:click' => '$set(\'showDeleteModal\', false)','wire:loading.attr' => 'disabled']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('secondary-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['wire:click' => '$set(\'showDeleteModal\', false)','wire:loading.attr' => 'disabled']); ?>
+                    <?php echo e(__('Cancel')); ?>
+
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal3b0e04e43cf890250cc4d85cff4d94af)): ?>
+<?php $attributes = $__attributesOriginal3b0e04e43cf890250cc4d85cff4d94af; ?>
+<?php unset($__attributesOriginal3b0e04e43cf890250cc4d85cff4d94af); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal3b0e04e43cf890250cc4d85cff4d94af)): ?>
+<?php $component = $__componentOriginal3b0e04e43cf890250cc4d85cff4d94af; ?>
+<?php unset($__componentOriginal3b0e04e43cf890250cc4d85cff4d94af); ?>
+<?php endif; ?>
+
+                <?php if (isset($component)) { $__componentOriginal656e8c5ea4d9a4fa173298297bfe3f11 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal656e8c5ea4d9a4fa173298297bfe3f11 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.danger-button','data' => ['class' => 'ml-3','wire:click' => 'deleteAppointment','wire:loading.attr' => 'disabled']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('danger-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'ml-3','wire:click' => 'deleteAppointment','wire:loading.attr' => 'disabled']); ?>
+                    <?php echo e(__('Delete Appointment')); ?>
+
+                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal656e8c5ea4d9a4fa173298297bfe3f11)): ?>
+<?php $attributes = $__attributesOriginal656e8c5ea4d9a4fa173298297bfe3f11; ?>
+<?php unset($__attributesOriginal656e8c5ea4d9a4fa173298297bfe3f11); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal656e8c5ea4d9a4fa173298297bfe3f11)): ?>
+<?php $component = $__componentOriginal656e8c5ea4d9a4fa173298297bfe3f11; ?>
+<?php unset($__componentOriginal656e8c5ea4d9a4fa173298297bfe3f11); ?>
+<?php endif; ?>
+             <?php $__env->endSlot(); ?>
+         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal49bd1c1dd878e22e0fb84faabf295a3f)): ?>
+<?php $attributes = $__attributesOriginal49bd1c1dd878e22e0fb84faabf295a3f; ?>
+<?php unset($__attributesOriginal49bd1c1dd878e22e0fb84faabf295a3f); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal49bd1c1dd878e22e0fb84faabf295a3f)): ?>
+<?php $component = $__componentOriginal49bd1c1dd878e22e0fb84faabf295a3f; ?>
+<?php unset($__componentOriginal49bd1c1dd878e22e0fb84faabf295a3f); ?>
+<?php endif; ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 </div>
 <?php /**PATH /var/www/html/resources/views/livewire/admin/pet-show.blade.php ENDPATH**/ ?>

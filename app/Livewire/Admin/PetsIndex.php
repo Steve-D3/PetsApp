@@ -6,10 +6,15 @@ use App\Models\Pet;
 use DateTime;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Title('Pets')]
 class PetsIndex extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'tailwind';
+
     public $filterSpecies = '';
     public $filterSterilized = '';
     public $filterMicrochip = '';
@@ -37,7 +42,7 @@ class PetsIndex extends Component
             })
             ->with('owner')
             ->orderBy('name')
-            ->paginate(7);
+            ->paginate(10);
 
         return view('livewire.admin.pets-index', compact('pets'));
     }
@@ -71,5 +76,26 @@ class PetsIndex extends Component
     public function resetFilters()
     {
         $this->reset(['search', 'filterSpecies', 'filterSterilized', 'filterMicrochip']);
+        $this->resetPage();
+    }
+    
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    
+    public function updatingFilterSpecies()
+    {
+        $this->resetPage();
+    }
+    
+    public function updatingFilterSterilized()
+    {
+        $this->resetPage();
+    }
+    
+    public function updatingFilterMicrochip()
+    {
+        $this->resetPage();
     }
 }

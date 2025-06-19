@@ -465,7 +465,7 @@
                                                         <span class="sr-only">Edit</span>
                                                     </a>
                                                     <button type="button"
-                                                            wire:click="$emit('openModal', 'vet.pet-appointment-modal', <?php echo e(json_encode(['petId' => $pet->id])); ?>)"
+                                                            wire:click="$dispatch('openModal', { component: 'vet.pet-appointment-modal', arguments: {petId: <?php echo e($pet->id); ?>}})"
                                                             class="p-1.5 rounded-full text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-gray-700 transition-colors duration-150"
                                                             title="New appointment">
                                                         <?php if (isset($component)) { $__componentOriginal261827c949f61002cd2898b3f98b1d37 = $component; } ?>

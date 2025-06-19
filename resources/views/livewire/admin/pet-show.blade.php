@@ -1,5 +1,14 @@
-<div class="min-h-screen bg-gray-200 dark:bg-gray-900/50 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
-    <div class="space-y-8">
+<div>
+    @if($isLoading)
+        <div class="min-h-screen flex items-center justify-center bg-gray-200 dark:bg-gray-900/50">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                <p class="mt-4 text-gray-600 dark:text-gray-400">Loading pet information...</p>
+            </div>
+        </div>
+    @else
+        <div class="min-h-screen bg-gray-200 dark:bg-gray-900/50 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+            <div class="space-y-8">
         <!-- Flash Messages -->
         <div class="max-w-7xl mx-auto mb-6 space-y-3">
             @if (session()->has('message'))
@@ -208,10 +217,17 @@
                                 <div class="relative group">
                                     <div
                                         class="aspect-w-1 aspect-h-1 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700/50 border-2 border-gray-200 dark:border-gray-600">
-                                        <img src="{{ $pet->photo ? $pet->photo : asset('images/default-pet.jpg') }}"
+                                        @php
+                                            $imageUrl = $pet->photo ? (filter_var($pet->photo, FILTER_VALIDATE_URL) ? $pet->photo : asset('storage/' . $pet->photo)) : asset('images/default-pet.jpg');
+                                        @endphp
+                                        <img src="{{ $imageUrl }}"
                                             alt="{{ $pet->name }}"
-                                            class="w-full h-full object-cover transition-opacity duration-300"
-                                            onload="this.style.opacity = '1'" style="opacity: 0;" loading="lazy">
+                                            class="w-full h-full object-cover transition-opacity duration-300 opacity-100"
+                                            @if(!$pet->photo) 
+                                                style="object-position: center;"
+                                            @endif
+                                            loading="lazy"
+                                            onerror="this.onerror=null; this.src='{{ asset('images/default-pet.jpg') }}';">
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                                             <button type="button"
@@ -273,14 +289,14 @@
                                                 <dt class="text-xs font-medium text-gray-500 dark:text-gray-400">Species
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
-                                                    {{ $pet->species->name ?? 'N/A' }}
+                                                    {{ $pet->species ?? 'N/A' }}
                                                 </dd>
                                             </div>
                                             <div>
                                                 <dt class="text-xs font-medium text-gray-500 dark:text-gray-400">Breed
                                                 </dt>
                                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
-                                                    {{ $pet->breed->name ?? 'Unknown' }}
+                                                    {{ $pet->breed ?? 'Unknown' }}
                                                 </dd>
                                             </div>
                                         </dl>
@@ -296,10 +312,25 @@
                                                 <dt class="text-xs font-medium text-gray-500 dark:text-gray-400">Date of
                                                     Birth</dt>
                                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
-                                                    @if($pet->date_of_birth)
-                                                        {{ $pet->date_of_birth->format('M d, Y') }}
-                                                        <span
-                                                            class="text-gray-500 dark:text-gray-400">({{ $pet->age ?? 'N/A' }})</span>
+                                                    @if($pet->birth_date)
+                                                        @php
+                                                            $birthDate = \Carbon\Carbon::parse($pet->birth_date);
+                                                            $now = \Carbon\Carbon::now();
+                                                            $age = $birthDate->diff($now);
+                                                            $ageString = '';
+                                                            if ($age->y > 0) {
+                                                                $ageString .= $age->y . ' year' . ($age->y > 1 ? 's' : '');
+                                                            }
+                                                            if ($age->m > 0) {
+                                                                if ($ageString !== '') $ageString .= ', ';
+                                                                $ageString .= $age->m . ' month' . ($age->m > 1 ? 's' : '');
+                                                            }
+                                                            if ($ageString === '') {
+                                                                $ageString = 'Less than a month';
+                                                            }
+                                                        @endphp
+                                                        {{ $pet->birth_date }}
+                                                        <span class="text-gray-500 dark:text-gray-400">({{ $ageString }})</span>
                                                     @else
                                                         Not specified
                                                     @endif
@@ -424,7 +455,7 @@
                                 Scheduled visits and medical appointments for {{ $pet->name }}
                             </p>
                         </div>
-                        <button wire:click="$set('showAddModal', true)"
+                        <!-- <button wire:click="$set('showAddModal', true)"
                             class="inline-flex items-center px-3.5 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150">
                             <svg class="-ml-0.5 mr-1.5 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -433,12 +464,12 @@
                                     clip-rule="evenodd" />
                             </svg>
                             New Appointment
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
                 <div class="overflow-x-auto no-scrollbar">
-                    @if($pet->appointments->count() > 0)
+                    @if(count($appointments) > 0)
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
@@ -464,7 +495,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                @foreach($pet->appointments as $appointment)
+                                @foreach($appointments as $appointment)
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
@@ -533,20 +564,27 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex justify-end space-x-2">
+                                                <div class="flex space-x-1">
+                                                    <button
+                                                        wire:click="$dispatch('showAppointmentModal', { id: {{ $appointment->id }} })"
+                                                        class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 p-1.5 rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
+                                                        title="View/Edit Appointment">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        wire:click="confirmDelete({{ $appointment->id }})"
+                                                        class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-150"
+                                                        title="Delete Appointment">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                                 <button
-                                                    wire:click="$dispatch('showAppointmentModal', { id: {{ $appointment->id }} })"
-                                                    class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 p-1.5 rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
-                                                    title="View details">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    wire:click="$dispatch('editAppointment', { id: {{ $appointment->id }} })"
+                                                    wire:click="editAppointment({{ $appointment->id }})"
                                                     class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1.5 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors duration-150"
                                                     title="Edit appointment">
                                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -555,29 +593,69 @@
                                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
                                                 </button>
-                                                <button
-                                                    wire:click="$dispatch('confirmDeleteAppointment', { id: {{ $appointment->id }} })"
-                                                    class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors duration-150"
-                                                    title="Delete appointment">
-                                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        <div
-                            class="px-6 py-3 bg-gray-50 dark:bg-gray-700/50 text-right border-t border-gray-200 dark:border-gray-700">
-                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                Showing {{ $pet->appointments->count() }}
-                                {{ Str::plural('appointment', $pet->appointments->count()) }}
-                            </p>
+                        @if(is_array($pagination) && count($pagination) > 0)
+                        <div class="px-6 py-3 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex flex-col md:flex-row items-center justify-between">
+                                <div class="mb-2 md:mb-0">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        @if(isset($pagination['current_page']) && isset($pagination['per_page']) && isset($pagination['total']))
+                                            Showing {{ ($pagination['current_page'] - 1) * $pagination['per_page'] + 1 }} to {{ min($pagination['current_page'] * $pagination['per_page'], $pagination['total']) }} of {{ $pagination['total'] }} appointments
+                                        @else
+                                            Showing {{ count($appointments) }} appointments
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <select wire:model.live="perPage" class="text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                        <option value="5">5 per page</option>
+                                        <option value="10">10 per page</option>
+                                        <option value="25">25 per page</option>
+                                        <option value="50">50 per page</option>
+                                    </select>
+                                    @if(isset($pagination['links']) && is_array($pagination['links']))
+                                    <nav class="flex space-x-1">
+                                        @foreach($pagination['links'] as $index => $link)
+                                            @if($link['url'] !== null)
+                                                @php
+                                                    $pageNumber = null;
+                                                    if (is_numeric(trim(strip_tags($link['label'])))) {
+                                                        $pageNumber = (int)trim(strip_tags($link['label']));
+                                                    } elseif (str_contains($link['label'], 'Previous')) {
+                                                        $pageNumber = max(1, $pagination['current_page'] - 1);
+                                                    } elseif (str_contains($link['label'], 'Next')) {
+                                                        $pageNumber = min($pagination['last_page'], $pagination['current_page'] + 1);
+                                                    }
+                                                @endphp
+
+                                                @if($pageNumber !== null)
+                                                    <button
+                                                        type="button"
+                                                        wire:click="$set('page', {{ $pageNumber }})"
+                                                        @if($link['active'])
+                                                            aria-current="page"
+                                                        @endif
+                                                        class="px-3 py-1 border rounded {{ $link['active'] ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white dark:bg-gray-700 border-gray-300 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600' }}">
+                                                        {!! $link['label'] !!}
+                                                    </button>
+                                                @endif
+                                            @else
+                                                <span class="px-3 py-1 border rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                                                    {!! $link['label'] !!}
+                                                </span>
+                                            @endif
+                                        @endforeach
+                                    </nav>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
+                        @endif
                     @else
                         <div class="p-8 text-center">
                             <div
@@ -632,23 +710,48 @@
 
             <x-slot name="content">
                 <div class="space-y-4">
+                    @if(session('error'))
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-red-700">
+                                        {{ session('error') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Start Time -->
                     <div>
                         <x-label for="startTimeToEdit" value="{{ __('Start Time') }}" />
-                        <x-input id="startTimeToEdit" type="datetime-local" class="mt-1 block w-full"
-                            wire:model="startTimeToEdit" required />
+                        <x-input 
+                            id="startTimeToEdit" 
+                            type="datetime-local" 
+                            class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
+                            wire:model.defer="startTimeToEdit" 
+                            required 
+                        />
                         <x-input-error for="startTimeToEdit" class="mt-1" />
                     </div>
 
                     <!-- Status -->
                     <div>
                         <x-label for="statusToEdit" value="{{ __('Status') }}" />
-                        <select id="statusToEdit" wire:model="statusToEdit"
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
+                        <select 
+                            id="statusToEdit" 
+                            wire:model.defer="statusToEdit"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm"
+                        >
+                            <option value="pending" @if(old('statusToEdit', $statusToEdit ?? '') == 'pending') selected @endif>Pending</option>
+                            <option value="confirmed" @if(old('statusToEdit', $statusToEdit ?? '') == 'confirmed') selected @endif>Confirmed</option>
+                            <option value="completed" @if(old('statusToEdit', $statusToEdit ?? '') == 'completed') selected @endif>Completed</option>
+                            <option value="cancelled" @if(old('statusToEdit', $statusToEdit ?? '') == 'cancelled') selected @endif>Cancelled</option>
                         </select>
                         <x-input-error for="statusToEdit" class="mt-1" />
                     </div>
@@ -656,17 +759,27 @@
                     <!-- Notes -->
                     <div>
                         <x-label for="notesToEdit" value="{{ __('Notes') }}" />
-                        <x-input id="notesToEdit" type="text" class="mt-1 block w-full" wire:model="notesToEdit" />
+                        <textarea 
+                            id="notesToEdit" 
+                            rows="3"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm"
+                            wire:model.defer="notesToEdit"
+                        ></textarea>
                         <x-input-error for="notesToEdit" class="mt-1" />
                     </div>
 
                     <!-- Veterinarian -->
                     <div>
                         <x-label for="veterinarianIdToEdit" value="{{ __('Veterinarian') }}" />
-                        <select id="veterinarianIdToEdit" wire:model="veterinarianIdToEdit"
-                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm">
+                        <select 
+                            id="veterinarianIdToEdit" 
+                            wire:model.defer="veterinarianIdToEdit"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 rounded-md shadow-sm"
+                            required
+                        >
+                            <option value="">Select a veterinarian</option>
                             @foreach($veterinarians as $vet)
-                                <option value="{{ $vet->id }}">
+                                <option value="{{ $vet->id }}" @if(old('veterinarianIdToEdit', $veterinarianIdToEdit ?? '') == $vet->id) selected @endif>
                                     {{ $vet->name }}
                                 </option>
                             @endforeach
@@ -681,8 +794,19 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-button class="ml-3" wire:click="updateAppointment" wire:loading.attr="disabled">
-                    {{ __('Update Appointment') }}
+                <x-button 
+                    class="ml-3" 
+                    wire:click="updateAppointment" 
+                    wire:loading.attr="disabled"
+                    wire:target="updateAppointment"
+                >
+                    <span wire:loading wire:target="updateAppointment" class="mr-2">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                    <span>{{ __('Update Appointment') }}</span>
                 </x-button>
             </x-slot>
         </x-dialog-modal>
@@ -738,5 +862,29 @@
                 </x-button>
             </x-slot>
         </x-dialog-modal>
-    </div>
+
+        <!-- Delete Confirmation Modal -->
+        <x-dialog-modal wire:model.live="showDeleteModal">
+            <x-slot name="title">
+                {{ __('Delete Appointment') }}
+            </x-slot>
+
+            <x-slot name="content">
+                {{ __('Are you sure you want to delete this appointment? This action cannot be undone.') }}
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-secondary-button wire:click="$set('showDeleteModal', false)" wire:loading.attr="disabled">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button class="ml-3" wire:click="deleteAppointment" wire:loading.attr="disabled">
+                    {{ __('Delete Appointment') }}
+                </x-danger-button>
+            </x-slot>
+        </x-dialog-modal>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

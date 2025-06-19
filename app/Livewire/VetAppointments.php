@@ -49,7 +49,10 @@ class VetAppointments extends Component
         switch ($this->status) {
             case 'upcoming':
                 $query->where('start_time', '>=', now())
-                    ->whereIn('status', ['scheduled', 'confirmed']);
+                    ->whereIn('status', ['pending', 'scheduled', 'confirmed']);
+                break;
+            case 'pending':
+                $query->where('status', 'pending');
                 break;
             case 'completed':
                 $query->where('status', 'completed');
