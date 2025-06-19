@@ -1,4 +1,4 @@
-<div class="py-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+<div class="py-6 bg-gray-200 dark:bg-gray-900 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-xl mb-8 transition-all duration-200">

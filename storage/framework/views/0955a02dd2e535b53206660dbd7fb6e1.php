@@ -6,11 +6,13 @@
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center">
                         <h1 class="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate">
-                            {{ $veterinarianProfile->user->name }}
+                            <?php echo e($veterinarianProfile->user->name); ?>
+
                         </h1>
                         <span
                             class="ml-3 px-3 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                            {{ $veterinarianProfile->specialty ?? 'Veterinarian' }}
+                            <?php echo e($veterinarianProfile->specialty ?? 'Veterinarian'); ?>
+
                         </span>
                     </div>
                     <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
@@ -21,7 +23,8 @@
                                     d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Member since {{ $veterinarianProfile->created_at->format('M Y') }}
+                            Member since <?php echo e($veterinarianProfile->created_at->format('M Y')); ?>
+
                         </div>
                         <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
                             <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
@@ -30,12 +33,12 @@
                                 <path
                                     d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                             </svg>
-                            {{ $veterinarianProfile->appointments()->count() }} appointments
+                            <?php echo e($veterinarianProfile->appointments()->count()); ?> appointments
                         </div>
                     </div>
                 </div>
                 <div class="mt-4 flex md:mt-0 md:ml-4 space-x-3">
-                    <a href="mailto:{{ $veterinarianProfile->user->email }}"
+                    <a href="mailto:<?php echo e($veterinarianProfile->user->email); ?>"
                         class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600">
                         <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20" fill="currentColor">
@@ -44,7 +47,7 @@
                         </svg>
                         Email
                     </a>
-                    <a href="tel:{{ $veterinarianProfile->phone_number }}"
+                    <a href="tel:<?php echo e($veterinarianProfile->phone_number); ?>"
                         class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -70,14 +73,15 @@
                             <div class="flex items-center justify-center">
                                 <div
                                     class="h-24 w-24 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-200 text-2xl font-bold">
-                                    {{ substr($veterinarianProfile->user->name, 0, 1) }}
+                                    <?php echo e(substr($veterinarianProfile->user->name, 0, 1)); ?>
+
                                 </div>
                             </div>
                             <div class="mt-4 text-center">
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                                    {{ $veterinarianProfile->user->name }}</h3>
+                                    <?php echo e($veterinarianProfile->user->name); ?></h3>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    {{ $veterinarianProfile->specialty ?? 'Veterinarian' }}</p>
+                                    <?php echo e($veterinarianProfile->specialty ?? 'Veterinarian'); ?></p>
                             </div>
                         </div>
                         <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
@@ -85,31 +89,34 @@
                                 <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</dt>
                                     <dd class="mt-1 text-sm text-gray-900 dark:text-white sm:mt-0 sm:col-span-2">
-                                        <a href="mailto:{{ $veterinarianProfile->user->email }}"
+                                        <a href="mailto:<?php echo e($veterinarianProfile->user->email); ?>"
                                             class="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
-                                            {{ $veterinarianProfile->user->email }}
+                                            <?php echo e($veterinarianProfile->user->email); ?>
+
                                         </a>
                                     </dd>
                                 </div>
-                                @if($veterinarianProfile->phone_number)
+                                <!--[if BLOCK]><![endif]--><?php if($veterinarianProfile->phone_number): ?>
                                     <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</dt>
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-white sm:mt-0 sm:col-span-2">
-                                            <a href="tel:{{ $veterinarianProfile->phone_number }}"
+                                            <a href="tel:<?php echo e($veterinarianProfile->phone_number); ?>"
                                                 class="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
-                                                {{ $veterinarianProfile->phone_number }}
+                                                <?php echo e($veterinarianProfile->phone_number); ?>
+
                                             </a>
                                         </dd>
                                     </div>
-                                @endif
-                                @if($veterinarianProfile->bio)
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <!--[if BLOCK]><![endif]--><?php if($veterinarianProfile->bio): ?>
                                     <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                                         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Bio</dt>
                                         <dd class="mt-1 text-sm text-gray-900 dark:text-white sm:mt-0 sm:col-span-2">
-                                            {{ $veterinarianProfile->bio }}
+                                            <?php echo e($veterinarianProfile->bio); ?>
+
                                         </dd>
                                     </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </dl>
                         </div>
                     </div>
@@ -121,26 +128,28 @@
                         <h2 class="text-lg font-medium text-gray-900 dark:text-white">Clinic Information</h2>
                         <div class="mt-6">
                             <h3 class="text-md font-medium text-gray-900 dark:text-white">
-                                {{ $veterinarianProfile->clinic->name }}</h3>
+                                <?php echo e($veterinarianProfile->clinic->name); ?></h3>
                             <div class="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                                <p>{{ $veterinarianProfile->clinic->address }}</p>
-                                <p>{{ $veterinarianProfile->clinic->postal_code }}
-                                    {{ $veterinarianProfile->clinic->city }}</p>
-                                <p>{{ $veterinarianProfile->clinic->country }}</p>
+                                <p><?php echo e($veterinarianProfile->clinic->address); ?></p>
+                                <p><?php echo e($veterinarianProfile->clinic->postal_code); ?>
+
+                                    <?php echo e($veterinarianProfile->clinic->city); ?></p>
+                                <p><?php echo e($veterinarianProfile->clinic->country); ?></p>
                             </div>
-                            @if($veterinarianProfile->clinic->website)
+                            <!--[if BLOCK]><![endif]--><?php if($veterinarianProfile->clinic->website): ?>
                                 <div class="mt-4">
-                                    <a href="{{ $veterinarianProfile->clinic->website }}" target="_blank"
+                                    <a href="<?php echo e($veterinarianProfile->clinic->website); ?>" target="_blank"
                                         rel="noopener noreferrer"
                                         class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
                                         <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                         </svg>
-                                        {{ parse_url($veterinarianProfile->clinic->website, PHP_URL_HOST) }}
+                                        <?php echo e(parse_url($veterinarianProfile->clinic->website, PHP_URL_HOST)); ?>
+
                                     </a>
                                 </div>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
@@ -154,7 +163,7 @@
                         class="px-4 py-5 sm:px-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                         <h2 class="text-lg font-medium text-gray-900 dark:text-white">Appointment Calendar</h2>
                         <div class="flex space-x-2">
-                            <a href="{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}"
+                            <a href="<?php echo e(route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id])); ?>"
                                 class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -182,7 +191,8 @@
                                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Today's
                                             Appointments</p>
                                         <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                                            {{ $veterinarianProfile->appointments()->whereDate('start_time', today())->count() }}
+                                            <?php echo e($veterinarianProfile->appointments()->whereDate('start_time', today())->count()); ?>
+
                                         </p>
                                     </div>
                                 </div>
@@ -203,7 +213,8 @@
                                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                                             Confirmed</p>
                                         <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                                            {{ $veterinarianProfile->appointments()->where('status', 'confirmed')->count() }}
+                                            <?php echo e($veterinarianProfile->appointments()->where('status', 'confirmed')->count()); ?>
+
                                         </p>
                                     </div>
                                 </div>
@@ -224,7 +235,8 @@
                                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Pending
                                         </p>
                                         <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                                            {{ $veterinarianProfile->appointments()->where('status', 'pending')->count() }}
+                                            <?php echo e($veterinarianProfile->appointments()->where('status', 'pending')->count()); ?>
+
                                         </p>
                                     </div>
                                 </div>
@@ -279,70 +291,73 @@
                     </div>
                     <div class="bg-white dark:bg-gray-800 overflow-hidden">
                         <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                            @forelse($veterinarianProfile->appointments()->where('start_time', '>=', now())->orderBy('start_time')->take(5)->get() as $appointment)
+                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $veterinarianProfile->appointments()->where('start_time', '>=', now())->orderBy('start_time')->take(5)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                     <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                                                         <div class="flex items-center">
                                                             <div
                                                                 class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
                                                                 <span class="text-blue-600 dark:text-blue-200 font-medium">
-                                                                    {{ substr($appointment->pet->name, 0, 1) }}
+                                                                    <?php echo e(substr($appointment->pet->name, 0, 1)); ?>
+
                                                                 </span>
                                                             </div>
                                                             <div class="ml-4">
                                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                                    {{ $appointment->pet->name }}
-                                                                    <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full {{
-                                match ($appointment->status) {
+                                                                    <?php echo e($appointment->pet->name); ?>
+
+                                                                    <span class="ml-2 px-2 py-0.5 text-xs font-medium rounded-full <?php echo e(match ($appointment->status) {
                                     'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
                                     'confirmed' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
                                     'cancelled' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
                                     'completed' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
                                     default => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                                }
-                                                                }}">
-                                                                        {{ ucfirst($appointment->status) }}
+                                }); ?>">
+                                                                        <?php echo e(ucfirst($appointment->status)); ?>
+
                                                                     </span>
                                                                 </div>
                                                                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                                    {{ $appointment->start_time->format('D, M j, Y \a\t g:i A') }}
+                                                                    <?php echo e($appointment->start_time->format('D, M j, Y \a\t g:i A')); ?>
+
                                                                 </div>
                                                                 <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                                    {{ $appointment->reason }}
+                                                                    <?php echo e($appointment->reason); ?>
+
                                                                 </div>
                                                             </div>
                                                             <div class="ml-auto">
-                                                                <a href="{{ route('admin.appointments.show', $appointment) }}"
+                                                                <a href="<?php echo e(route('admin.appointments.show', $appointment)); ?>"
                                                                     class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
                                                                     View
                                                                 </a>
                                                             </div>
                                                         </div>
                                                     </li>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <li class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                                     No upcoming appointments
                                 </li>
-                            @endforelse
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </ul>
-                        @if($veterinarianProfile->appointments()->where('start_time', '>=', now())->count() > 5)
+                        <!--[if BLOCK]><![endif]--><?php if($veterinarianProfile->appointments()->where('start_time', '>=', now())->count() > 5): ?>
                             <div class="px-6 py-3 border-t border-gray-200 dark:border-gray-700 text-center">
                                 <a href="#"
                                     class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
                                     View all appointments
                                 </a>
                             </div>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="calendar-data" data-appointments='{{ $appointmentsJson }}'
-            data-vet-id="{{ $veterinarianProfile->user_id }}" class="hidden">
+        <div id="calendar-data" data-appointments='<?php echo e($appointmentsJson); ?>'
+            data-vet-id="<?php echo e($veterinarianProfile->user_id); ?>" class="hidden">
         </div>
 
 
-        @push('styles')
+        <?php $__env->startPush('styles'); ?>
                 <!-- FullCalendar CSS -->
                 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
 
@@ -465,9 +480,9 @@
             </style> -->
 
 
-        @endpush
+        <?php $__env->stopPush(); ?>
 
-        @push('scripts')
+        <?php $__env->startPush('scripts'); ?>
 
             <!-- SweetAlert2 for beautiful alerts -->
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -600,7 +615,7 @@
                             today.setHours(0, 0, 0, 0);
 
                             if (clickedDate >= today) {
-                                window.location.href = `{{ route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id]) }}?date=${info.dateStr}`;
+                                window.location.href = `<?php echo e(route('appointments.create', ['veterinarianProfile' => $veterinarianProfile->id])); ?>?date=${info.dateStr}`;
                                 window.Livewire.emit('openAppointmentForm', info.dateStr);
 
                                 console.log(info.dateStr);
@@ -702,6 +717,7 @@
                     }
                 });
             </script>
-        @endpush
+        <?php $__env->stopPush(); ?>
 
     </div>
+<?php /**PATH /var/www/html/resources/views/livewire/admin/vet-show.blade.php ENDPATH**/ ?>

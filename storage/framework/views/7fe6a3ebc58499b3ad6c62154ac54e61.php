@@ -366,7 +366,7 @@
             <!-- Filter Panel -->
             <!--[if BLOCK]><![endif]--><?php if($showFilters): ?>
                 <div
-                    class="bg-gray-50/50 dark:bg-gray-700/50 px-6 py-4 border-b border-gray-100 dark:border-gray-600 backdrop-blur-sm">
+                    class="bg-gray-200 dark:bg-gray-700/50 px-6 py-4 border-b border-gray-100 dark:border-gray-600 backdrop-blur-sm">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
                             <label for="petFilter"

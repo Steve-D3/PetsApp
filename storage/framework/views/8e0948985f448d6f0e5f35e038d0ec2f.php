@@ -11,7 +11,7 @@
                             appointments</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <a href="{{ route('vet.appointments.calendar', ['veterinarian_profile_id' => $vetId]) }}"
+                        <a href="<?php echo e(route('vet.appointments.calendar', ['veterinarian_profile_id' => $vetId])); ?>"
                             class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 border border-transparent rounded-lg font-medium text-sm text-white shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@
                             </svg>
                             Filter Appointments
                         </h3>
-                        @if($status !== 'upcoming' || $dateFilter || $search)
+                        <!--[if BLOCK]><![endif]--><?php if($status !== 'upcoming' || $dateFilter || $search): ?>
                             <button wire:click="$set('status', 'upcoming'); $set('dateFilter', null); $set('search', '')"
                                 class="text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors flex items-center">
                                 <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
                                 </svg>
                                 Reset filters
                             </button>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <!-- Status Filter -->
@@ -108,7 +108,7 @@
 
                 <!-- Appointments Table -->
                 <div class="overflow-x-auto">
-                    @if($appointments->count() > 0)
+                    <!--[if BLOCK]><![endif]--><?php if($appointments->count() > 0): ?>
                         <div class="align-middle inline-block min-w-full overflow-hidden">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700/50">
@@ -143,7 +143,7 @@
                                 </thead>
                                 <tbody
                                     class="bg-white dark:bg-gray-800/50 divide-y divide-gray-100 dark:divide-gray-700/50">
-                                    @foreach($appointments as $appointment)
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                     <tr
                                                                         class="hover:bg-gray-50/80 dark:hover:bg-gray-700/30 transition-colors duration-150">
                                                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -159,10 +159,12 @@
                                                                                 </div>
                                                                                 <div>
                                                                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                                                        {{ $appointment->start_time->format('M d, Y') }}
+                                                                                        <?php echo e($appointment->start_time->format('M d, Y')); ?>
+
                                                                                     </div>
                                                                                     <div class="text-xs text-gray-500 dark:text-gray-400">
-                                                                                        {{ $appointment->start_time->format('h:i A') }}
+                                                                                        <?php echo e($appointment->start_time->format('h:i A')); ?>
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -172,14 +174,15 @@
                                                                                 <div
                                                                                     class="flex-shrink-0 h-10 w-10 rounded-xl overflow-hidden border-2 border-white dark:border-gray-700 shadow-sm">
                                                                                     <img class="h-full w-full object-cover"
-                                                                                        src="{{ $appointment->pet->profile_photo_url }}"
-                                                                                        alt="{{ $appointment->pet->name }}"
-                                                                                        onerror="this.src='https://ui-avatars.com/api/?name='+encodeURIComponent('{{ $appointment->pet->name }}')+'&background=7c3aed&color=fff&size=128'" />
+                                                                                        src="<?php echo e($appointment->pet->profile_photo_url); ?>"
+                                                                                        alt="<?php echo e($appointment->pet->name); ?>"
+                                                                                        onerror="this.src='https://ui-avatars.com/api/?name='+encodeURIComponent('<?php echo e($appointment->pet->name); ?>')+'&background=7c3aed&color=fff&size=128'" />
                                                                                 </div>
                                                                                 <div class="ml-4">
                                                                                     <div
                                                                                         class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                                                                        {{ $appointment->pet->name }}
+                                                                                        <?php echo e($appointment->pet->name); ?>
+
                                                                                     </div>
                                                                                     <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
                                                                                         <svg class="w-3.5 h-3.5 mr-1 text-gray-400" fill="none"
@@ -188,27 +191,30 @@
                                                                                                 stroke-width="2"
                                                                                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                                                         </svg>
-                                                                                        {{ $appointment->pet->owner->name }}
+                                                                                        <?php echo e($appointment->pet->owner->name); ?>
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                                                                         <td class="px-6 py-4">
                                                                             <div class="text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate group relative"
-                                                                                title="{{ $appointment->notes }}">
-                                                                                @if($appointment->notes)
-                                                                                    {{ $appointment->notes }}
+                                                                                title="<?php echo e($appointment->notes); ?>">
+                                                                                <!--[if BLOCK]><![endif]--><?php if($appointment->notes): ?>
+                                                                                    <?php echo e($appointment->notes); ?>
+
                                                                                     <div
                                                                                         class="absolute z-10 hidden group-hover:block w-64 p-2 mt-1 text-xs text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600">
-                                                                                        {{ $appointment->notes }}
+                                                                                        <?php echo e($appointment->notes); ?>
+
                                                                                     </div>
-                                                                                @else
+                                                                                <?php else: ?>
                                                                                     <span class="text-gray-400 dark:text-gray-500 italic">No notes</span>
-                                                                                @endif
+                                                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                                             </div>
                                                                         </td>
                                                                         <td class="px-6 py-4 whitespace-nowrap">
-                                                                            @php
+                                                                            <?php
                                                                                 $statusConfig = [
                                                                                     'scheduled' => [
                                                                                         'bg' => 'bg-yellow-100 dark:bg-yellow-900/30',
@@ -242,20 +248,21 @@
                                                                                     'text' => 'text-gray-800 dark:text-gray-200',
                                                                                     'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
                                                                                 ];
-                                                                            @endphp
+                                                                            ?>
                                           <div
-                                                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ $status['bg'] }} {{ $status['text'] }}">
+                                                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium <?php echo e($status['bg']); ?> <?php echo e($status['text']); ?>">
                                                                                 <svg class="h-3 w-3 mr-1.5" fill="none" stroke="currentColor"
                                                                                     viewBox="0 0 24 24">
                                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                                        d="{{ $status['icon'] }}" />
+                                                                                        d="<?php echo e($status['icon']); ?>" />
                                                                                 </svg>
-                                                                                {{ str_replace('_', ' ', ucfirst($appointment->status)) }}
+                                                                                <?php echo e(str_replace('_', ' ', ucfirst($appointment->status))); ?>
+
                                                                             </div>
                                                                         </td>
                                                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                                             <div class="flex items-center justify-end space-x-2">
-                                                                                <a href="{{ route('admin.appointments.show', $appointment) }}"
+                                                                                <a href="<?php echo e(route('admin.appointments.show', $appointment)); ?>"
                                                                                     class="inline-flex items-center p-1.5 rounded-lg text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors duration-150"
                                                                                     title="View details">
                                                                                     <svg class="h-4 w-4" fill="none" stroke="currentColor"
@@ -267,8 +274,8 @@
                                                                                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                                                     </svg>
                                                                                 </a>
-                                                                                @if(in_array($appointment->status, ['scheduled', 'confirmed']))
-                                                                                    <button wire:click="changeStatus('{{ $appointment->id }}', 'completed')"
+                                                                                <!--[if BLOCK]><![endif]--><?php if(in_array($appointment->status, ['scheduled', 'confirmed'])): ?>
+                                                                                    <button wire:click="changeStatus('<?php echo e($appointment->id); ?>', 'completed')"
                                                                                         class="inline-flex items-center p-1.5 rounded-lg text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-150"
                                                                                         title="Mark as completed">
                                                                                         <svg class="h-4 w-4" fill="none" stroke="currentColor"
@@ -277,7 +284,7 @@
                                                                                                 stroke-width="2" d="M5 13l4 4L19 7" />
                                                                                         </svg>
                                                                                     </button>
-                                                                                    <button wire:click="changeStatus('{{ $appointment->id }}', 'cancelled')"
+                                                                                    <button wire:click="changeStatus('<?php echo e($appointment->id); ?>', 'cancelled')"
                                                                                         class="inline-flex items-center p-1.5 rounded-lg text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
                                                                                         title="Cancel appointment">
                                                                                         <svg class="h-4 w-4" fill="none" stroke="currentColor"
@@ -286,18 +293,19 @@
                                                                                                 stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                                                         </svg>
                                                                                     </button>
-                                                                                @endif
+                                                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                                             </div>
                                                                         </td>
                                                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </tbody>
                             </table>
                             <div class="px-6 py-4">
-                                {{ $appointments->links() }}
+                                <?php echo e($appointments->links()); ?>
+
                             </div>
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="text-center py-12">
                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -306,12 +314,14 @@
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No appointments found</h3>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                {{ $status === 'upcoming' ? 'You have no upcoming appointments.' : 'No appointments match your current filters.' }}
+                                <?php echo e($status === 'upcoming' ? 'You have no upcoming appointments.' : 'No appointments match your current filters.'); ?>
+
                             </p>
                         </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
         </div>
     </div>
 </div>
+<?php /**PATH /var/www/html/resources/views/livewire/vet/appointments.blade.php ENDPATH**/ ?>

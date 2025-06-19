@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8 rounded-lg">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden shadow-xl shadow-gray-200/50 dark:shadow-gray-900/20 rounded-2xl mb-8 border border-gray-100/50 dark:border-gray-700/50 transition-all duration-300 transform hover:shadow-2xl hover:shadow-gray-300/30 dark:hover:shadow-gray-900/30 hover:-translate-y-0.5">

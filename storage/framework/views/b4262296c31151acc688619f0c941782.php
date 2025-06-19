@@ -10,19 +10,38 @@
                 </div>
                 <button wire:click="openCreateModal"
                     class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full shadow-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 transform">
-                    <x-icon.plus class="-ml-1 mr-2 h-5 w-5" />
+                    <?php if (isset($component)) { $__componentOriginal6315a526d124ee5b3ba861082d11f72e = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6315a526d124ee5b3ba861082d11f72e = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.plus','data' => ['class' => '-ml-1 mr-2 h-5 w-5']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.plus'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => '-ml-1 mr-2 h-5 w-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6315a526d124ee5b3ba861082d11f72e)): ?>
+<?php $attributes = $__attributesOriginal6315a526d124ee5b3ba861082d11f72e; ?>
+<?php unset($__attributesOriginal6315a526d124ee5b3ba861082d11f72e); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6315a526d124ee5b3ba861082d11f72e)): ?>
+<?php $component = $__componentOriginal6315a526d124ee5b3ba861082d11f72e; ?>
+<?php unset($__componentOriginal6315a526d124ee5b3ba861082d11f72e); ?>
+<?php endif; ?>
                     New Appointment
                 </button>
             </div>
         </div>
 
-        @if($loading)
+        <!--[if BLOCK]><![endif]--><?php if($loading): ?>
             <div
                 class="flex flex-col items-center justify-center h-96 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-gray-700/50 p-8 text-center">
                 <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mb-4"></div>
                 <p class="text-gray-600 dark:text-gray-300">Loading appointments...</p>
             </div>
-        @else
+        <?php else: ?>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in-up">
                 <!-- Calendar Section -->
                 <div class="lg:col-span-2 transform transition-all duration-300 hover:scale-[1.005]">
@@ -33,7 +52,8 @@
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                 <div>
                                     <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                                        {{ $selectedDate->format('F Y') }}
+                                        <?php echo e($selectedDate->format('F Y')); ?>
+
                                     </h2>
                                     <p class="text-sm text-indigo-600 dark:text-indigo-400 mt-1">
                                         Manage your appointments
@@ -50,7 +70,7 @@
 
 
                 <!-- Appointment Details Modal -->
-                @if($showDetails && $selectedAppointment)
+                <!--[if BLOCK]><![endif]--><?php if($showDetails && $selectedAppointment): ?>
                     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-xl w-full mx-4">
                             <div class="flex justify-between items-center mb-4">
@@ -68,37 +88,38 @@
                             <div class="space-y-4">
                                 <div>
                                     <h4 class="font-medium text-gray-900 dark:text-white">Pet Name:</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">{{ $selectedAppointment['pet_name'] }}</p>
+                                    <p class="text-gray-600 dark:text-gray-300"><?php echo e($selectedAppointment['pet_name']); ?></p>
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-900 dark:text-white">Owner Name:</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">{{ $selectedAppointment['owner_name'] }}</p>
+                                    <p class="text-gray-600 dark:text-gray-300"><?php echo e($selectedAppointment['owner_name']); ?></p>
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-900 dark:text-white">Time:</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">{{ $selectedAppointment['start_time'] }}</p>
+                                    <p class="text-gray-600 dark:text-gray-300"><?php echo e($selectedAppointment['start_time']); ?></p>
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-900 dark:text-white">Status:</h4>
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                                                                                                                @if($selectedAppointment['status'] === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                                                                                                                                                                @elseif($selectedAppointment['status'] === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
-                                                                                                                                                                    @else bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                                                                                                                                                @endif">
-                                        {{ ucfirst($selectedAppointment['status']) }}
+                                                                                                                                                                <?php if($selectedAppointment['status'] === 'completed'): ?> bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                                                                                                                                                <?php elseif($selectedAppointment['status'] === 'cancelled'): ?> bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                                                                                                                                                                    <?php else: ?> bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                                                                                                                                                                <?php endif; ?>">
+                                        <?php echo e(ucfirst($selectedAppointment['status'])); ?>
+
                                     </span>
                                 </div>
-                                @if($selectedAppointment['notes'])
+                                <!--[if BLOCK]><![endif]--><?php if($selectedAppointment['notes']): ?>
                                     <div>
                                         <h4 class="font-medium text-gray-900 dark:text-white">Notes:</h4>
-                                        <p class="text-gray-600 dark:text-gray-300">{{ $selectedAppointment['notes'] }}</p>
+                                        <p class="text-gray-600 dark:text-gray-300"><?php echo e($selectedAppointment['notes']); ?></p>
                                     </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <!-- Appointments List -->
                 <div class="lg:col-span-1 transform transition-all duration-300 hover:scale-[1.005]">
@@ -112,7 +133,8 @@
                                         Upcoming Appointments
                                     </h2>
                                     <p class="text-sm text-indigo-600 dark:text-indigo-400 mt-1">
-                                        For {{ $selectedDate->format('F Y') }}
+                                        For <?php echo e($selectedDate->format('F Y')); ?>
+
                                     </p>
                                 </div>
                                 <button wire:click="$refresh"
@@ -123,26 +145,46 @@
                         </div>
                         <div
                             class="overflow-hidden flex-1 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
-                            @if(count($appointments) > 0)
+                            <!--[if BLOCK]><![endif]--><?php if(count($appointments) > 0): ?>
                                 <ul class="divide-y divide-gray-200/50 dark:divide-gray-700/50">
-                                    @foreach($appointments as $appointment)
-                                        <a href="{{ route('admin.appointments.show', $appointment['id']) }}"
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $appointment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <a href="<?php echo e(route('admin.appointments.show', $appointment['id'])); ?>"
                                             class="block hover:bg-gray-50/90 dark:hover:bg-gray-700/60 transition-all duration-200 transform hover:scale-[1.01] hover:shadow-sm">
                                             <div class="p-4">
                                                 <div class="flex items-start gap-3">
                                                     <div class="flex-shrink-0 mt-0.5">
                                                         <div
                                                             class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/40 dark:to-purple-900/30 flex items-center justify-center shadow-sm">
-                                                            <x-icon.paw class="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                                                            <?php if (isset($component)) { $__componentOriginale6eaa1fb23a5dde7f44337b383c5a9cc = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginale6eaa1fb23a5dde7f44337b383c5a9cc = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.paw','data' => ['class' => 'h-5 w-5 text-indigo-600 dark:text-indigo-400']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.paw'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'h-5 w-5 text-indigo-600 dark:text-indigo-400']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginale6eaa1fb23a5dde7f44337b383c5a9cc)): ?>
+<?php $attributes = $__attributesOriginale6eaa1fb23a5dde7f44337b383c5a9cc; ?>
+<?php unset($__attributesOriginale6eaa1fb23a5dde7f44337b383c5a9cc); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginale6eaa1fb23a5dde7f44337b383c5a9cc)): ?>
+<?php $component = $__componentOriginale6eaa1fb23a5dde7f44337b383c5a9cc; ?>
+<?php unset($__componentOriginale6eaa1fb23a5dde7f44337b383c5a9cc); ?>
+<?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <div class="flex-1 min-w-0">
                                                         <div class="flex items-center justify-between gap-2">
                                                             <h3
                                                                 class="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                                                                {{ $appointment['pet_name'] }}
+                                                                <?php echo e($appointment['pet_name']); ?>
+
                                                             </h3>
-                                                            @php
+                                                            <?php
                                                                 $statusClasses = [
                                                                     'scheduled' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
                                                                     'confirmed' => 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
@@ -151,31 +193,91 @@
                                                                     'no_show' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
                                                                 ];
                                                                 $statusClass = $statusClasses[$appointment['status']] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-                                                            @endphp
+                                                            ?>
                                                             <span
-                                                                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $statusClass }} flex-shrink-0">
-                                                                {{ ucfirst(str_replace('_', ' ', $appointment['status'])) }}
+                                                                class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo e($statusClass); ?> flex-shrink-0">
+                                                                <?php echo e(ucfirst(str_replace('_', ' ', $appointment['status']))); ?>
+
                                                             </span>
                                                         </div>
                                                         <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                                                            <x-icon.calendar class="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" />
-                                                            {{ $appointment['start_time'] }}
+                                                            <?php if (isset($component)) { $__componentOriginal78401f3e2385b5fdffa95e016607311b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal78401f3e2385b5fdffa95e016607311b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.calendar','data' => ['class' => 'w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.calendar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal78401f3e2385b5fdffa95e016607311b)): ?>
+<?php $attributes = $__attributesOriginal78401f3e2385b5fdffa95e016607311b; ?>
+<?php unset($__attributesOriginal78401f3e2385b5fdffa95e016607311b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal78401f3e2385b5fdffa95e016607311b)): ?>
+<?php $component = $__componentOriginal78401f3e2385b5fdffa95e016607311b; ?>
+<?php unset($__componentOriginal78401f3e2385b5fdffa95e016607311b); ?>
+<?php endif; ?>
+                                                            <?php echo e($appointment['start_time']); ?>
+
                                                         </p>
                                                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
-                                                            <x-icon.user class="w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5" />
-                                                            {{ $appointment['owner_name'] }}
+                                                            <?php if (isset($component)) { $__componentOriginal218c5c64b059a605cc15629404be144b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal218c5c64b059a605cc15629404be144b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.user','data' => ['class' => 'w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.user'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-3.5 h-3.5 inline-block mr-1.5 -mt-0.5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal218c5c64b059a605cc15629404be144b)): ?>
+<?php $attributes = $__attributesOriginal218c5c64b059a605cc15629404be144b; ?>
+<?php unset($__attributesOriginal218c5c64b059a605cc15629404be144b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal218c5c64b059a605cc15629404be144b)): ?>
+<?php $component = $__componentOriginal218c5c64b059a605cc15629404be144b; ?>
+<?php unset($__componentOriginal218c5c64b059a605cc15629404be144b); ?>
+<?php endif; ?>
+                                                            <?php echo e($appointment['owner_name']); ?>
+
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </ul>
-                            @else
+                            <?php else: ?>
                                 <div class="p-8 text-center animate-pulse">
                                     <div
                                         class="mx-auto h-16 w-16 rounded-full bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 flex items-center justify-center mb-4 shadow-inner">
-                                        <x-icon.calendar class="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                                        <?php if (isset($component)) { $__componentOriginal78401f3e2385b5fdffa95e016607311b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal78401f3e2385b5fdffa95e016607311b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.calendar','data' => ['class' => 'h-8 w-8 text-indigo-600 dark:text-indigo-400']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.calendar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'h-8 w-8 text-indigo-600 dark:text-indigo-400']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal78401f3e2385b5fdffa95e016607311b)): ?>
+<?php $attributes = $__attributesOriginal78401f3e2385b5fdffa95e016607311b; ?>
+<?php unset($__attributesOriginal78401f3e2385b5fdffa95e016607311b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal78401f3e2385b5fdffa95e016607311b)): ?>
+<?php $component = $__componentOriginal78401f3e2385b5fdffa95e016607311b; ?>
+<?php unset($__componentOriginal78401f3e2385b5fdffa95e016607311b); ?>
+<?php endif; ?>
                                     </div>
                                     <h3 class="text-base font-medium text-gray-900 dark:text-white">No appointments</h3>
                                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -184,16 +286,35 @@
                                     <div class="mt-6">
                                         <button wire:click="openCreateModal"
                                             class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-full shadow-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 transform">
-                                            <x-icon.plus class="-ml-1 mr-2 h-5 w-5" />
+                                            <?php if (isset($component)) { $__componentOriginal6315a526d124ee5b3ba861082d11f72e = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6315a526d124ee5b3ba861082d11f72e = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.icon.plus','data' => ['class' => '-ml-1 mr-2 h-5 w-5']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon.plus'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => '-ml-1 mr-2 h-5 w-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6315a526d124ee5b3ba861082d11f72e)): ?>
+<?php $attributes = $__attributesOriginal6315a526d124ee5b3ba861082d11f72e; ?>
+<?php unset($__attributesOriginal6315a526d124ee5b3ba861082d11f72e); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6315a526d124ee5b3ba861082d11f72e)): ?>
+<?php $component = $__componentOriginal6315a526d124ee5b3ba861082d11f72e; ?>
+<?php unset($__componentOriginal6315a526d124ee5b3ba861082d11f72e); ?>
+<?php endif; ?>
                                             New Appointment
                                         </button>
                                     </div>
                                 </div>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <!-- Create Appointment Modal -->
@@ -239,14 +360,22 @@
                                             <select id="pet_id" wire:model="newAppointment.pet_id"
                                                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
                                                 <option value="">Select a pet</option>
-                                                @foreach($pets as $pet)
-                                                    <option value="{{ $pet->id }}">{{ $pet->name }}
-                                                        ({{ $pet->owner->name }})</option>
-                                                @endforeach
+                                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $pets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($pet->id); ?>"><?php echo e($pet->name); ?>
+
+                                                        (<?php echo e($pet->owner->name); ?>)</option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                             </select>
-                                            @error('newAppointment.pet_id')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
+                                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['newAppointment.pet_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
 
                                         <!-- Start Time -->
@@ -258,9 +387,16 @@
                                             <input type="datetime-local" id="start_time"
                                                 wire:model="newAppointment.start_time"
                                                 class="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                            @error('newAppointment.start_time')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
+                                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['newAppointment.start_time'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
 
                                         <!-- Notes -->
@@ -271,9 +407,16 @@
                                             </label>
                                             <textarea id="notes" wire:model="newAppointment.notes" rows="3"
                                                 class="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-                                            @error('newAppointment.notes')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
+                                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['newAppointment.notes'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <p class="mt-1 text-sm text-red-600"><?php echo e($message); ?></p>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                     </div>
 
@@ -295,7 +438,7 @@
             </div>
         </div>
 
-        @push('scripts')
+        <?php $__env->startPush('scripts'); ?>
             <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
@@ -308,7 +451,7 @@
                             center: 'title',
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
                         },
-                        events: @json($appointments),
+                        events: <?php echo json_encode($appointments, 15, 512) ?>,
                         eventClick: function (info) {
                             info.jsEvent.preventDefault();
                             info.jsEvent.stopPropagation();
@@ -377,7 +520,7 @@
                                     window.location.href = `/admin/appointments/${event.id}`;
                                 } else if (result.isDenied) {
                                     // Handle cancel appointment
-                                    @this.cancelAppointment(event.id);
+                                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').cancelAppointment(event.id);
                                 }
                             });
 
@@ -414,7 +557,7 @@
                             }
                         },
                         themeSystem: 'bootstrap5',
-                        darkTheme: @json(auth()->user()->dark_mode ?? false)
+                        darkTheme: <?php echo json_encode(auth()->user()->dark_mode ?? false, 15, 512) ?>
                     });
 
                     calendar.render();
@@ -434,10 +577,10 @@
                     calendar.render();
                 });
             </script>
-        @endpush
+        <?php $__env->stopPush(); ?>
     </div>
 
-    @push('styles')
+    <?php $__env->startPush('styles'); ?>
         <style>
             @keyframes shimmer {
                 0% {
@@ -488,5 +631,6 @@
                 }
             }
         </style>
-    @endpush
+    <?php $__env->stopPush(); ?>
 </div>
+<?php /**PATH /var/www/html/resources/views/livewire/appointment-calendar.blade.php ENDPATH**/ ?>
