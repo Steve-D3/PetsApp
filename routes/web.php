@@ -148,6 +148,10 @@ Route::middleware([
             ->name('medical-records.index');
         Route::get('/admin/pets/{pet}/medical-records/create', '\App\Http\Controllers\MedicalRecordController@create')
             ->name('medical-records.create');
+        Route::get('/admin/pets/{pet}/medical-records/{record}/edit', '\App\Http\Controllers\MedicalRecordController@edit')
+            ->name('medical-records.edit');
+        Route::put('/admin/pets/{pet}/medical-records/{record}', '\App\Http\Controllers\MedicalRecordController@update')
+            ->name('medical-records.update');
         Route::get('/admin/pets/{pet}/medical-records/{record}', MedicalRecordDetails::class)
             ->name('medical-records.show');
 

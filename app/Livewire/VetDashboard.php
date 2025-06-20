@@ -21,6 +21,14 @@ class VetDashboard extends Component
     public $appointmentStats;
     public $patientStats;
     public $pendingTasks;
+    public $showAllTasksModal = false;
+    public $showAddTaskForm = false;
+    public $newTask = [
+        'title' => '',
+        'due' => '',
+        'priority' => 'medium',
+        'description' => ''
+    ];
 
     // Medical Records Filtering
     public $petFilter = '';
@@ -185,29 +193,148 @@ class VetDashboard extends Component
         ];
 
         // Vaccine Statistics
+        $dueVaccinations = \App\Models\Vaccination::whereHas('pet.appointments', function($query) {
+                $query->where('veterinarian_id', $this->vetId);
+            })
+            ->where('next_due_date', '<=', now()->addDays(30))
+            ->where(function($query) {
+                $query->where('next_due_date', '>=', now()->subDays(7)) // Due in next 30 days
+                      ->orWhereNull('administration_date'); // Or never administered
+            })
+            ->with(['pet', 'vaccinationType'])
+            ->get()
+            ->groupBy('pet_id');
+
         $this->vaccineStats = [
             'total_vaccinations' => MedicalRecord::where('veterinarian_profile_id', $this->vetId)
                 ->whereHas('vaccinations')
                 ->count(),
-            'unique_vaccines' => 0, // TODO: Implement unique vaccines count
-            'due_soon' => 0, // TODO: Implement due soon count
+            'unique_vaccines' => VaccineType::whereHas('vaccinations', function($query) {
+                    $query->whereHas('medicalRecord', function($q) {
+                        $q->where('veterinarian_profile_id', $this->vetId);
+                    });
+                })
+                ->count(),
+            'due_soon' => $dueVaccinations->count(),
+            'due_vaccinations' => $dueVaccinations->map(function($vaccinations) {
+                $pet = $vaccinations->first()->pet;
+                return [
+                    'pet_id' => $pet->id,
+                    'pet_name' => $pet->name,
+                    'vaccinations' => $vaccinations->map(function($v) {
+                        return [
+                            'id' => $v->id,
+                            'name' => $v->vaccinationType->name,
+                            'due_date' => $v->next_due_date->format('M j, Y'),
+                            'is_overdue' => $v->next_due_date->isPast(),
+                            'days_until_due' => now()->diffInDays($v->next_due_date, false)
+                        ];
+                    })->sortBy('days_until_due')->values()
+                ];
+            })->values()
         ];
 
-        // Pending Tasks/Reminders
-        $this->pendingTasks = [
-            [
-                'title' => 'Follow up with recent patients',
-                'due' => now()->addDays(2),
-                'priority' => 'high',
-            ],
-            [
-                'title' => 'Review pending lab results',
-                'due' => now()->addDays(1),
-                'priority' => 'medium',
-            ],
-        ];
+        // Load tasks
+        $this->loadTasks();
     }
 
+    protected function loadTasks()
+    {
+        // In a real app, you would load tasks from the database
+        // For now, we'll use the sample data
+        $pendingTasks = [
+            [
+                'id' => 1,
+                'title' => 'Follow up with recent patients',
+                'description' => 'Check on post-operative patients from last week',
+                'due' => now()->addDays(2),
+                'priority' => 'high',
+                'completed' => false,
+                'created_at' => now()->subDays(3),
+            ],
+            [
+                'id' => 2,
+                'title' => 'Review pending lab results',
+                'description' => 'Blood work for Max (Lab ID: #45678)',
+                'due' => now()->addDays(1),
+                'priority' => 'medium',
+                'completed' => false,
+                'created_at' => now()->subDays(1),
+            ],
+            [
+                'id' => 3,
+                'title' => 'Order more vaccines',
+                'description' => 'Rabies and FVRCP vaccines running low',
+                'due' => now()->addDays(5),
+                'priority' => 'medium',
+                'completed' => false,
+                'created_at' => now()->subDays(2),
+            ],
+            [
+                'id' => 4,
+                'title' => 'Schedule staff meeting',
+                'description' => 'Monthly team meeting to discuss clinic updates',
+                'due' => now()->addWeek(),
+                'priority' => 'low',
+                'completed' => false,
+                'created_at' => now()->subDays(5),
+            ],
+        ];
+        
+        // Convert to array of objects for the view
+        $this->pendingTasks = array_map(function($task) {
+            return (object) $task;
+        }, $pendingTasks);
+    }
+
+    public function addTask()
+    {
+        $this->validate([
+            'newTask.title' => 'required|string|max:255',
+            'newTask.due' => 'required|date|after:now',
+            'newTask.priority' => 'required|in:low,medium,high',
+        ]);
+        
+        // In a real app, you would save to the database here
+        $newTask = [
+            'id' => count($this->pendingTasks) + 1,
+            'title' => $this->newTask['title'],
+            'description' => $this->newTask['description'] ?? '',
+            'due' => \Carbon\Carbon::parse($this->newTask['due']),
+            'priority' => $this->newTask['priority'],
+            'completed' => false,
+            'created_at' => now(),
+        ];
+        
+        $this->pendingTasks = array_merge([(object)$newTask], $this->pendingTasks);
+        
+        // Reset the form
+        $this->reset('newTask');
+        $this->showAddTaskForm = false;
+        
+        $this->dispatch('notify', 'Task added successfully!');
+    }
+    
+    public function toggleTaskCompletion($taskId)
+    {
+        foreach ($this->pendingTasks as $key => $task) {
+            if ($task->id == $taskId) {
+                $this->pendingTasks[$key]->completed = !$task->completed;
+                $this->dispatch('notify', 'Task updated!');
+                break;
+            }
+        }
+    }
+    
+    public function deleteTask($taskId)
+    {
+        $this->pendingTasks = array_filter($this->pendingTasks, function($task) use ($taskId) {
+            return $task->id != $taskId;
+        });
+        
+        $this->dispatch('notify', 'Task deleted!');
+    }
+    
     public function loadMedicalRecords()
     {
         $query = MedicalRecord::with(['pet', 'vet.user'])

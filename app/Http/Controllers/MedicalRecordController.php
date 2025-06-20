@@ -135,9 +135,17 @@ class MedicalRecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MedicalRecord $medicalRecord)
+    public function edit($pet, $record)
     {
-        //
+        $medicalRecord = MedicalRecord::with(['pet', 'vet', 'treatments', 'vaccinations'])
+            ->findOrFail($record);
+            
+        return view('admin.medical-records.edit', [
+            'record' => $medicalRecord,
+            'pet' => $medicalRecord->pet,
+            'treatments' => $medicalRecord->treatments,
+            'vaccinations' => $medicalRecord->vaccinations
+        ]);
     }
 
     /**
@@ -145,54 +153,41 @@ class MedicalRecordController extends Controller
      *
      * @param UpdateMedicalRecordRequest $request
      * @param MedicalRecord $medicalRecord
-     * @return JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateMedicalRecordRequest $request, MedicalRecord $medicalRecord)
+    public function update(UpdateMedicalRecordRequest $request, $pet, $record)
     {
         try {
+            $medicalRecord = MedicalRecord::findOrFail($record);
+            
             // Get the validated data
             $validated = $request->validated();
 
             // Prepare the update data
             $updateData = [
-                'pet_id' => $validated['pet_id'] ?? $medicalRecord->pet_id,
-                'veterinarian_profile_id' => $validated['veterinarian_profile_id'] ?? $medicalRecord->veterinarian_profile_id,
-                'appointment_id' => $validated['appointment_id'] ?? $medicalRecord->appointment_id,
-                'record_date' => $validated['record_date'] ?? $medicalRecord->record_date,
-                'chief_complaint' => $validated['chief_complaint'] ?? $medicalRecord->chief_complaint,
-                'history' => $validated['history'] ?? $medicalRecord->history,
-                'physical_examination' => $validated['physical_examination'] ?? $medicalRecord->physical_examination,
-                'diagnosis' => $validated['diagnosis'] ?? $medicalRecord->diagnosis,
-                'treatment_plan' => $validated['treatment_plan'] ?? $medicalRecord->treatment_plan,
-                'medications' => $validated['medications'] ?? $medicalRecord->medications,
-                'notes' => $validated['notes'] ?? $medicalRecord->notes,
-                'weight' => $validated['weight'] ?? $medicalRecord->weight,
-                'temperature' => $validated['temperature'] ?? $medicalRecord->temperature,
-                'heart_rate' => $validated['heart_rate'] ?? $medicalRecord->heart_rate,
-                'respiratory_rate' => $validated['respiratory_rate'] ?? $medicalRecord->respiratory_rate,
-                'follow_up_required' => $validated['follow_up_required'] ?? $medicalRecord->follow_up_required,
-                'follow_up_date' => $validated['follow_up_date'] ?? $medicalRecord->follow_up_date,
+                'record_date' => $validated['record_date'],
+                'chief_complaint' => $validated['chief_complaint'],
+                'diagnosis' => $validated['diagnosis'],
+                'treatment_plan' => $validated['treatment_plan'] ?? null,
+                'notes' => $validated['notes'] ?? null,
+                'follow_up_required' => $request->has('follow_up_required'),
+                'follow_up_date' => $request->has('follow_up_required') ? $validated['follow_up_date'] : null,
             ];
 
             // Update the medical record
             $medicalRecord->update($updateData);
 
-            // Load relationships for the response
-            $medicalRecord->load(['pet', 'vet', 'appointment']);
-
-            return response()->json([
-                'message' => 'Medical record updated successfully',
-                'data' => $medicalRecord
-            ]);
+            return redirect()
+                ->route('medical-records.show', ['pet' => $pet, 'record' => $record])
+                ->with('status', 'Medical record updated successfully!');
 
         } catch (\Exception $e) {
             // Log the error for debugging
             \Log::error('Error updating medical record: ' . $e->getMessage());
 
-            return response()->json([
-                'message' => 'Failed to update medical record',
-                'error' => $e->getMessage()
-            ], 500);
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Failed to update medical record. Please try again.']);
         }
     }
 
