@@ -121,7 +121,7 @@
                                                 <div class="text-gray-500 dark:text-gray-400"><?php echo e($pet->owner?->email ?? ''); ?></div>
                                             </td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                                <?php echo e(ucfirst($pet->type)); ?>
+                                                <?php echo e(ucfirst($pet->species)); ?>
 
                                             </td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">

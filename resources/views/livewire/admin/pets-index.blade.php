@@ -121,7 +121,7 @@
                                                 <div class="text-gray-500 dark:text-gray-400">{{ $pet->owner?->email ?? '' }}</div>
                                             </td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                                {{ ucfirst($pet->type) }}
+                                                {{ ucfirst($pet->species) }}
                                             </td>
                                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
                                                 {{ $pet->breed ?? 'Mixed' }}
