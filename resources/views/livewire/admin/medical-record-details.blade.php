@@ -724,7 +724,7 @@
                                                                     @endif
                                                                 </div>
 
-                                                                @if($vaccination->pivot->notes)
+                                                                @if($vaccination->pivot && $vaccination->pivot->notes)
                                                                     <div class="mt-2 p-2 bg-gray-50 dark:bg-gray-700/30 rounded-md">
                                                                         <p class="text-xs text-gray-600 dark:text-gray-300">
                                                                             {{ $vaccination->pivot->notes }}</p>
