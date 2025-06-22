@@ -12,7 +12,7 @@
                             My Patients
                         </h2>
                     </div>
-                    <div class="mt-4 md:mt-0">
+                    <!-- <div class="mt-4 md:mt-0">
                         <a href="#"
                            class="inline-flex items-center px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-wider hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@
                             </svg>
                             Add New Patient
                         </a>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Filters Card -->
@@ -68,7 +68,7 @@
                             <div class="relative">
                                 <select
                                     id="species"
-                                    class="appearance-none block w-full pl-3 pr-10 py-2.5 border-0 bg-white/70 dark:bg-gray-700/50 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all duration-200 cursor-pointer"
+                                    class="appearance-none block w-full pl-3 pr-10 py-2.5 border-0 bg-white/70 dark:bg-gray-700/50 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all duration-200 cursor-pointer dark:text-gray-500 "
                                     wire:model.live="speciesFilter">
                                     <option value="">All Species</option>
                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $species; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

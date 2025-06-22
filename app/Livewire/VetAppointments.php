@@ -51,6 +51,12 @@ class VetAppointments extends Component
                 $query->where('start_time', '>=', now())
                     ->whereIn('status', ['pending', 'scheduled', 'confirmed']);
                 break;
+            case 'scheduled':
+                $query->where('status', 'scheduled');
+                break;
+            case 'confirmed':
+                $query->where('status', 'confirmed');
+                break;
             case 'pending':
                 $query->where('status', 'pending');
                 break;
@@ -62,6 +68,11 @@ class VetAppointments extends Component
                 break;
             case 'all':
                 // No additional where clauses needed
+                break;
+            default:
+                // Default to upcoming if status is not recognized
+                $query->where('start_time', '>=', now())
+                    ->whereIn('status', ['pending', 'scheduled', 'confirmed']);
                 break;
         }
 

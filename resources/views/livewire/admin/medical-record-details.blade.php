@@ -662,7 +662,10 @@
                                             <ul class="space-y-4">
                                                 @foreach($vaccinations as $vaccination)
                                                     @php
-                                                        $isExpired = $vaccination->pivot->expires_at && \Carbon\Carbon::parse($vaccination->pivot->expires_at)->isPast();
+                                                        $isExpired = false;
+                                                        if ($vaccination->pivot && $vaccination->pivot->expires_at) {
+                                                            $isExpired = \Carbon\Carbon::parse($vaccination->pivot->expires_at)->isPast();
+                                                        }
                                                     @endphp
                                                     <li
                                                         class="group/item relative pl-4 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/50 -mx-2 px-2 py-3 rounded-lg border-l-2 {{ $isExpired ? 'border-rose-500' : 'border-green-500' }}">
