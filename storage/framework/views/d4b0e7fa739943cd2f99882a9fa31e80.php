@@ -679,7 +679,10 @@
                                             <ul class="space-y-4">
                                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $vaccinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vaccination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <?php
-                                                        $isExpired = $vaccination->pivot->expires_at && \Carbon\Carbon::parse($vaccination->pivot->expires_at)->isPast();
+                                                        $isExpired = false;
+                                                        if ($vaccination->pivot && $vaccination->pivot->expires_at) {
+                                                            $isExpired = \Carbon\Carbon::parse($vaccination->pivot->expires_at)->isPast();
+                                                        }
                                                     ?>
                                                     <li
                                                         class="group/item relative pl-4 transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-700/50 -mx-2 px-2 py-3 rounded-lg border-l-2 <?php echo e($isExpired ? 'border-rose-500' : 'border-green-500'); ?>">
@@ -698,7 +701,7 @@
                                                                 </div>
 
                                                                 <div class="mt-1.5 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                                                                    <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot->administered_at): ?>
+                                                                    <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot && $vaccination->pivot->administered_at): ?>
                                                                         <div class="flex items-center text-gray-600 dark:text-gray-400">
                                                                             <svg class="flex-shrink-0 mr-1.5 h-3.5 w-3.5 text-green-500"
                                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -711,21 +714,20 @@
                                                                         </div>
                                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                                                                    <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot->expires_at): ?>
-                                                                        <div
-                                                                            class="flex items-center <?php echo e($isExpired ? 'text-rose-600 dark:text-rose-400' : 'text-gray-600 dark:text-gray-400'); ?>">
-                                                                            <svg class="flex-shrink-0 mr-1.5 h-3.5 w-3.5 <?php echo e($isExpired ? 'text-rose-500' : 'text-green-500'); ?>"
+                                                                    <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot && $vaccination->pivot->expires_at): ?>
+                                                                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                                                                            <svg class="flex-shrink-0 mr-1.5 h-3.5 w-3.5 text-amber-500"
                                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                                     stroke-width="2"
-                                                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                                             </svg>
                                                                             <span>Expires:
                                                                                 <?php echo e(\Carbon\Carbon::parse($vaccination->pivot->expires_at)->format('M j, Y')); ?></span>
                                                                         </div>
                                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                                                                    <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot->administered_by): ?>
+                                                                    <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot && $vaccination->pivot->administered_by): ?>
                                                                         <div
                                                                             class="flex items-center text-gray-600 dark:text-gray-400 col-span-2">
                                                                             <svg class="flex-shrink-0 mr-1.5 h-3.5 w-3.5 text-blue-500"
@@ -739,7 +741,7 @@
                                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                                 </div>
 
-                                                                <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot->notes): ?>
+                                                                <!--[if BLOCK]><![endif]--><?php if($vaccination->pivot && $vaccination->pivot->notes): ?>
                                                                     <div class="mt-2 p-2 bg-gray-50 dark:bg-gray-700/30 rounded-md">
                                                                         <p class="text-xs text-gray-600 dark:text-gray-300">
                                                                             <?php echo e($vaccination->pivot->notes); ?></p>

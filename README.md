@@ -1,60 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Veterinary Management System
 
-## About Laravel
+_A comprehensive backend system for managing veterinary clinics, appointments, and pet health records_
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Livewire](https://img.shields.io/badge/Livewire-4e56a6?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel-livewire.com)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+</div>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Features
 
-## Learning Laravel
+-   **User Management**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    -   Role-based access control (Admin, Veterinarian, Client)
+    -   Email verification
+    -   Password reset functionality
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   **Pet Management**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    -   Comprehensive pet profiles
+    -   Medical history tracking
+    -   Vaccination records
 
-## Laravel Sponsors
+-   **Appointment System**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    -   Online scheduling
+    -   Calendar integration
+    -   Reminder notifications
 
-### Premium Partners
+-   **Medical Records**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+    -   Treatment history
+    -   Prescription tracking
+    -   Medical notes
 
-## Contributing
+-   **Clinic Management**
+    -   Multi-location support
+    -   Veterinarian schedules
+    -   Resource allocation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🛠 Tech Stack
 
-## Code of Conduct
+-   **Backend**: Laravel 12.x
+-   **Frontend**: Laravel Livewire, Tailwind CSS
+-   **Authentication**: Laravel Fortify with Sanctum
+-   **Database**: MySQL/PostgreSQL
+-   **API**: RESTful JSON API
+-   **Testing**: PHPUnit
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📦 Requirements
 
-## Security Vulnerabilities
+-   PHP 8.1 or higher
+-   Composer
+-   Node.js & NPM
+-   MySQL 8.0+ / PostgreSQL 13+
+-   Web server (Apache/Nginx)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🚀 Installation
+
+1. **Clone the repository**
+
+    ```bash
+    git clone https://github.com/your-username/veterinary-management-system.git
+    cd veterinary-management-system
+    ```
+
+2. **Install dependencies**
+
+    ```bash
+    composer install
+    npm install
+    ```
+
+3. **Configure environment**
+
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+4. **Configure database**
+
+    Update `.env` with your database credentials:
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
+    ```
+
+5. **Run migrations**
+
+    ```bash
+    php artisan migrate --seed
+    ```
+
+6. **Compile assets**
+
+    ```bash
+    npm run build
+    ```
+
+7. **Start the development server**
+
+    ```bash
+    php artisan serve
+    ```
+
+## 📸 Screenshots
+
+Here are some screenshots of the application in action:
+
+| Dashboard | Pet Management | Appointment Calendar | Medical Records | User Profile | Settings |
+|-----------|----------------|----------------------|-----------------|--------------|----------|
+| ![Dashboard](./public/pics/Macbook-Air-.png) | ![Pet Management](./public/pics/Macbook-Air-1.png) | ![Calendar View](./public/pics/Macbook-Air-2.png) | ![Medical Records](./public/pics/Macbook-Air-3.png) | ![User Profile](./public/pics/Macbook-Air-4.png) | ![Settings](./public/pics/Macbook-Air-5.png) |
+
+_Click on any image to view it in full size._
+
+## 🔐 API Documentation
+
+API documentation is available at `/api/documentation` after setting up the application.
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+php artisan test
+```
 
 ## License
 

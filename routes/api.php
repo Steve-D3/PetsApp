@@ -31,7 +31,6 @@ Route::post('/login', [UserController::class, 'login']);
 // Password reset routes
 Route::post('/forgot-password', [UserController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [UserController::class, 'reset']);
-
 // Email Verification Routes
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
     ->name('verification.verify');
